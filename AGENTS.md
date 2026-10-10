@@ -55,7 +55,7 @@ Instructions for AI agents (Claude, Codex, Cursor, etc.) that create or edit vis
 
 ## Editable template editor (preferred for routine posts)
 
-`editor/` is a web editor with 68 editable templates. **For routine content, prefer it over writing new SVG:**
+`editor/` is a web editor with 72 editable templates. **For routine content, prefer it over writing new SVG:**
 - weekly event
 - general post or story
 - call for stories
@@ -143,7 +143,7 @@ Image fields take a local path in `render_editor.py` jobs (relative to the JSON 
 **Automatic editing:** to turn raw clips into a branded video, write a *guion* JSON (see `brand.json → video.montaje` and `video/ejemplos/`) and run `python -I tools/montaje.py guion.json`.
 - Formats: `9x16-marco` (horizontal clips framed in a Reel), `9x16` (full-screen vertical) and `16x9`.
 - Segments can be clips (`clip`), still photos with a slow pan (`foto`) or chapter cards (`separador`).
-- Branding style: `"capa": {"estilo": "clasico" | "banda" | "stickers" | "marco"}` (9x16) or `clasico | banda` (16x9). `marco` puts the clip in a 960×1000 window.
+- Branding style: `"capa": {"estilo": "clasico" | "banda" | "stickers" | "marco" | "editorial" | "zine"}` (9x16) or `clasico | banda` (16x9). `marco`, `editorial` and `zine` put the clip in a window; with `editorial`/`zine` each segment's `texto` becomes the headline (`titulo2`) and the matching intro/outro is used. Prefer `editorial` or `zine` (the official lines).
 - Keep segments 2.5–5 s and Reels 15–30 s.
 - One short on-screen text per segment, in brand voice.
 - Inspect frames of the result (for example with `ffmpeg -ss <t> -frames:v 1`) before delivering.

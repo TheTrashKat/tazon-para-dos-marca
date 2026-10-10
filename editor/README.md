@@ -69,6 +69,8 @@ Un editor web para hacer publicaciones sin saber diseño. Eliges la plantilla, c
 | `overlay_video_h_banda` | Capa 16:9 estilo banda (transparente) | 1920 × 1080 |
 | `video_portada_banda` | Portada de Reel que combina con el estilo banda | 1080 × 1920 |
 | `aviso_nuevo_reel` | Historia para avisar que hay Reel nuevo (con recuadro donde pegas el Reel) | 1080 × 1920 |
+| `editorial_marco_v` / `zine_marco_v` | Marcos para video en las líneas Editorial y Zine (transparentes, con ventana para el clip) | 1080 × 1920 |
+| `editorial_cierre_v` / `zine_cierre_v` | Tarjetas finales de video en las líneas Editorial y Zine | 1080 × 1920 |
 | `audiograma` | Clip de podcast: foto, onda de sonido y frase | 1080 × 1080 |
 
 **Fotos:** pulsa *Elegir foto* y la foto se reduce sola a un máximo de 2400 px. En el JSON para `render_editor.py`, el campo de foto lleva la ruta de la imagen, relativa al archivo JSON. Hay un ejemplo en [`ejemplos/fotos_video.json`](ejemplos/fotos_video.json).

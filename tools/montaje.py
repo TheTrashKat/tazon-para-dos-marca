@@ -12,7 +12,9 @@ Formato del guion:
   "audio": "original",               # original | silencio
   "marco": { "receta": "general", "titulo": "...", "etiqueta": "...", "usuario": "@tazonparados" },   # solo 9x16-marco
   "capa":  { "estilo": "clasico", "etiqueta": "...", "usuario": "@tazonparados", "info": "..." },  # 9x16 y 16x9
-            # estilo 9x16: clasico | banda | stickers | marco (el clip va en una ventana 960x1000 con borde de marca)
+            # estilo 9x16: clasico | banda | stickers | marco | editorial | zine
+            #   marco, editorial y zine ponen el clip en una ventana; en editorial y zine el texto de cada
+            #   segmento se vuelve el titular (titulo2) y la intro/cierre usan la línea correspondiente
             # estilo 16x9: clasico | banda
   "segmentos": [
     { "clip": "ruta/al/video.mp4", "inicio": 2.0, "duracion": 4.0,
@@ -38,7 +40,14 @@ from video import FFMPEG  # noqa: E402  (reutiliza la búsqueda de ffmpeg)
 FFPROBE = str(pathlib.Path(FFMPEG).with_name("ffprobe" + pathlib.Path(FFMPEG).suffix))
 SIZE = {"9x16-marco": (1080, 1920), "9x16": (1080, 1920), "16x9": (1920, 1080)}
 CAPA = {("v", "clasico"): "overlay_reel", ("v", "banda"): "overlay_reel_banda", ("v", "stickers"): "overlay_reel_stickers",
-        ("v", "marco"): "marco_vertical", ("h", "clasico"): "overlay_video_h", ("h", "banda"): "overlay_video_h_banda"}
+        ("v", "marco"): "marco_vertical", ("v", "editorial"): "editorial_marco_v", ("v", "zine"): "zine_marco_v",
+        ("h", "clasico"): "overlay_video_h", ("h", "banda"): "overlay_video_h_banda"}
+# Ventana del clip (ancho, alto, x, y) para los estilos con marco
+VENTANA = {"marco": (960, 1000, 60, 400), "editorial": (984, 860, 48, 250), "zine": (880, 780, 100, 280)}
+# El texto de cada segmento va dentro del marco (no como texto en pantalla aparte)
+TEXTO_EN_MARCO = {"editorial", "zine"}
+INTRO = {"editorial": "video/intro_editorial_9x16.mp4"}
+CIERRE = {"editorial": "video/cierre_editorial_9x16.mp4", "zine": "video/cierre_zine_9x16.mp4"}
 ENC = ["-r", "30", "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-pix_fmt", "yuv420p",
        "-c:a", "aac", "-b:a", "160k", "-ar", "48000", "-ac", "2", "-movflags", "+faststart",
        "-color_primaries", "bt709", "-color_trc", "bt709", "-colorspace", "bt709", "-color_range", "tv"]
@@ -88,32 +97,36 @@ def main():
     # 1) Capas PNG con el editor
     jobs = []
     vertical = fmt.startswith("9x16")
+    capa = dict(g.get("capa", {}))
+    estilo = capa.pop("estilo", "clasico")
+    por_segmento = fmt == "9x16" and estilo in TEXTO_EN_MARCO
     for i, s in enumerate(segs):
         if s.get("separador") is not None:
             jobs.append({"template": "separador_v" if vertical else "separador_h", "values": s["separador"], "output": str(work / f"sep_{i}.png")})
             continue
         if fmt == "9x16-marco":
             jobs.append({"template": "marco_video", "values": {**g.get("marco", {}), "texto": s.get("texto", "")}, "output": str(work / f"capa_{i}.png")})
+        elif por_segmento:
+            vals = {**capa, **({"titulo2": s["texto"]} if s.get("texto") else {})}
+            jobs.append({"template": CAPA[("v", estilo)], "values": vals, "output": str(work / f"capa_{i}.png")})
         elif s.get("texto"):
             jobs.append({"template": "texto_pantalla" if vertical else "texto_pantalla_h",
                          "values": {"texto": s["texto"], "caja": s.get("estilo_texto", "tinta"), "pos": "abajo"}, "output": str(work / f"texto_{i}.png")})
         if s.get("rotulo"):
             jobs.append({"template": "tercio_inferior_v" if vertical else "tercio_inferior_h", "values": s["rotulo"], "output": str(work / f"rotulo_{i}.png")})
-    capa = dict(g.get("capa", {}))
-    estilo = capa.pop("estilo", "clasico")
-    if fmt != "9x16-marco":
+    if fmt != "9x16-marco" and not por_segmento:
         key = ("v" if vertical else "h", estilo)
         if key not in CAPA:
             raise SystemExit(f"Estilo de capa desconocido para {fmt}: {estilo}")
         jobs.append({"template": CAPA[key], "values": capa, "output": str(work / "marca.png")})
-    ventana = fmt == "9x16" and estilo == "marco"
+    ventana = VENTANA.get(estilo) if fmt == "9x16" else None
     print(f"Renderizando {len(jobs)} capas…")
     render_overlays(jobs, work)
 
     # 2) Segmentos
     parts = []
     if g.get("intro", True):
-        parts.append(("intro", ROOT / ("video/intro_9x16.mp4" if vertical else "video/intro_16x9.mp4")))
+        parts.append(("intro", ROOT / (INTRO.get(estilo, "video/intro_9x16.mp4") if vertical else "video/intro_16x9.mp4")))
     for i, s in enumerate(segs):
         dur = float(s.get("duracion", 4))
         if s.get("separador") is not None:
@@ -138,8 +151,9 @@ def main():
             bw, bh = int(w * 1.12) // 2 * 2, int(h * 1.12) // 2 * 2
             return f"scale={bw}:{bh}:force_original_aspect_ratio=increase,crop={w}:{h}:x='(iw-{w})*t/{dur}':y='(ih-{h})/2'"
         if ventana:
-            chain = f"[0:v]{cover(960, 1000)},setsar=1,pad=1080:1920:60:400:black[b0]"
-            layers = [p for p in (work / "marca.png", work / f"texto_{i}.png") if p.exists()]
+            vw, vh, vx, vy = ventana
+            chain = f"[0:v]{cover(vw, vh)},setsar=1,pad=1080:1920:{vx}:{vy}:black[b0]"
+            layers = [p for p in (work / f"capa_{i}.png", work / "marca.png", work / f"texto_{i}.png") if p.exists()]
         elif fmt == "9x16-marco":
             chain = f"[0:v]{cover(960, 540)},setsar=1,pad=1080:1920:60:650:black[b0]"
             layers = [work / f"capa_{i}.png"]
@@ -168,7 +182,7 @@ def main():
         parts.append((f"segmento {i + 1}", seg))
         print(f"  segmento {i + 1}/{len(segs)} listo")
     if g.get("cierre", True):
-        parts.append(("cierre", ROOT / ("video/cierre_9x16.mp4" if vertical else "video/cierre_16x9.mp4")))
+        parts.append(("cierre", ROOT / (CIERRE.get(estilo, "video/cierre_9x16.mp4") if vertical else "video/cierre_16x9.mp4")))
 
     # 3) Normalizar intro/cierre (agregar audio en silencio) y unir
     final = []

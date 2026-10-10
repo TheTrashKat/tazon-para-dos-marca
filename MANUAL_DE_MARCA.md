@@ -334,6 +334,8 @@ La marca encima del video tiene **cuatro estilos**. Se eligen en el guion con `"
 | `banda` | Bloque de color diagonal arriba con la cabecera grande y franja tinta abajo con horario y usuario |
 | `stickers` | Sello, nombre y datos como etiquetas inclinadas pegadas sobre el video, más un dado |
 | `marco` | El video va dentro de una ventana con borde tinta sobre fondo de color, con etiquetas en el borde |
+| `editorial` | Línea Editorial: intro crema, el video con margen de revista y el texto de cada parte como titular coral, tarjeta final editorial |
+| `zine` | Línea Mesa / Zine: el video como tarjeta con cinta, sello y dado, el texto de cada parte en recortes, tarjeta final zine |
 
 En videos horizontales (16:9) hay `clasico` y `banda`.
 
@@ -407,7 +409,7 @@ Además de clips, un guion puede llevar:
 
 ## 15. Cómo hacer una pieza nueva
 
-> 💡 **La forma más fácil es el [editor de plantillas](https://thetrashkat.github.io/tazon-para-dos-marca/editor/).** Eliges la plantilla, cambias los textos y descargas el PNG. Tiene 68 plantillas: publicaciones, eventos, convocatorias, podcast, carrusel, destacadas, **fotos** y **video**. Más detalles en [`editor/README.md`](editor/README.md).
+> 💡 **La forma más fácil es el [editor de plantillas](https://thetrashkat.github.io/tazon-para-dos-marca/editor/).** Eliges la plantilla, cambias los textos y descargas el PNG. Tiene 72 plantillas: publicaciones, eventos, convocatorias, podcast, carrusel, destacadas, **fotos** y **video**. Más detalles en [`editor/README.md`](editor/README.md).
 
 Para piezas que no estén en el editor:
 

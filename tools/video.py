@@ -18,6 +18,7 @@ TEAL = TOKENS["color"]["teal"]["value"]
 INK = TOKENS["color"]["ink"]["value"]
 SUN = TOKENS["color"]["sun"]["value"]
 CORAL = TOKENS["color"]["coral"]["value"]
+CREAM = TOKENS["color"]["cream"]["value"]
 
 
 def find_ffmpeg():
@@ -66,9 +67,14 @@ def render_editor(jobs, workdir):
                    stdout=subprocess.DEVNULL)
 
 
-def intro(w, h, logo, out, work):
-    bg = work / f"bg_{w}x{h}.png"
-    dotted_background(w, h, bg)
+def intro(w, h, logo, out, work, plain=None):
+    """plain: color de fondo liso (línea editorial); si no, fondo turquesa con puntos."""
+    bg = work / f"bg_{w}x{h}_{'liso' if plain else 'puntos'}.png"
+    if plain:
+        from PIL import Image
+        Image.new("RGB", (w, h), hex_rgb(plain)).save(bg)
+    else:
+        dotted_background(w, h, bg)
     base = w                                                 # la capa del logo ocupa todo el cuadro
     # Rebote: crece de 40 % a 115 % y se asienta en 100 %
     s = "if(lt(t,0.35),0.4+0.75*t/0.35,if(lt(t,0.55),1.15-0.15*(t-0.35)/0.2,1))"
@@ -102,6 +108,10 @@ def main():
         {"template": "overlay_video_h", "output": str(OUT / "capas/marca_video_16x9.png")},
         {"template": "intro_logo_v", "output": str(work / "intro_logo_9x16.png")},
         {"template": "intro_logo_h", "output": str(work / "intro_logo_16x9.png")},
+        {"template": "editorial_cierre_v", "output": str(OUT / "portadas/tarjeta_final_editorial_9x16.png")},
+        {"template": "zine_cierre_v", "output": str(OUT / "portadas/tarjeta_final_zine_9x16.png")},
+        {"template": "editorial_marco_v", "output": str(OUT / "capas/marco_editorial_9x16.png")},
+        {"template": "zine_marco_v", "output": str(OUT / "capas/marco_zine_9x16.png")},
     ]
     print("Renderizando tarjetas y capas…")
     render_editor(jobs, work)
@@ -110,6 +120,10 @@ def main():
     intro(1920, 1080, work / "intro_logo_16x9.png", OUT / "intro_16x9.mp4", work)
     outro(OUT / "portadas/tarjeta_final_9x16.png", 1080, 1920, OUT / "cierre_9x16.mp4")
     outro(OUT / "portadas/tarjeta_final_16x9.png", 1920, 1080, OUT / "cierre_16x9.mp4")
+    # Líneas Editorial y Mesa / Zine
+    intro(1080, 1920, work / "intro_logo_9x16.png", OUT / "intro_editorial_9x16.mp4", work, plain=CREAM)
+    outro(OUT / "portadas/tarjeta_final_editorial_9x16.png", 1080, 1920, OUT / "cierre_editorial_9x16.mp4")
+    outro(OUT / "portadas/tarjeta_final_zine_9x16.png", 1080, 1920, OUT / "cierre_zine_9x16.mp4")
     for p in sorted(OUT.rglob("*.*")):
         print(f"   {p.relative_to(ROOT)}  ({p.stat().st_size // 1024} KB)")
     shutil.rmtree(work, ignore_errors=True)

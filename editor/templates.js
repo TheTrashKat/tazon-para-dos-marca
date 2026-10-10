@@ -1482,6 +1482,92 @@
     },
   });
 
+  // ============================================================ VIDEO EN LAS LÍNEAS EDITORIAL Y ZINE
+  // Marcos con ventana transparente: montaje.py pone el clip en la ventana y el texto de cada segmento en titulo2.
+  const FULL_V = "M0,0 H1080 V1920 H0 Z";
+  add({
+    id: "editorial_marco_v", name: "Editorial: marco para video 9:16 (transparente)", group: "Video", w: 1080, h: 1920, transparent: true,
+    fields: [f.etiqueta("REEL · SÁBADO DE JUEGOS"), { key: "titulo1", label: "Titular línea 1", type: "text", default: "ASÍ SE VIVE" },
+      { key: "titulo2", label: "Titular línea 2 (coral; en el montaje, el texto de cada segmento)", type: "text", default: "UNA PARTIDA." }, f.usuario],
+    render(v) {
+      const win = roundRect(48, 250, 984, 860, 8);   // ventana del clip: 984×860 en (48, 250)
+      const t = twoTitle(v.titulo1, v.titulo2, 100, 860, 52);
+      const y1 = Math.round(1186 + t.size * 0.74), y2 = Math.round(y1 + t.size * 0.96);
+      return `<path fill-rule="evenodd" d="${FULL_V} ${win}" fill="${CREAM}"/>
+        ${edLabel(54, 1160, v.etiqueta, 860)}
+        <text x="50" y="${y1}" class="cond" font-size="${t.size}" fill="${INK}">${D.esc(t.a)}</text>
+        <text x="50" y="${y2}" class="cond" font-size="${t.size}" fill="${CORAL}">${D.esc(t.b)}</text>
+        <rect x="54" y="1398" width="860" height="4" fill="${INK}"/>
+        ${firma(54, 1466, 1, INK)}
+        <text x="914" y="1463" text-anchor="end" class="sans" font-weight="700" font-size="${D.fit(v.usuario, 26, 400, "sans", 700)}" fill="${MUTED}">${D.esc(v.usuario)}</text>`;
+    },
+  });
+
+  add({
+    id: "zine_marco_v", name: "Mesa/Zine: marco para video 9:16 (transparente)", group: "Video", w: 1080, h: 1920, transparent: true,
+    fields: [zineBg, { key: "titulo1", label: "Recorte 1", type: "text", default: "ASÍ SE VIVE" },
+      { key: "titulo2", label: "Recorte 2 (en el montaje, el texto de cada segmento)", type: "text", default: "UNA PARTIDA." },
+      { key: "pie", label: "Pie de la tarjeta", type: "text", default: "la mesa de los sábados" }, f.usuario],
+    render(v) {
+      const bg = COLOR[v.fondo] || TEAL, [alt, altInk] = zAlt(bg);
+      const win = roundRect(100, 280, 880, 780, 4);   // ventana del clip: 880×780 en (100, 280)
+      const card = roundRect(70, 250, 940, 900, 10);
+      const s1 = cutoutSize(v.titulo1, 100, 800), s2 = cutoutSize(v.titulo2, 110, 800);
+      return `<path fill-rule="evenodd" d="${FULL_V} ${win}" fill="${bg}"/><path fill-rule="evenodd" d="${FULL_V} ${win}" fill="url(#${bg === INK ? "dotsLight" : "dots"})"/>
+        ${motif(170, 1700, 300, -10, bg === INK ? 0.08 : 0.1)}
+        <path fill-rule="evenodd" d="${roundRect(86, 266, 940, 900, 10)} ${win}" fill="${INK}"/>
+        <path fill-rule="evenodd" d="${card} ${win}" fill="${CREAM}" stroke="${INK}" stroke-width="7"/>
+        ${tape(540, 250, 220, 2)}
+        <g transform="translate(96,262) rotate(-10)"><circle cx="9" cy="9" r="64" fill="${INK}"/><circle r="64" fill="${CREAM}" stroke="${INK}" stroke-width="6"/>
+          <use href="#bowl" x="-39" y="-40" width="78" height="80"/></g>
+        ${v.pie ? `<text x="120" y="1114" class="sans" font-weight="600" font-style="italic" font-size="${D.fit(v.pie, 32, 480, "sans", 600)}" fill="${INK}">${D.esc(v.pie)}</text>` : ""}
+        <text x="910" y="1114" text-anchor="end" class="sans" font-weight="700" font-size="${D.fit(v.usuario, 26, 300, "sans", 700)}" fill="${INK}">${D.esc(v.usuario)}</text>
+        ${D.d20(1000, 320, 70, 14)}${D.sparkle(1010, 1240, 50, SUN)}
+        ${cutout(54, 1250, -2, v.titulo1, s1, SUN, INK)}
+        ${cutout(70, 1388, 1.5, v.titulo2, s2, alt, altInk)}`;
+    },
+  });
+
+  const cierreFields = [{ key: "linea1", label: "Línea 1", type: "text", default: "¿TE GUSTÓ?" }, { key: "linea2", label: "Línea 2 (destacada)", type: "text", default: "VEN A JUGAR." },
+    { key: "info", label: "Horario", type: "text", default: INFO }, { key: "lugar", label: "Lugar", type: "text", default: PLACE }, f.usuario];
+  add({
+    id: "editorial_cierre_v", name: "Editorial: tarjeta final de video 9:16", group: "Video", w: 1080, h: 1920, fields: cierreFields,
+    render(v) {
+      const t = twoTitle(v.linea1, v.linea2, 150, 790, 44);
+      const y1 = Math.round(880 + t.size * 0.74), y2 = Math.round(y1 + t.size * 1.04);
+      return `<rect width="1080" height="1920" fill="${CREAM}"/>
+        <circle cx="${540 + 14}" cy="${560 + 14}" r="170" fill="${INK}"/><circle cx="540" cy="560" r="170" fill="${CREAM}" stroke="${INK}" stroke-width="10"/>
+        <use href="#bowl" x="${540 - 106}" y="${560 - 110}" width="212" height="219"/>
+        ${D.sparkle(800, 420, 70, SUN)}${D.sparkle(300, 700, 40, CORAL)}
+        ${edLabel(540 - D.measure("GRACIAS POR VER", "sans", 26, 700, 5) / 2, 836, "GRACIAS POR VER", 800)}
+        <text x="540" y="${y1}" text-anchor="middle" class="cond" font-size="${t.size}" fill="${INK}">${D.esc(t.a)}</text>
+        <text x="540" y="${y2}" text-anchor="middle" class="cond" font-size="${t.size}" fill="${CORAL}">${D.esc(t.b)}</text>
+        <rect x="140" y="${y2 + 60}" width="800" height="4" fill="${INK}"/>
+        ${v.info ? `<text x="540" y="${y2 + 130}" text-anchor="middle" class="sans" font-weight="700" font-size="${D.fit(v.info, 34, 740, "sans", 700, 2)}" fill="${INK}" letter-spacing="2">${D.esc(v.info)}</text>` : ""}
+        <text x="540" y="${y2 + 182}" text-anchor="middle" class="sans" font-weight="600" font-size="${D.fit(v.lugar, 30, 800, "sans", 600)}" fill="${MUTED}">${D.esc(v.lugar)}</text>
+        <text x="540" y="${y2 + 270}" text-anchor="middle" class="cond" font-size="${D.fit(v.usuario, 64, 800)}" fill="${CORAL}">${D.esc(v.usuario)}</text>`;
+    },
+  });
+
+  add({
+    id: "zine_cierre_v", name: "Mesa/Zine: tarjeta final de video 9:16", group: "Video", w: 1080, h: 1920, fields: [zineBg, ...cierreFields],
+    render(v) {
+      const bg = COLOR[v.fondo] || TEAL, [alt, altInk] = zAlt(bg);
+      const s1 = cutoutSize(v.linea1, 120, 800), s2 = cutoutSize(v.linea2, 132, 800);
+      const cx = (text, s) => Math.round(540 - (D.measure(String(text).toUpperCase(), "cond", s, 800, 1) + s * 0.62) / 2);
+      return `${D.background(1080, 1920, bg, bg === INK)}${motif(880, 1640, 360, 12, bg === INK ? 0.08 : 0.1)}
+        <g transform="translate(540,560) rotate(-6)"><circle cx="16" cy="16" r="190" fill="${INK}"/><circle r="190" fill="${CREAM}" stroke="${INK}" stroke-width="10"/>
+          <use href="#bowl" x="-118" y="-122" width="236" height="244"/></g>
+        ${tape(540, 372, 230, 4)}
+        ${D.d20(860, 420, 90, 14)}${D.d6(220, 760, 1.2, -16)}${D.sparkle(230, 400, 70, SUN)}${D.sparkle(900, 700, 40, CREAM)}
+        ${cutout(cx(v.linea1, s1), 900, -2, v.linea1, s1, SUN, INK)}
+        ${cutout(cx(v.linea2, s2), 1056, 1.5, v.linea2, s2, alt, altInk)}
+        ${tag(540, 1204, 2, v.info, D.fit(v.info, 30, 760, "sans", 700, 2), CREAM, INK, "sans", "middle")}
+        ${tag(540, 1290, -2, v.lugar, D.fit(v.lugar, 28, 760, "sans", 700, 2), bg === SUN ? CORAL : SUN, INK, "sans", "middle")}
+        ${tag(540, 1388, 2, v.usuario, D.fit(v.usuario, 40, 700, "sans", 700, 2), CREAM, INK, "sans", "middle")}`;
+    },
+  });
+
   function introLogo(w, h, v) {
     const H = w < h;
     const cx = H ? 540 : 560, cy = H ? 760 : 540, R = H ? 270 : 280;

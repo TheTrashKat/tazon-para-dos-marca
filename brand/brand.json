@@ -1,6 +1,6 @@
 {
   "$description": "Perfil de marca legible por máquina. Úsalo junto a tokens.json para generar piezas nuevas. Textos tomados de tazon-para-dos.online (oct 2026) salvo los marcados como 'propuesta'.",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "updated": "2026-10-10",
   "identity": {
     "name": "Tazón para Dos",
@@ -663,7 +663,11 @@
       "zine_carrusel_lamina",
       "zine_podcast",
       "zine_cita",
-      "zine_collage"
+      "zine_collage",
+      "editorial_marco_v",
+      "zine_marco_v",
+      "editorial_cierre_v",
+      "zine_cierre_v"
     ],
     "job_format": {
       "template": "<id>",
@@ -802,7 +806,7 @@
         "cierre": "bool",
         "audio": "original | silencio",
         "marco": "valores de marco_video",
-        "capa": "valores de la capa + \"estilo\": clasico | banda | stickers | marco (9x16) · clasico | banda (16x9)",
+        "capa": "valores de la capa + \"estilo\": clasico | banda | stickers | marco | editorial | zine (9x16) · clasico | banda (16x9)",
         "segmentos": [
           {
             "clip": "ruta",
@@ -851,7 +855,9 @@
           "clasico": "overlay_reel",
           "banda": "overlay_reel_banda",
           "stickers": "overlay_reel_stickers",
-          "marco": "marco_vertical (clip en ventana 960x1000 en x60 y400)"
+          "marco": "marco_vertical (clip en ventana 960x1000 en x60 y400)",
+          "editorial": "editorial_marco_v (clip en ventana 984x860 en x48 y250; el texto de cada segmento es el titular coral; intro crema y cierre editorial)",
+          "zine": "zine_marco_v (clip en ventana 880x780 en x100 y280 dentro de una tarjeta con cinta; el texto de cada segmento es el recorte 2; cierre zine)"
         },
         "16x9": {
           "clasico": "overlay_video_h",

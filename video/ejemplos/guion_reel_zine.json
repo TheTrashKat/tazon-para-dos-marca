@@ -1,0 +1,11 @@
+{
+  "formato": "9x16",
+  "salida": "salida/reel_zine.mp4",
+  "intro": false,
+  "cierre": true,
+  "capa": { "estilo": "zine", "fondo": "teal", "titulo1": "CRÓNICA DEL SÁBADO", "pie": "la mesa de los sábados", "usuario": "@tazonparados" },
+  "segmentos": [
+    { "foto": "../../editor/ejemplos/fotos/tablero.jpg", "duracion": 3.5, "texto": "La mesa ya está lista." },
+    { "foto": "../../editor/ejemplos/fotos/grabacion-podcast.jpg", "duracion": 3.5, "texto": "Y la partida se vuelve podcast." }
+  ]
+}
