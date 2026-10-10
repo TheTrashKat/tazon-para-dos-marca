@@ -407,7 +407,7 @@ Además de clips, un guion puede llevar:
 
 ## 15. Cómo hacer una pieza nueva
 
-> 💡 **La forma más fácil es el [editor de plantillas](https://thetrashkat.github.io/tazon-para-dos-marca/editor/).** Eliges la plantilla, cambias los textos y descargas el PNG. Tiene 47 plantillas: publicaciones, eventos, convocatorias, podcast, carrusel, destacadas, **fotos** y **video**. Más detalles en [`editor/README.md`](editor/README.md).
+> 💡 **La forma más fácil es el [editor de plantillas](https://thetrashkat.github.io/tazon-para-dos-marca/editor/).** Eliges la plantilla, cambias los textos y descargas el PNG. Tiene 56 plantillas: publicaciones, eventos, convocatorias, podcast, carrusel, destacadas, **fotos** y **video**. Más detalles en [`editor/README.md`](editor/README.md).
 
 Para piezas que no estén en el editor:
 

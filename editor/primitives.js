@@ -76,7 +76,7 @@
     return `<circle cx="${x}" cy="${y}" r="${46 * s}" fill="${CREAM}" stroke="${INK}" stroke-width="${4 * s}"/>
     <use href="#bowl" x="${x - 29 * s}" y="${y - 31 * s}" width="${58 * s}" height="${60 * s}"/>
     <text x="${x + 66 * s}" y="${y + 2 * s}" class="cond" font-size="${44 * s}" fill="${ink}" letter-spacing="1">TAZÓN PARA DOS</text>
-    <text x="${x + 68 * s}" y="${y + 33 * s}" class="sans" font-weight="600" font-size="${19 * s}" fill="${ink}" letter-spacing="${3.2 * s}">${esc(sub)}</text>`;
+    <text x="${x + 68 * s}" y="${y + 33 * s}" class="sans" font-weight="600" font-size="${22 * s}" fill="${ink}" letter-spacing="${2.6 * s}">${esc(sub)}</text>`;
   }
 
   function pill(x, y, w, h, fill, ink, label, size, opts = {}) {
@@ -90,6 +90,7 @@
   // Píldora con ancho calculado según el texto. anchor: "start" | "middle" | "end"
   function pillAuto(x, y, h, fill, ink, label, size, opts = {}) {
     if (!label) return "";
+    if (size < 22 && !opts.allowSmall) { h = Math.round(h * 22 / size); size = 22; }   // legible en el celular
     const w = measure(label, "sans", size, 700, 2) + h * 1.2;
     const x0 = opts.anchor === "middle" ? x - w / 2 : opts.anchor === "end" ? x - w : x;
     return pill(x0, y, w, h, fill, ink, label, size, opts);

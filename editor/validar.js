@@ -20,7 +20,9 @@
   }));
   await document.fonts.ready;
 
-  const SKIP = new Set(["guia_zonas"]);          // dibuja las zonas a propósito
+  const SKIP = new Set(["guia_zonas"]);
+  // Tamaño mínimo de texto a 1080 px de ancho (guías de legibilidad en celular: 24–32 px para texto secundario)
+  const MIN_PX = Number(new URLSearchParams(location.search).get("min")) || 22;          // dibuja las zonas a propósito
   const ctx = document.createElement("canvas").getContext("2d");
   const stage = document.getElementById("stage");
 
@@ -90,11 +92,13 @@
       if (/undefined|NaN|\[object/.test(b.txt)) errors.push(`Texto inválido: «${short(b.txt)}»`);
       if (b.x0 < -2 || b.y0 < -2 || b.x1 > t.w + 2 || b.y1 > t.h + 2) errors.push(`Se sale del lienzo: «${short(b.txt)}»`);
       else if (!t.transparent && (b.x0 < 20 || b.x1 > t.w - 20)) warnings.push(`Pegado al borde: «${short(b.txt)}»`);
-      if (b.size * scale < 18) warnings.push(`Texto pequeño (${Math.round(b.size)} px): «${short(b.txt)}»`);
+      if (b.size * scale < MIN_PX) warnings.push(`Texto pequeño (${Math.round(b.size)} px): «${short(b.txt)}»`);
       if (vertical) {
         const bottomLimit = reel ? 1500 : 1670;
         if (b.y0 < 250 - 4 || b.y1 > bottomLimit + 4) warnings.push(`En zona de interfaz de Instagram: «${short(b.txt)}»`);
-        else if (reel && b.x1 > 940 && b.y1 > 900 && b.y0 < 1500) warnings.push(`Bajo los botones del Reel: «${short(b.txt)}»`);
+        else if (reel && !t.cover && b.x1 > 940 && b.y1 > 900 && b.y0 < 1500) warnings.push(`Bajo los botones del Reel: «${short(b.txt)}»`);
+        // Portadas de Reel: la cuadrícula del perfil recorta un cuadrado centrado (y 420–1500)
+        if (t.cover && (b.y0 < 420 - 4 || b.y1 > 1500 + 4)) warnings.push(`Fuera del recorte de la cuadrícula: «${short(b.txt)}»`);
       }
     }
     for (const pl of pills) {

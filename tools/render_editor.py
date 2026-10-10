@@ -30,7 +30,7 @@ def template_sizes():
     """Lee id, tamaño de salida y campos de editor/templates.js (sin ejecutar JS)."""
     src = (ROOT / "editor/templates.js").read_text(encoding="utf-8")
     out = {}
-    for m in re.finditer(r'id: "([^"]+)", name: "([^"]+)".*?w: (\d+), h: (\d+)(?:, out: \{ w: (\d+), h: (\d+) \})?', src, re.S):
+    for m in re.finditer(r'id: "([^"]+)",[^\n]*?name: "([^"]+)".*?w: (\d+), h: (\d+)(?:, out: \{ w: (\d+), h: (\d+) \})?', src, re.S):
         tid, name, w, h, ow, oh = m.groups()
         out[tid] = {"name": name, "w": int(ow or w), "h": int(oh or h)}
     return out

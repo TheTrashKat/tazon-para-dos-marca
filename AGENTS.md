@@ -55,7 +55,7 @@ Instructions for AI agents (Claude, Codex, Cursor, etc.) that create or edit vis
 
 ## Editable template editor (preferred for routine posts)
 
-`editor/` is a web editor with 47 editable templates. **For routine content, prefer it over writing new SVG:**
+`editor/` is a web editor with 56 editable templates. **For routine content, prefer it over writing new SVG:**
 - weekly event
 - general post or story
 - call for stories
@@ -167,6 +167,8 @@ Follow `brand.json → photography`. Photos should show real people playing, han
 Every new or changed editor template must pass both before it is committed:
 1. **Automatic:** `python -I tools/validar.py` → must report **0 errors**. It renders each template with defaults and with long "stress" texts and checks, with real fonts: text outside the canvas, overlapping or touching texts, pills covering text, `undefined`/`NaN`; warnings for Instagram UI zones (stories: top 250/bottom 250; Reels: top 250, bottom 420, right button strip x>940 between y 900–1500), text < 18 px and text hugging the edge.
 2. **Visual:** `python -I tools/validar.py --hojas` → open every sheet in `salida/validacion/` and look at both columns (normal | estrés). Fix anything that looks wrong even if the script passed, and if it is a new class of problem, add a check to `editor/validar.js`.
+
+Research-based rules enforced by the validator (sources in `brand.json → editor.validation.research_rules`): text ≥ 22 px at 1080 width (dates, times and places ≥ 32 px), Reel covers keep text and logo inside the centered square y 420–1500 (mark them with `cover: true`), one headline + at most one subhead per piece.
 
 For generated videos, also extract a few frames and look at them before delivering.
 
