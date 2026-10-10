@@ -36,7 +36,8 @@ from video import FFMPEG  # noqa: E402  (reutiliza la búsqueda de ffmpeg)
 FFPROBE = str(pathlib.Path(FFMPEG).with_name("ffprobe" + pathlib.Path(FFMPEG).suffix))
 SIZE = {"9x16-marco": (1080, 1920), "9x16": (1080, 1920), "16x9": (1920, 1080)}
 ENC = ["-r", "30", "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-pix_fmt", "yuv420p",
-       "-c:a", "aac", "-b:a", "160k", "-ar", "48000", "-ac", "2", "-movflags", "+faststart"]
+       "-c:a", "aac", "-b:a", "160k", "-ar", "48000", "-ac", "2", "-movflags", "+faststart",
+       "-color_primaries", "bt709", "-color_trc", "bt709", "-colorspace", "bt709", "-color_range", "tv"]
 
 
 def ff(*args):
@@ -47,6 +48,16 @@ def has_audio(path):
     out = subprocess.run([FFPROBE, "-v", "error", "-select_streams", "a", "-show_entries", "stream=index", "-of", "csv=p=0", str(path)],
                          capture_output=True, text=True).stdout.strip()
     return bool(out)
+
+
+# Videos HDR de celular (HDR10/HDR10+/HLG): convertir a SDR para que no se vean lavados
+TONEMAP = "zscale=t=linear:npl=100,format=gbrpf32le,zscale=p=bt709,tonemap=hable:desat=0,zscale=t=bt709:m=bt709:r=tv,format=yuv420p,setparams=color_primaries=bt709:color_trc=bt709:colorspace=bt709:range=tv,"
+
+
+def is_hdr(path):
+    out = subprocess.run([FFPROBE, "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=color_transfer", "-of", "csv=p=0", str(path)],
+                         capture_output=True, text=True).stdout.strip()
+    return out.split(",")[0].strip() in ("smpte2084", "arib-std-b67")
 
 
 def render_overlays(jobs, work):
@@ -113,7 +124,7 @@ def main():
             inputs = ["-ss", str(s.get("inicio", 0)), "-t", str(dur), "-i", str(clip)]
         def cover(w, h):
             if not still:
-                return f"scale={w}:{h}:force_original_aspect_ratio=increase,crop={w}:{h}"
+                return f"{TONEMAP if is_hdr(clip) else ''}scale={w}:{h}:force_original_aspect_ratio=increase,crop={w}:{h}"
             bw, bh = int(w * 1.12) // 2 * 2, int(h * 1.12) // 2 * 2
             return f"scale={bw}:{bh}:force_original_aspect_ratio=increase,crop={w}:{h}:x='(iw-{w})*t/{dur}':y='(ih-{h})/2'"
         if fmt == "9x16-marco":
