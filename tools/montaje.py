@@ -16,6 +16,8 @@ Formato del guion:
             #   tiktok: video a pantalla completa con acercamiento, subtítulos de 1-3 palabras con la palabra
             #   activa en amarillo, marca discreta arriba y "gancho" opcional al inicio:
             #   "gancho": {"linea1": "¿PLAN PARA", "linea2": "EL SÁBADO?"}; cierre según capa.linea (zine | editorial)
+            #   capa.subtitulos: karaoke | caja | recorte | pop | editorial
+            #   formato lista: en cada segmento "numero": "3", "titulo": "CATAN" (número grande y título arriba)
             #   marco, editorial y zine ponen el clip en una ventana; en editorial y zine el texto de cada
             #   segmento se vuelve el titular (titulo2) y la intro/cierre usan la línea correspondiente
             # estilo 16x9: clasico | banda
@@ -124,17 +126,25 @@ def main():
         if s.get("separador") is not None:
             jobs.append({"template": "separador_v" if vertical else "separador_h", "values": s["separador"], "output": str(work / f"sep_{i}.png")})
             continue
+        if tiktok and s.get("numero"):   # formato lista: número grande y título durante todo el segmento
+            png = work / f"numero_{i}.png"
+            jobs.append({"template": "numero_tiktok", "values": {"numero": s["numero"], "titulo": s.get("titulo", "")}, "output": str(png)})
+            timed.setdefault(i, []).append((png, 0, round(float(s.get("duracion", 4)), 3)))
         if fmt == "9x16-marco":
             jobs.append({"template": "marco_video", "values": {**g.get("marco", {}), "texto": s.get("texto", "")}, "output": str(work / f"capa_{i}.png")})
         elif tiktok and s.get("texto"):
             dur = float(s.get("duracion", 4))
-            parts_ = chunks(s["texto"])
+            sub = g.get("capa", {}).get("subtitulos", "karaoke")
+            parts_ = chunks(s["texto"], max_words=1) if sub == "pop" else chunks(s["texto"])
             t0, span = 0.12, max(0.5, dur - 0.22)
             per = span / len(parts_)
             for c, ws in enumerate(parts_):
                 for j in range(len(ws)):
                     png = work / f"sub_{i}_{c}_{j}.png"
-                    jobs.append({"template": "subtitulo_tiktok", "values": {"texto": " ".join(ws), "destacar": j + 1}, "output": str(png)})
+                    vals = {"texto": " ".join(ws), "destacar": j + 1, "estilo": sub, "color": len(timed.get(i, [])) + i}
+                    if sub == "editorial":
+                        vals["y"] = 1300
+                    jobs.append({"template": "subtitulo_tiktok", "values": vals, "output": str(png)})
                     a = t0 + c * per + j * per / len(ws)
                     timed.setdefault(i, []).append((png, round(a, 3), round(a + per / len(ws), 3)))
         elif por_segmento:
@@ -150,7 +160,10 @@ def main():
         if first is not None:
             png = work / "gancho.png"
             jobs.append({"template": "gancho_tiktok", "values": g["gancho"], "output": str(png)})
-            timed.setdefault(first, []).append((png, 0, round(min(1.8, float(segs[first].get("duracion", 4))), 3)))
+            fin = round(min(1.8, float(segs[first].get("duracion", 4))), 3)
+            timed.setdefault(first, []).append((png, 0, fin))
+            # el número de lista del primer segmento aparece cuando termina el gancho
+            timed[first] = [(p_, max(a, fin) if p_.name.startswith("numero_") else a, b) for p_, a, b in timed[first]]
     if fmt != "9x16-marco" and not por_segmento:
         key = ("v" if vertical else "h", estilo)
         if key not in CAPA:

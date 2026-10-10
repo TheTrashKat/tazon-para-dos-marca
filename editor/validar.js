@@ -156,7 +156,13 @@
   const results = [];
   for (const t of TEMPLATES) {
     if (SKIP.has(t.id)) continue;
-    for (const [caso, values] of [["normal", defaults(t)], ["estrés", stress(t)]]) {
+    // Variantes declaradas en la plantilla (p. ej. estilos de subtítulo): cada una con valores normales y de estrés
+    const cases = [["normal", defaults(t)], ["estrés", stress(t)]];
+    for (const vr of t.variants || []) {
+      const tag = Object.values(vr).join("·");
+      cases.push([`normal·${tag}`, { ...defaults(t), ...vr }], [`estrés·${tag}`, { ...stress(t), ...vr }]);
+    }
+    for (const [caso, values] of cases) {
       $status.textContent = `Validando ${t.id} (${caso})…`;
       const r = check(t, values);
       results.push({ id: t.id, name: t.name, group: t.group, caso, values, ...r });

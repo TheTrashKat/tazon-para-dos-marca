@@ -55,7 +55,7 @@ Instructions for AI agents (Claude, Codex, Cursor, etc.) that create or edit vis
 
 ## Editable template editor (preferred for routine posts)
 
-`editor/` is a web editor with 75 editable templates. **For routine content, prefer it over writing new SVG:**
+`editor/` is a web editor with 76 editable templates. **For routine content, prefer it over writing new SVG:**
 - weekly event
 - general post or story
 - call for stories
@@ -143,7 +143,8 @@ Image fields take a local path in `render_editor.py` jobs (relative to the JSON 
 **Automatic editing:** to turn raw clips into a branded video, write a *guion* JSON (see `brand.json → video.montaje` and `video/ejemplos/`) and run `python -I tools/montaje.py guion.json`.
 - Formats: `9x16-marco` (horizontal clips framed in a Reel), `9x16` (full-screen vertical) and `16x9`.
 - Segments can be clips (`clip`), still photos with a slow pan (`foto`) or chapter cards (`separador`).
-- Branding style: `"capa": {"estilo": "clasico" | "banda" | "stickers" | "marco" | "editorial" | "zine"}` (9x16) or `clasico | banda` (16x9). `marco`, `editorial` and `zine` put the clip in a window; with `editorial`/`zine` each segment's `texto` becomes the headline (`titulo2`) and the matching intro/outro is used. Prefer `editorial` or `zine` (the official lines). `tiktok` = full-screen clips with a slow punch-in, 1–3-word subtitles with the active word in sun, an optional `gancho` (hook) in the first 1.8 s and the outro from `capa.linea`; use 2–3 s segments and `"intro": false`.
+- Branding style: `"capa": {"estilo": "clasico" | "banda" | "stickers" | "marco" | "editorial" | "zine"}` (9x16) or `clasico | banda` (16x9). `marco`, `editorial` and `zine` put the clip in a window; with `editorial`/`zine` each segment's `texto` becomes the headline (`titulo2`) and the matching intro/outro is used. Prefer `editorial` or `zine` (the official lines). `tiktok` = full-screen clips with a slow punch-in, 1–3-word subtitles with the active word in sun, an optional `gancho` (hook) in the first 1.8 s and the outro from `capa.linea`; use 2–3 s segments and `"intro": false`. Subtitle look: `capa.subtitulos` = karaoke | caja | recorte | pop | editorial. List videos: per segment `numero` + `titulo` (shown after the hook).
+- Templates with style options declare `variants` so `tools/validar.py` checks every variant (normal and stress).
 - Horizontal clips cropped to 9:16 lose the sides: always check frames and set `"encuadre"` (izquierda | centro | derecha | 0–1) per segment so people stay in frame.
 - Keep segments 2.5–5 s and Reels 15–30 s.
 - One short on-screen text per segment, in brand voice.

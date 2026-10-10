@@ -1,6 +1,6 @@
 {
   "$description": "Perfil de marca legible por máquina. Úsalo junto a tokens.json para generar piezas nuevas. Textos tomados de tazon-para-dos.online (oct 2026) salvo los marcados como 'propuesta'.",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "updated": "2026-10-10",
   "identity": {
     "name": "Tazón para Dos",
@@ -670,7 +670,8 @@
       "zine_cierre_v",
       "subtitulo_tiktok",
       "gancho_tiktok",
-      "overlay_tiktok"
+      "overlay_tiktok",
+      "numero_tiktok"
     ],
     "job_format": {
       "template": "<id>",
@@ -873,7 +874,15 @@
           "clasico": "overlay_video_h",
           "banda": "overlay_video_h_banda"
         }
-      }
+      },
+      "tiktok_subtitulos": {
+        "karaoke": "crema con contorno, palabra activa en sol",
+        "caja": "frase en caja sol, palabra activa en caja tinta",
+        "recorte": "etiqueta crema inclinada, palabra activa en coral",
+        "pop": "una palabra gigante a la vez, colores de la paleta",
+        "editorial": "panel crema con barra coral, palabra activa en coral"
+      },
+      "tiktok_lista": "en cada segmento \"numero\" y \"titulo\": número grande y título arriba (aparece después del gancho)"
     },
     "branding_scale": "Visible en el celular: cabecera con sello y nombre a 1.25× (≈590 px de ancho en 1080), etiqueta e información 72 px de alto con texto de 30 px, usuario 84 px de alto con texto de 36 px. Intro con sello de 540 px de diámetro."
   },

@@ -1570,14 +1570,94 @@
 
   // ============================================================ ESTILO TIKTOK (video a pantalla completa)
   const centeredCut = (text, s) => Math.round(540 - (D.measure(String(text || "").toUpperCase(), "cond", s, 800, 1) + s * 0.62) / 2);
+  // ---- Estilos de subtítulo: karaoke (por defecto) · caja · recorte · pop · editorial
+  const SUB_OPTS = [["karaoke", "Karaoke (crema con contorno, palabra activa en sol)"], ["caja", "Caja (frase en caja sol, palabra activa en caja tinta)"],
+    ["recorte", "Recorte zine (etiqueta inclinada, palabra activa en coral)"], ["pop", "Pop (una palabra gigante a la vez)"], ["editorial", "Editorial (panel crema, palabra activa en coral)"]];
+  // Coloca las palabras de una línea centrada en x: devuelve [{w, x, ancho}]
+  function layoutWords(line, size, cx, kind = "cond", weight = 800, spacing = 1) {
+    const ws = line.split(" "), space = D.measure(" ", kind, size, weight, 0);
+    const widths = ws.map((w) => D.measure(w, kind, size, weight, spacing));
+    const total = widths.reduce((a, b) => a + b, 0) + space * (ws.length - 1);
+    let x = cx - total / 2;
+    return { total, words: ws.map((w, i) => { const o = { w, x, width: widths[i] }; x += widths[i] + space; return o; }) };
+  }
+  function subLines(text, max, maxW, min = 64) {
+    let size = max, lines;
+    for (;;) { lines = D.wrapBalanced(text, size, maxW, "cond", 800); if (lines.length <= 2 || size <= min) break; size -= 6; }
+    return { lines: lines.slice(0, 2), size };
+  }
+  const SUB_STYLES = {
+    caja(text, v) {
+      const { lines, size } = subLines(text, 104, 740);
+      const lh = size * 1.32, cy = Number(v.y) || 1180, hl = Number(v.destacar) || 0;
+      const top = cy - (lines.length * lh) / 2;
+      let wi = 0;
+      return lines.map((line, li) => {
+        const L = layoutWords(line, size, 540), y = top + li * lh, base = Math.round(y + size * 0.86);
+        const pad = size * 0.28, bx = 540 - L.total / 2 - pad, bw = L.total + pad * 2, bh = size * 1.18;
+        let out = `<rect x="${bx + 10}" y="${y + 10}" width="${bw}" height="${bh}" rx="${size * 0.14}" fill="${INK}"/>
+          <rect x="${bx}" y="${y}" width="${bw}" height="${bh}" rx="${size * 0.14}" fill="${SUN}" stroke="${INK}" stroke-width="6"/>`;
+        const txt = L.words.map((o) => {
+          wi++;
+          const on = wi === hl;
+          if (on) out += `<rect x="${o.x - size * 0.12}" y="${y + size * 0.1}" width="${o.width + size * 0.24}" height="${size * 0.98}" rx="${size * 0.1}" fill="${INK}"/>`;
+          return `<tspan x="${o.x}" fill="${on ? CREAM : INK}">${D.esc(o.w)}</tspan>`;
+        }).join("");
+        return out + `<text y="${base}" class="cond" font-size="${size}" letter-spacing="1">${txt}</text>`;
+      }).join("");
+    },
+    recorte(text, v) {
+      const { lines, size } = subLines(text, 108, 760);
+      const lh = size * 1.36, cy = Number(v.y) || 1180, hl = Number(v.destacar) || 0;
+      const top = cy - (lines.length * lh) / 2 + lh / 2;
+      let wi = 0;
+      return lines.map((line, li) => {
+        const L = layoutWords(line, size, 0), rot = li % 2 ? 1.6 : -2.2;
+        const w = L.total + size * 0.62, h = size * 1.14;
+        const spans = L.words.map((o) => { wi++; return `<tspan x="${o.x}" fill="${wi === hl ? CORAL : INK}">${D.esc(o.w)}</tspan>`; }).join("");
+        return `<g transform="translate(540,${Math.round(top + li * lh)}) rotate(${rot})">
+          <rect x="${-w / 2 + 10}" y="${-h / 2 + 10}" width="${w}" height="${h}" rx="${size * 0.08}" fill="${INK}"/>
+          <rect x="${-w / 2}" y="${-h / 2}" width="${w}" height="${h}" rx="${size * 0.08}" fill="${CREAM}" stroke="${INK}" stroke-width="6"/>
+          <text y="${size * 0.36}" class="cond" font-size="${size}" letter-spacing="1">${spans}</text></g>`;
+      }).join("");
+    },
+    pop(text, v) {
+      const word = text.split(" ")[0];
+      const size = Math.min(230, D.fit(word, 230, 820));
+      const fill = [SUN, CORAL, TEAL, CREAM][(Number(v.color) || 0) % 4];
+      const cy = Number(v.y) || 1180, rot = (Number(v.color) || 0) % 2 ? 3 : -3;
+      return `<g transform="translate(540,${cy}) rotate(${rot})">
+        <text x="12" y="${size * 0.36 + 12}" text-anchor="middle" class="cond" font-size="${size}" fill="${INK}" stroke="${INK}" stroke-width="20" stroke-linejoin="round">${D.esc(word)}</text>
+        <text x="0" y="${size * 0.36}" text-anchor="middle" class="cond" font-size="${size}" fill="${fill}" stroke="${INK}" stroke-width="16" stroke-linejoin="round" paint-order="stroke">${D.esc(word)}</text></g>`;
+    },
+    editorial(text, v) {
+      const { lines, size } = subLines(text, 92, 760, 56);
+      const lh = size * 1.0, hl = Number(v.destacar) || 0;
+      const widest = Math.max(...lines.map((l) => D.measure(l, "cond", size, 800, 1)));
+      const ph = lines.length * lh + size * 0.62, py = (Number(v.y) || 1180) + 80 - ph;
+      let wi = 0;
+      const txt = lines.map((line, li) => {
+        const L = layoutWords(line, size, 0);
+        const spans = L.words.map((o) => { wi++; return `<tspan x="${108 + L.total / 2 + o.x}" fill="${wi === hl ? CORAL : INK}">${D.esc(o.w)}</tspan>`; }).join("");
+        return `<text y="${Math.round(py + size * 0.3 + size * 0.74 + li * lh)}" class="cond" font-size="${size}" letter-spacing="1">${spans}</text>`;
+      }).join("");
+      return `<rect x="64" y="${py}" width="${widest + 88}" height="${ph}" rx="8" fill="${CREAM}"/>
+        <rect x="64" y="${py}" width="12" height="${ph}" fill="${CORAL}"/>${txt}`;
+    },
+  };
+
   add({
     id: "subtitulo_tiktok", name: "Subtítulo estilo TikTok (transparente)", group: "Video", w: 1080, h: 1920, transparent: true,
+    variants: [{ estilo: "caja" }, { estilo: "recorte" }, { estilo: "pop" }, { estilo: "editorial", y: 1300 }],
     fields: [{ key: "texto", label: "Texto (1 a 3 palabras)", type: "text", default: "VEN A JUGAR" },
-      { key: "destacar", label: "Palabra destacada en amarillo (1, 2, 3… · 0 = ninguna)", type: "number", default: 1 },
+      { key: "destacar", label: "Palabra destacada (1, 2, 3… · 0 = ninguna)", type: "number", default: 1 },
+      { key: "estilo", label: "Estilo", type: "select", options: SUB_OPTS, default: "karaoke" },
+      { key: "color", label: "Color (estilo pop: 0 sol · 1 coral · 2 turquesa · 3 crema)", type: "number", default: 0 },
       { key: "y", label: "Altura del centro del texto", type: "number", default: 1180 }],
     render(v) {
       const text = String(v.texto || "").toUpperCase().split(/\s+/).filter(Boolean).join(" ");
       if (!text) return "";
+      if (v.estilo && v.estilo !== "karaoke") return SUB_STYLES[v.estilo] ? SUB_STYLES[v.estilo](text, v) : "";
       let size = 120, lines;
       for (;;) { lines = D.wrapBalanced(text, size, 780, "cond", 800); if (lines.length <= 2 || size <= 70) break; size -= 6; }
       lines = lines.slice(0, 2);
@@ -1593,6 +1673,18 @@
       }).join("");
     },
   });
+  add({
+    id: "numero_tiktok", name: "Número de lista estilo TikTok (transparente)", group: "Video", w: 1080, h: 1920, transparent: true,
+    fields: [{ key: "numero", label: "Número", type: "text", default: "3" }, { key: "titulo", label: "Título del elemento", type: "text", default: "CATAN" }],
+    render(v) {
+      const ns = D.fit(String(v.numero), 170, 200);
+      const ts = cutoutSize(v.titulo, 92, 640);
+      return `<g transform="translate(176,560) rotate(-8)"><circle cx="14" cy="14" r="120" fill="${INK}"/><circle r="120" fill="${SUN}" stroke="${INK}" stroke-width="9"/>
+          <text x="0" y="${ns * 0.36}" text-anchor="middle" class="cond" font-size="${ns}" fill="${INK}">${D.esc(v.numero)}</text></g>
+        ${cutout(300, 560, 2, v.titulo, ts, CREAM, INK)}`;
+    },
+  });
+
   add({
     id: "gancho_tiktok", name: "Gancho inicial estilo TikTok (transparente)", group: "Video", w: 1080, h: 1920, transparent: true,
     fields: [{ key: "linea1", label: "Recorte 1", type: "text", default: "¿PLAN PARA" }, { key: "linea2", label: "Recorte 2", type: "text", default: "EL SÁBADO?" }],

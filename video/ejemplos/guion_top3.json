@@ -1,0 +1,12 @@
+{
+  "formato": "9x16",
+  "salida": "salida/top3.mp4",
+  "intro": false,
+  "cierre": true,
+  "capa": { "estilo": "tiktok", "subtitulos": "recorte", "linea": "zine", "usuario": "@tazonparados" },
+  "gancho": { "linea1": "2 PLANES", "linea2": "PARA EL SÁBADO" },
+  "segmentos": [
+    { "foto": "../../editor/ejemplos/fotos/tablero.jpg", "duracion": 3, "numero": "2", "titulo": "JUEGOS DE MESA", "texto": "Para jugar en grupo" },
+    { "foto": "../../editor/ejemplos/fotos/grabacion-podcast.jpg", "duracion": 3, "numero": "1", "titulo": "PODCAST", "texto": "Para contar historias" }
+  ]
+}

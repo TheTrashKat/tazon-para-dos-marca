@@ -65,8 +65,10 @@ def contact_sheets(results, outdir):
     from PIL import Image, ImageDraw
     outdir.mkdir(parents=True, exist_ok=True)
     png = outdir / "png"
-    jobs = [{"template": r["id"], "values": r["values"], "output": str(png / f"{r['id']}__{'normal' if r['caso'] == 'normal' else 'estres'}.png")}
-            for r in results]
+    def fname(r):
+        caso = r["caso"].replace("estrés", "estres").replace("·", "_")
+        return png / f"{r['id']}__{caso}.png"
+    jobs = [{"template": r["id"], "values": r["values"], "output": str(fname(r))} for r in results]
     jf = outdir / "jobs.json"
     jf.write_text(json.dumps(jobs, ensure_ascii=False), encoding="utf-8")
     subprocess.run([sys.executable, "-I", str(ROOT / "tools/render_editor.py"), str(jf)], check=True, stdout=subprocess.DEVNULL)
