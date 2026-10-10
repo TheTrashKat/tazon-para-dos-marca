@@ -11,7 +11,9 @@ Formato del guion:
   "intro": true, "cierre": true,     # intro y cierre animados del kit (video/)
   "audio": "original",               # original | silencio
   "marco": { "receta": "general", "titulo": "...", "etiqueta": "...", "usuario": "@tazonparados" },   # solo 9x16-marco
-  "capa":  { "etiqueta": "...", "usuario": "@tazonparados" },                                         # 9x16 y 16x9
+  "capa":  { "estilo": "clasico", "etiqueta": "...", "usuario": "@tazonparados", "info": "..." },  # 9x16 y 16x9
+            # estilo 9x16: clasico | banda | stickers | marco (el clip va en una ventana 960x1000 con borde de marca)
+            # estilo 16x9: clasico | banda
   "segmentos": [
     { "clip": "ruta/al/video.mp4", "inicio": 2.0, "duracion": 4.0,
       "texto": "Jugamos en comunidad.",          # opcional
@@ -35,6 +37,8 @@ from video import FFMPEG  # noqa: E402  (reutiliza la búsqueda de ffmpeg)
 
 FFPROBE = str(pathlib.Path(FFMPEG).with_name("ffprobe" + pathlib.Path(FFMPEG).suffix))
 SIZE = {"9x16-marco": (1080, 1920), "9x16": (1080, 1920), "16x9": (1920, 1080)}
+CAPA = {("v", "clasico"): "overlay_reel", ("v", "banda"): "overlay_reel_banda", ("v", "stickers"): "overlay_reel_stickers",
+        ("v", "marco"): "marco_vertical", ("h", "clasico"): "overlay_video_h", ("h", "banda"): "overlay_video_h_banda"}
 ENC = ["-r", "30", "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-pix_fmt", "yuv420p",
        "-c:a", "aac", "-b:a", "160k", "-ar", "48000", "-ac", "2", "-movflags", "+faststart",
        "-color_primaries", "bt709", "-color_trc", "bt709", "-colorspace", "bt709", "-color_range", "tv"]
@@ -95,8 +99,14 @@ def main():
                          "values": {"texto": s["texto"], "caja": s.get("estilo_texto", "tinta"), "pos": "abajo"}, "output": str(work / f"texto_{i}.png")})
         if s.get("rotulo"):
             jobs.append({"template": "tercio_inferior_v" if vertical else "tercio_inferior_h", "values": s["rotulo"], "output": str(work / f"rotulo_{i}.png")})
+    capa = dict(g.get("capa", {}))
+    estilo = capa.pop("estilo", "clasico")
     if fmt != "9x16-marco":
-        jobs.append({"template": "overlay_reel" if vertical else "overlay_video_h", "values": g.get("capa", {}), "output": str(work / "marca.png")})
+        key = ("v" if vertical else "h", estilo)
+        if key not in CAPA:
+            raise SystemExit(f"Estilo de capa desconocido para {fmt}: {estilo}")
+        jobs.append({"template": CAPA[key], "values": capa, "output": str(work / "marca.png")})
+    ventana = fmt == "9x16" and estilo == "marco"
     print(f"Renderizando {len(jobs)} capas…")
     render_overlays(jobs, work)
 
@@ -127,7 +137,10 @@ def main():
                 return f"{TONEMAP if is_hdr(clip) else ''}scale={w}:{h}:force_original_aspect_ratio=increase,crop={w}:{h}"
             bw, bh = int(w * 1.12) // 2 * 2, int(h * 1.12) // 2 * 2
             return f"scale={bw}:{bh}:force_original_aspect_ratio=increase,crop={w}:{h}:x='(iw-{w})*t/{dur}':y='(ih-{h})/2'"
-        if fmt == "9x16-marco":
+        if ventana:
+            chain = f"[0:v]{cover(960, 1000)},setsar=1,pad=1080:1920:60:400:black[b0]"
+            layers = [p for p in (work / "marca.png", work / f"texto_{i}.png") if p.exists()]
+        elif fmt == "9x16-marco":
             chain = f"[0:v]{cover(960, 540)},setsar=1,pad=1080:1920:60:650:black[b0]"
             layers = [work / f"capa_{i}.png"]
         else:

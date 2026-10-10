@@ -52,6 +52,15 @@
     },
   });
 
+  // Etiqueta bajo un paso: una línea, o dos equilibradas si no cabe a 20 px o más
+  function stepLabel(cx, y, text, fill, maxW = 280, size = 24) {
+    const up = String(text || "").toUpperCase();
+    let lines = [up], fs = D.fit(up, size, maxW, "sans", 700, 3);
+    if (fs < 20) { lines = D.twoLines(up).filter(Boolean); fs = Math.min(...lines.map((l) => D.fit(l, size, maxW, "sans", 700, 3))); }
+    return `<text text-anchor="middle" class="sans" font-weight="700" font-size="${fs}" fill="${fill}" letter-spacing="3">` +
+      lines.map((l, i) => `<tspan x="${cx}" y="${Math.round(y + i * fs * 1.3)}">${D.esc(l)}</tspan>`).join("") + `</text>`;
+  }
+
   // ------------------------------------------------------------ HISTORIA GENERAL 9:16
   add({
     id: "historia_general", name: "Historia general", group: "Publicaciones", w: 1080, h: 1920,
@@ -64,7 +73,7 @@
     render(v) {
       const r = RECIPES[v.receta];
       const tag = v.etiqueta ? D.pillAuto(76, 400, 60, r.ink === CREAM ? TEAL : INK, r.ink === CREAM ? INK : CREAM, v.etiqueta, 24) : "";
-      const p = D.paragraph(76, 800, v.texto, 34, 900, r.ink, { maxLines: 3 });
+      const p = D.paragraph(76, 800, v.texto, 34, 900, r.ink, { maxLines: 2 });
       return `${D.background(1080, 1920, r.bg, r.light)}${D.corner(1080, ...r.corner, 260)}${D.header(132, 300, 1.22, r.ink)}${tag}
         ${D.headline(72, 570, v.linea1, D.fit(v.linea1, 150, 860), r.ink)}
         ${D.headline(72, 730, v.linea2, D.fit(v.linea2, 178, 900), r.hl, r.hlShadow, 9)}
@@ -73,10 +82,10 @@
         <path d="M0,962 L1080,892 L1080,1330 L0,1390 Z" fill="${r.block}"/><path d="M0,962 L1080,892 L1080,1330 L0,1390 Z" fill="url(#dots)"/>
         ${D.illustration(v.ilustracion, 540, 1130, 1.12)}
         <path d="M0,1390 L1080,1330 L1080,1920 L0,1920 Z" fill="${INK}"/><path d="M0,1390 L1080,1330 L1080,1342 L0,1402 Z" fill="${SUN}"/>
-        <text x="540" y="1500" text-anchor="middle" class="cond" font-size="${D.fit(v.cierre1, 112, 940)}" fill="${CREAM}">${D.esc(v.cierre1)}</text>
-        <text x="540" y="1580" text-anchor="middle" class="cond" font-size="${D.fit(v.cierre2, 72, 940)}" fill="${SUN}">${D.esc(v.cierre2)}</text>
-        <text x="540" y="1640" text-anchor="middle" class="sans" font-weight="700" font-size="${D.fit(v.pie, 26, 940, "sans", 700, 4)}" fill="${CREAM}" letter-spacing="4">${D.esc(v.pie)}</text>
-        ${D.pillAuto(540, 1672, 64, SUN, INK, v.usuario, 28, { anchor: "middle" })}`;
+        <text x="540" y="1478" text-anchor="middle" class="cond" font-size="${D.fit(v.cierre1, 112, 940)}" fill="${CREAM}">${D.esc(v.cierre1)}</text>
+        <text x="540" y="1548" text-anchor="middle" class="cond" font-size="${D.fit(v.cierre2, 72, 940)}" fill="${SUN}">${D.esc(v.cierre2)}</text>
+        <text x="540" y="1594" text-anchor="middle" class="sans" font-weight="700" font-size="${D.fit(v.pie, 26, 940, "sans", 700, 4)}" fill="${CREAM}" letter-spacing="4">${D.esc(v.pie)}</text>
+        ${D.pillAuto(540, 1610, 58, SUN, INK, v.usuario, 26, { anchor: "middle" })}`;
     },
   });
 
@@ -125,8 +134,8 @@
         <path d="M0,1002 L1080,942 L1080,1920 L0,1920 Z" fill="${r.block}"/><path d="M0,1002 L1080,942 L1080,1920 L0,1920 Z" fill="url(#dots)"/>
         ${v.dado ? D.d20(940, 960, 80, 14) : ""}
         ${card.svg}${D.chips(76, 1040 + card.height + 50, splitList(v.actividades).map((a, i) => [a.toUpperCase(), cc[i % 3]]), 64, 24)}
-        <text x="540" y="1640" text-anchor="middle" class="sans" font-weight="700" font-size="${D.fit(v.frase, 32, 920, "sans", 700)}" fill="${INK}">${D.esc(v.frase)}</text>
-        ${D.pillAuto(540, 1672, 64, INK, CREAM, v.usuario, 28, { anchor: "middle" })}`;
+        <text x="540" y="1572" text-anchor="middle" class="sans" font-weight="700" font-size="${D.fit(v.frase, 32, 920, "sans", 700)}" fill="${INK}">${D.esc(v.frase)}</text>
+        ${D.pillAuto(540, 1598, 64, INK, CREAM, v.usuario, 28, { anchor: "middle" })}`;
     },
   });
 
@@ -153,9 +162,9 @@
         ${D.bubble(470, 650, 420, 92, v.burbuja, 30)}
         ${D.steps([180, 540, 900], 830, 32, [v.paso1, v.paso2, v.paso3], INK, 19)}
         <rect x="0" y="960" width="1080" height="120" fill="${INK}"/>
-        ${D.pill(64, 984, Math.max(320, D.measure(v.cta, "sans", 24, 700, 2) + 90), 72, SUN, INK, v.cta, 24)}
-        <text x="1016" y="1018" text-anchor="end" class="sans" font-weight="700" font-size="24" fill="${CREAM}">${D.esc(v.web)}</text>
-        <text x="1016" y="1048" text-anchor="end" class="sans" font-weight="600" font-size="20" fill="${SUN}">${D.esc(v.usuario)}</text>`;
+        ${(() => { const cs = D.fit(v.cta, 24, 430, "sans", 700, 2); return D.pill(64, 984, Math.max(320, D.measure(v.cta, "sans", cs, 700, 2) + 90), 72, SUN, INK, v.cta, cs); })()}
+        <text x="1016" y="1018" text-anchor="end" class="sans" font-weight="700" font-size="${D.fit(v.web, 24, 400, "sans", 700)}" fill="${CREAM}">${D.esc(v.web)}</text>
+        <text x="1016" y="1050" text-anchor="end" class="sans" font-weight="700" font-size="${D.fit(v.usuario, 22, 400, "sans", 700)}" fill="${SUN}">${D.esc(v.usuario)}</text>`;
     },
   });
 
@@ -171,9 +180,9 @@
         ${D.sparkle(990, 500, 70, CORAL)}${p.svg}
         <path d="M0,1330 L1080,1280 L1080,1920 L0,1920 Z" fill="${CORAL}"/><path d="M0,1330 L1080,1280 L1080,1920 L0,1920 Z" fill="url(#dots)"/>
         ${D.bubble(76, 1190, 640, 110, v.burbuja, 38)}${D.d20(890, 1230, 110, 14, true, TEAL, TEAL_L)}
-        ${D.steps([200, 540, 880], 1420, 40, [v.paso1, v.paso2, v.paso3], INK, 22)}
-        ${D.pillAuto(540, 1580, 84, INK, CREAM, v.cta, 30, { anchor: "middle" })}
-        <text x="540" y="1716" text-anchor="middle" class="sans" font-weight="700" font-size="30" fill="${INK}">${D.esc([v.web, v.usuario].filter(Boolean).join(" · "))}</text>`;
+        ${D.steps([200, 540, 880], 1400, 40, [v.paso1, v.paso2, v.paso3], INK, 22)}
+        ${D.pillAuto(540, 1528, 76, INK, CREAM, v.cta, D.fit(v.cta, 30, 860, "sans", 700, 2), { anchor: "middle" })}
+        <text x="540" y="1650" text-anchor="middle" class="sans" font-weight="700" font-size="30" fill="${INK}">${D.esc([v.web, v.usuario].filter(Boolean).join(" · "))}</text>`;
     },
   });
 
@@ -196,15 +205,15 @@
         <path d="M0,730 L1080,668 L1080,1080 L0,1080 Z" fill="${TEAL}"/><path d="M0,730 L1080,668 L1080,1080 L0,1080 Z" fill="url(#dots)"/>
         ${D.mic(870, 430, 1.0, CREAM)}${D.d20(640, 640, 62, 12, false)}${D.sparkle(980, 250, 40, CREAM)}${D.sparkle(700, 210, 54, SUN)}
         ${p.svg}${D.waveform(64, 1016, 910, 56, INK)}
-        ${D.pillAuto(64, 970, 70, INK, CREAM, v.cta, 24)}
-        <text x="1016" y="1016" text-anchor="end" class="sans" font-weight="700" font-size="28" fill="${INK}">${D.esc(v.usuario)}</text>`;
+        ${D.pillAuto(64, 970, 70, INK, CREAM, v.cta, D.fit(v.cta, 24, 520, "sans", 700, 2))}
+        <text x="1016" y="1016" text-anchor="end" class="sans" font-weight="700" font-size="${D.fit(v.usuario, 28, 330, "sans", 700)}" fill="${INK}">${D.esc(v.usuario)}</text>`;
     },
   });
 
   add({
     id: "podcast_historia", name: "Podcast historia", group: "Podcast", w: 1080, h: 1920, fields: podFields,
     render(v) {
-      const p = D.paragraph(540, 1420, v.texto, 34, 900, INK, { maxLines: 2, lineHeight: 44, anchor: "middle" });
+      const p = D.paragraph(540, 1395, v.texto, 34, 900, INK, { maxLines: 2, lineHeight: 44, anchor: "middle" });
       return `${D.background(1080, 1920, INK, true)}${D.corner(1080, SUN, CORAL, 260)}${D.header(132, 300, 1.22, CREAM)}
         ${D.pillAuto(76, 400, 60, TEAL, INK, v.etiqueta, 24)}
         ${D.headline(70, 660, v.linea1, D.fit(v.linea1, 210, 860), CREAM)}
@@ -213,9 +222,9 @@
         <path d="M0,1300 L1080,1240 L1080,1282 L0,1342 Z" fill="${CREAM}"/>
         <path d="M0,1342 L1080,1282 L1080,1920 L0,1920 Z" fill="${TEAL}"/><path d="M0,1342 L1080,1282 L1080,1920 L0,1920 Z" fill="url(#dots)"/>
         ${D.mic(560, 1046, 0.95, CREAM)}${D.d20(190, 1160, 90, -12)}${D.meeple(845, 1110, 100, SUN)}${D.sparkle(120, 990, 44, CREAM)}
-        ${p.svg}${D.waveform(76, 1004, 1540, 64, INK)}
-        ${D.pillAuto(540, 1590, 80, INK, CREAM, v.cta, 28, { anchor: "middle" })}
-        <text x="540" y="1730" text-anchor="middle" class="sans" font-weight="700" font-size="30" fill="${INK}">${D.esc(v.usuario)}</text>`;
+        ${p.svg}${D.waveform(76, 1004, 1500, 64, INK)}
+        ${D.pillAuto(540, 1550, 72, INK, CREAM, v.cta, D.fit(v.cta, 28, 860, "sans", 700, 2), { anchor: "middle" })}
+        <text x="540" y="1660" text-anchor="middle" class="sans" font-weight="700" font-size="26" fill="${INK}">${D.esc(v.usuario)}</text>`;
     },
   });
 
@@ -233,7 +242,7 @@
       const lh = size * 0.93, y0 = 900 - (lines.length - 1) * lh;
       const title = lines.map((l, k) => D.headline(540, n(y0 + k * lh), l, size, INK, CREAM, 8, "middle")).join("");
       const menu = ["MENÚ", String(v.seccion).toUpperCase(), v.numero && String(v.numero).toUpperCase()].filter(Boolean).join(" · ");
-      return `${D.background(1080, 1080, bg)}${D.corner(1080, accent, CREAM, 160)}${D.header(100, 96, 0.9, INK, "PODCAST DE ROL")}
+      return `${D.background(1080, 1080, bg)}${D.corner(1080, accent, CREAM, 160)}${D.header(100, 96, 0.95, INK, "PODCAST DE ROL")}
         ${D.pillAuto(64, 170, 52, INK, CREAM, menu, 22)}
         <circle cx="540" cy="${y0 - 330}" r="210" fill="${CREAM}" stroke="${INK}" stroke-width="8"/>
         <circle cx="540" cy="${y0 - 330}" r="160" fill="none" stroke="${INK}" stroke-width="3" opacity="0.25"/>
@@ -261,7 +270,7 @@
         <text x="64" y="690" class="sans" font-weight="600" font-size="${D.fit(v.texto, 32, 950, "sans", 600)}" fill="${CREAM}">${D.esc(v.texto)}</text>
         <path d="M220,940 H860" stroke="${CREAM}" stroke-width="6" stroke-dasharray="4 18" stroke-linecap="round"/>
         ${items.map(([cx, c, ic, t]) => `<circle cx="${cx}" cy="940" r="110" fill="${c}" stroke="${CREAM}" stroke-width="6"/>${D.icon(ic, cx, 940, 120)}
-          <text x="${cx}" y="1110" text-anchor="middle" class="sans" font-weight="700" font-size="${D.fit(t, 24, 300, "sans", 700, 3)}" fill="${CREAM}" letter-spacing="3">${D.esc(String(t).toUpperCase())}</text>`).join("")}
+          ${stepLabel(cx, 1110, t, CREAM)}`).join("")}
         ${D.sparkle(960, 300, 60, SUN)}${carouselFooter(1, v.total, CREAM, "DESLIZA →")}`;
     },
   });
@@ -288,7 +297,8 @@
       for (;;) { tl = D.wrapBalanced(String(v.titulo).toUpperCase(), size, 950, "cond", 800); if (tl.length <= 3 || size <= 70) break; size -= 8; }
       const lh = size * 0.95;
       const titleSvg = tl.map((l, k) => `<text x="64" y="${n(640 + k * lh)}" class="cond" font-size="${size}" fill="${INK}">${D.esc(l)}</text>`).join("");
-      const p = D.paragraph(64, 640 + tl.length * lh + 40, v.texto, 38, 900, INK, { maxLines: 5, lineHeight: 50 });
+      const py = 640 + tl.length * lh + 40;
+      const p = D.paragraph(64, py, v.texto, 38, 900, INK, { maxLines: Math.max(1, Math.min(5, Math.floor((1120 - py) / 50) + 1)), lineHeight: 50 });
       return `${D.background(1080, 1350, bg)}${D.header(110, 104, 1, INK)}
         ${D.headline(56, 470, v.numero, D.fit(v.numero, 330, 560), CREAM, INK, 14)}
         <circle cx="830" cy="350" r="170" fill="${CREAM}" stroke="${INK}" stroke-width="8"/>${D.icon(v.icono, 830, 350, 200)}
@@ -323,7 +333,11 @@
     if (kind === "destello") return D.sparkle(x, y, 110 * s, SUN) + D.sparkle(x - 90 * s, y + 70 * s, 50 * s, CREAM);
     return "";
   }
-  const headerChip = (x, y, s = 1) => `<rect x="${x}" y="${y}" width="${470 * s}" height="${104 * s}" rx="${52 * s}" fill="${CREAM}" stroke="${INK}" stroke-width="${4 * s}"/>${D.header(x + 56 * s, y + 52 * s, s * 0.95, INK)}`;
+  const headerChip = (x, y, s = 1) => {
+    const k = s * 0.95;
+    const tw = Math.max(D.measure("TAZÓN PARA DOS", "cond", 44 * k, 800, 1), D.measure("ESPACIO CULTURAL · ENGATIVÁ", "sans", 19 * k, 600, 3.2 * k));
+    return `<rect x="${x}" y="${y}" width="${Math.round(56 * s + 68 * k + tw + 40 * s)}" height="${104 * s}" rx="${52 * s}" fill="${CREAM}" stroke="${INK}" stroke-width="${4 * s}"/>${D.header(x + 56 * s, y + 52 * s, k, INK)}`;
+  };
 
   add({
     id: "foto_post", name: "Foto con marco 4:5", group: "Fotos", w: 1080, h: 1350,
@@ -376,7 +390,7 @@
         ${D.headline(72, 1440, v.titulo1, D.fit(v.titulo1, 130, 930), r.ink)}
         ${D.headline(72, 1560, v.titulo2, D.fit(v.titulo2, 150, 900), r.hl, r.hlShadow, 9)}
         ${p.svg}
-        <text x="1004" y="1720" text-anchor="end" class="sans" font-weight="700" font-size="30" fill="${r.ink}">${D.esc(v.usuario)}</text>`;
+        ${D.pillAuto(1016, 1060, 60, CREAM, INK, v.usuario, 26, { anchor: "end", stroke: INK })}`;
     },
   });
 
@@ -415,7 +429,7 @@
         ${D.photo(560, 760, 456, 400, v.foto3, { focus: v.enfoque3, shadow: true, rx: 22 })}
         ${v.etiqueta ? D.pillAuto(96, 200, 52, INK, CREAM, v.etiqueta, 20) : ""}
         ${D.sparkle(1010, 735, 70, r.accent)}
-        ${D.headline(64, 1270, v.titulo, D.fit(v.titulo, 96, 700), r.ink)}
+        ${D.headline(64, 1270, v.titulo, D.fit(v.titulo, 96, Math.min(700, 952 - D.measure(v.usuario, "sans", 26, 700) - 48)), r.ink)}
         <text x="1016" y="1268" text-anchor="end" class="sans" font-weight="700" font-size="26" fill="${r.ink}">${D.esc(v.usuario)}</text>`;
     },
   });
@@ -432,12 +446,12 @@
     render(v) {
       const [fill, ink] = BOX[v.caja] || BOX.sol;
       let size = 120, tb;
-      for (;;) { tb = D.textBox(540, 700, String(v.titulo).toUpperCase(), size, 900, fill, ink, { kind: "cond", weight: 800, maxLines: 3 }); if (tb.width <= 940 || size <= 70) break; size -= 6; }
+      for (;;) { tb = D.textBox(540, 700, String(v.titulo).toUpperCase(), size, 900, fill, ink, { kind: "cond", weight: 800, maxLines: 3 }); if ((tb.width <= 940 && tb.height <= 400) || size <= 64) break; size -= 6; }
       return `${D.photo(0, 0, 1080, 1920, v.foto, { focus: v.enfoque, stroke: false, rx: 0 })}
         ${headerChip(64, 250, 1.3)}
         ${v.etiqueta ? D.pillAuto(540, 590, 76, INK, CREAM, v.etiqueta, 32, { anchor: "middle" }) : ""}
         ${tb.svg}
-        ${v.play ? D.playBadge(540, 700 + tb.height + 190, 110) : ""}
+        ${v.play ? D.playBadge(540, Math.min(700 + tb.height + 170, 1270), 100) : ""}
         ${D.pillAuto(540, 1400, 84, CREAM, INK, v.usuario, 36, { anchor: "middle", stroke: INK })}`;
     },
   });
@@ -456,8 +470,8 @@
       return `${D.background(1280, 720, r.bg, r.light)}
         ${D.photo(0, 0, 1280, 720, v.foto, { focus: v.enfoque, stroke: false, path: "M640,0 H1280 V720 H540 Z" })}
         <path d="M612,0 H640 L540,720 H512 Z" fill="${CREAM}"/><path d="M640,0 L540,720" stroke="${INK}" stroke-width="6"/>
-        ${D.header(96, 80, 0.85, r.ink)}
-        ${v.etiqueta ? D.pillAuto(56, 160, 52, r.ink === CREAM ? TEAL : INK, r.ink === CREAM ? INK : CREAM, v.etiqueta, 20) : ""}
+        ${D.header(110, 84, 1.15, r.ink)}
+        ${v.etiqueta ? D.pillAuto(56, 160, 60, r.ink === CREAM ? TEAL : INK, r.ink === CREAM ? INK : CREAM, v.etiqueta, 24) : ""}
         ${title}
         ${D.playBadge(1150, 590, 70)}
         <text x="56" y="670" class="sans" font-weight="700" font-size="26" fill="${r.ink}">${D.esc(v.usuario)}</text>`;
@@ -494,7 +508,7 @@
   }
   const ltFields = [{ key: "nombre", label: "Nombre", type: "text", default: "Nombre Apellido" }, { key: "rol", label: "Rol / descripción", type: "text", default: "Narración · Tazón para Dos" }];
   add({ id: "tercio_inferior_h", name: "Rótulo de nombre 16:9 (transparente)", group: "Video", w: 1920, h: 1080, transparent: true, fields: ltFields, render: (v) => lowerThird(96, 790, v.nombre, v.rol, 1.2, 1300) });
-  add({ id: "tercio_inferior_v", name: "Rótulo de nombre 9:16 (transparente)", group: "Video", w: 1080, h: 1920, transparent: true, fields: ltFields, render: (v) => lowerThird(64, 1130, v.nombre, v.rol, 1.05, 952) });
+  add({ id: "tercio_inferior_v", name: "Rótulo de nombre 9:16 (transparente)", group: "Video", w: 1080, h: 1920, transparent: true, fields: ltFields, render: (v) => lowerThird(64, 1130, v.nombre, v.rol, 1.05, 860) });
 
   add({
     id: "texto_pantalla", name: "Texto en pantalla 9:16 (transparente)", group: "Video", w: 1080, h: 1920, transparent: true,
@@ -522,10 +536,10 @@
     }).join("");
     const seal = (cx, cy, rr) => `<circle cx="${cx + 12}" cy="${cy + 12}" r="${rr}" fill="${INK}"/><circle cx="${cx}" cy="${cy}" r="${rr}" fill="${CREAM}" stroke="${INK}" stroke-width="10"/><use href="#bowl" x="${cx - rr * 0.6}" y="${cy - rr * 0.63}" width="${rr * 1.2}" height="${rr * 1.24}"/>`;
     if (H) return `${D.background(w, h, r.bg, r.light)}${D.corner(w, ...r.corner, 260)}${seal(540, 560, 180)}
-      ${D.headline(540, 920, v.linea1, D.fit(v.linea1, 130, 940), r.ink, null, 0, "middle")}
-      ${D.headline(540, 1080, v.linea2, D.fit(v.linea2, 170, 900), r.hl, r.hlShadow, 10, "middle")}
-      ${D.pillAuto(540, 1150, 104, r.bg === INK ? SUN : INK, r.bg === INK ? INK : CREAM, v.cta, 46, { anchor: "middle" })}
-      <text x="540" y="1350" text-anchor="middle" class="sans" font-weight="700" font-size="${D.fit(v.sub, 42, 960, "sans", 700)}" fill="${r.ink}">${D.esc(v.sub)}</text>${icons}
+      ${D.headline(540, 920, v.linea1, D.fit(v.linea1, 130, 800), r.ink, null, 0, "middle")}
+      ${D.headline(540, 1080, v.linea2, D.fit(v.linea2, 170, 770), r.hl, r.hlShadow, 10, "middle")}
+      ${D.pillAuto(540, 1150, 104, r.bg === INK ? SUN : INK, r.bg === INK ? INK : CREAM, v.cta, D.fit(v.cta, 46, 680, "sans", 700, 2), { anchor: "middle" })}
+      <text x="540" y="1350" text-anchor="middle" class="sans" font-weight="700" font-size="${D.fit(v.sub, 42, 790, "sans", 700)}" fill="${r.ink}">${D.esc(v.sub)}</text>${icons}
       ${D.sparkle(180, 360, 80, r.accent)}${D.sparkle(900, 820, 50, CREAM)}`;
     return `${D.background(w, h, r.bg, r.light)}${D.corner(w, ...r.corner, 260)}${seal(440, 540, 240)}
       ${D.headline(780, 400, v.linea1, D.fit(v.linea1, 120, 1060), r.ink)}
@@ -574,7 +588,7 @@
       lines = lines.slice(0, 2);
       const ty = Math.max(top + size * 0.72, W.y - 30 - (lines.length - 1) * size * 0.95);
       const title = lines.map((l, i) => D.headline(60, Math.round(ty + i * size * 0.95), l, size, i === lines.length - 1 ? r.hl : r.ink, i === lines.length - 1 ? r.hlShadow : null, 8)).join("");
-      const tb = v.texto ? D.textBox(540, 1236, v.texto, 54, 960, r.bg === INK ? SUN : INK, r.bg === INK ? INK : CREAM, { maxLines: 2 }) : { svg: "" };
+      const tb = v.texto ? D.textBox(540, 1236, v.texto, 54, 800, r.bg === INK ? SUN : INK, r.bg === INK ? INK : CREAM, { maxLines: 2 }) : { svg: "" };
       return `<path fill-rule="evenodd" d="${full} ${win}" fill="${r.bg}"/><path fill-rule="evenodd" d="${full} ${win}" fill="url(#${r.light ? "dotsLight" : "dots"})"/>
         <path fill-rule="evenodd" d="${roundRect(W.x + 14, W.y + 14, W.w, W.h, W.r)} ${win}" fill="${INK}"/>
         <path d="${win}" fill="none" stroke="${INK}" stroke-width="10"/>
@@ -693,7 +707,7 @@
       return `${D.background(1080, 1350, r.bg, r.light)}
         ${D.photo(0, 0, 1080, 1010, v.foto, { focus: v.enfoque, stroke: false, path: "M0,0 H1080 V940 L0,1010 Z" })}
         <path d="M0,1010 L1080,940 L1080,980 L0,1050 Z" fill="${CREAM}"/><path d="M0,1010 L1080,940" stroke="${INK}" stroke-width="6"/>
-        ${headerChip(48, 48, 0.85)}
+        ${headerChip(48, 48, 1)}
         <circle cx="${960 + 8}" cy="${960 + 8}" r="76" fill="${INK}"/><circle cx="960" cy="960" r="76" fill="${SUN}" stroke="${INK}" stroke-width="7"/>
         <text x="960" y="${960 + D.fit(num, 64, 120) * 0.36}" text-anchor="middle" class="cond" font-size="${D.fit(num, 64, 120)}" fill="${INK}">${D.esc(num)}</text>
         ${D.headline(64, 1125, t.lines[0], t.size, r.ink)}
@@ -759,7 +773,7 @@
     render(v) {
       const r = RECIPES[v.receta];
       const q = fitLines(v.pregunta, 104, 940, 3, 60);
-      const qTop = 1040, lh = q.size * 0.95;
+      const qTop = 1040, lh = q.size * 1.02;
       const qsvg = q.lines.map((l, i) => D.headline(72, Math.round(qTop + q.size * 0.8 + i * lh), l, q.size, i === q.lines.length - 1 ? r.hl : r.ink, i === q.lines.length - 1 ? r.hlShadow : null, 8)).join("");
       const zy = Math.round(qTop + q.lines.length * lh + 70), zh = Math.max(200, 1560 - zy);
       return `${D.background(1080, 1920, r.bg, r.light)}${D.corner(1080, ...r.corner, 200)}
@@ -769,7 +783,7 @@
         ${v.etiqueta ? D.pillAuto(72, 970, 56, r.ink === CREAM ? TEAL : INK, r.ink === CREAM ? INK : CREAM, v.etiqueta, 22) : ""}
         ${qsvg}
         ${v.guia ? `<rect x="140" y="${zy}" width="800" height="${zh}" rx="36" fill="${CREAM}" fill-opacity="0.35" stroke="${r.ink}" stroke-width="5" stroke-dasharray="20 14"/>
-          <text x="540" y="${zy + zh / 2 + 10}" text-anchor="middle" class="sans" font-weight="700" font-size="26" fill="${r.ink}" letter-spacing="3" opacity="0.8">PON AQUÍ LA ENCUESTA</text>` : ""}
+          <text data-guia="1" x="540" y="${zy + zh / 2 + 10}" text-anchor="middle" class="sans" font-weight="700" font-size="26" fill="${r.ink}" letter-spacing="3" opacity="0.8">PON AQUÍ LA ENCUESTA</text>` : ""}
         ${D.sparkle(990, zy + 30, 70, r.accent)}${D.sparkle(90, zy + zh - 10, 40, CREAM)}
         ${D.pillAuto(540, 1600, 60, CREAM, INK, v.usuario, 26, { anchor: "middle", stroke: INK })}`;
     },
@@ -804,7 +818,7 @@
     const r = RECIPES[v.receta];
     const H = w < h;
     const num = String(v.numero || "");
-    const t = fitLines(v.titulo, H ? 150 : 140, H ? 940 : 960, 2, 70);
+    const t = fitLines(v.titulo, H ? 150 : 140, H ? 800 : 960, 2, 70);
     const cx = H ? 540 : 470, cy = H ? 720 : 540, R = H ? 210 : 230;
     const circle = num ? `<circle cx="${cx + 14}" cy="${cy + 14}" r="${R}" fill="${INK}"/><circle cx="${cx}" cy="${cy}" r="${R}" fill="${SUN}" stroke="${INK}" stroke-width="12"/>
       <text x="${cx}" y="${cy + D.fit(num, 230, R * 1.5) * 0.36}" text-anchor="middle" class="cond" font-size="${D.fit(num, 230, R * 1.5)}" fill="${INK}">${D.esc(num)}</text>` : "";
@@ -813,7 +827,7 @@
     const ty0 = H ? 1120 : 540 - ((t.lines.length - 1) * lh) / 2 + t.size * 0.3 - (v.subtitulo ? 30 : 0);
     const title = t.lines.map((l, i) => D.headline(tx, Math.round(ty0 + i * lh), l, t.size, i === t.lines.length - 1 ? r.hl : r.ink, i === t.lines.length - 1 ? r.hlShadow : null, 10, anchor)).join("");
     const sy = Math.round(ty0 + (t.lines.length - 1) * lh + (H ? 90 : 80));
-    const sub = v.subtitulo ? `<text x="${tx}" y="${sy}" text-anchor="${anchor}" class="sans" font-weight="700" font-size="${D.fit(v.subtitulo, 40, H ? 900 : 1000, "sans", 700)}" fill="${r.ink}">${D.esc(v.subtitulo)}</text>` : "";
+    const sub = v.subtitulo ? `<text x="${tx}" y="${sy}" text-anchor="${anchor}" class="sans" font-weight="700" font-size="${D.fit(v.subtitulo, 40, H ? 800 : 1000, "sans", 700)}" fill="${r.ink}">${D.esc(v.subtitulo)}</text>` : "";
     const band = H ? `<path d="M0,1640 L1080,1560 L1080,1600 L0,1680 Z" fill="${CREAM}"/><path d="M0,1680 L1080,1600 V1920 H0 Z" fill="${r.block}"/><path d="M0,1680 L1080,1600 V1920 H0 Z" fill="url(#dots)"/>`
       : `<path d="M0,1000 L1920,940 L1920,964 L0,1024 Z" fill="${CREAM}"/><path d="M0,1024 L1920,964 V1080 H0 Z" fill="${r.block}"/>`;
     return `${D.background(w, h, r.bg, r.light)}${D.corner(w, ...r.corner, H ? 260 : 220)}${band}
@@ -849,19 +863,160 @@
     },
   });
 
+  // ============================================================ ESTILOS DE MARCA PARA REELS (banda, stickers, marco)
+  // Etiqueta tipo cinta/sticker, girada, con sombra dura
+  function tag(x, y, rot, text, size, fill, ink, kind = "sans", anchor = "start") {
+    if (!text) return "";
+    const cond = kind === "cond";
+    const t = cond ? String(text).toUpperCase() : String(text);
+    const w = D.measure(t, kind, size, cond ? 800 : 700, cond ? 1 : 2) + size * 1.1, h = size * 1.7;
+    const x0 = anchor === "middle" ? -w / 2 : anchor === "end" ? -w : 0;
+    return `<g transform="translate(${x},${y}) rotate(${rot})">
+      <rect x="${x0 + 9}" y="${-h / 2 + 9}" width="${w}" height="${h}" rx="${h * 0.2}" fill="${INK}"/>
+      <rect x="${x0}" y="${-h / 2}" width="${w}" height="${h}" rx="${h * 0.2}" fill="${fill}" stroke="${INK}" stroke-width="5"/>
+      <text x="${x0 + w / 2}" y="${size * 0.36}" text-anchor="middle" class="${kind}" font-weight="${cond ? 800 : 700}" font-size="${size}" fill="${ink}" letter-spacing="${cond ? 1 : 2}">${D.esc(t)}</text></g>`;
+  }
+  const infoField = { key: "info", label: "Información (horario, lugar…)", type: "text", default: INFO };
+
+  add({
+    id: "overlay_reel_banda", name: "Capa de marca Reel: banda (transparente)", group: "Video", w: 1080, h: 1920, transparent: true,
+    fields: [f.receta, f.etiqueta("SÁBADO DE JUEGOS"), f.usuario, infoField],
+    render(v) {
+      const r = RECIPES[v.receta];
+      const top = "M0,0 H1080 V400 L0,470 Z", bot = "M0,1350 L1080,1300 L1080,1440 L0,1490 Z";
+      return `<path d="${top}" fill="${r.bg}"/><path d="${top}" fill="url(#${r.light ? "dotsLight" : "dots"})"/>
+        <path d="M0,470 L1080,400 L1080,430 L0,500 Z" fill="${CREAM}"/><path d="M0,500 L1080,430" stroke="${INK}" stroke-width="6"/>
+        ${D.corner(1080, ...r.corner, 220)}
+        ${D.header(140, 318, 1.55, r.ink)}
+        ${v.etiqueta ? `<g transform="rotate(-4 900 420)">${D.pillAuto(1010, 384, 72, r.bg === SUN ? CORAL : SUN, INK, v.etiqueta, 30, { anchor: "end", stroke: INK, shadow: true })}</g>` : ""}
+        <path d="M0,1336 L1080,1286 L1080,1300 L0,1350 Z" fill="${SUN}"/>
+        <path d="${bot}" fill="${INK}"/><path d="${bot}" fill="url(#dotsLight)"/>
+        ${v.info ? `<text x="64" y="1406" class="sans" font-weight="700" font-size="${D.fit(v.info, 30, 780, "sans", 700, 2)}" fill="${SUN}" letter-spacing="2">${D.esc(v.info)}</text>` : ""}
+        <text x="64" y="1458" class="sans" font-weight="700" font-size="${D.fit(v.usuario, 40, 780, "sans", 700)}" fill="${CREAM}">${D.esc(v.usuario)}</text>
+        ${D.sparkle(860, 1385, 50, SUN)}${D.sparkle(800, 1420, 22, CREAM)}`;
+    },
+  });
+
+  add({
+    id: "overlay_reel_stickers", name: "Capa de marca Reel: stickers (transparente)", group: "Video", w: 1080, h: 1920, transparent: true,
+    fields: [f.etiqueta("SÁBADO DE JUEGOS"), f.usuario, infoField, { key: "sticker", label: "Sticker", type: "select", options: STICKER_OPTS, default: "d20" }],
+    render(v) {
+      const seal = `<g transform="translate(182,384) rotate(-8)"><circle cx="10" cy="10" r="104" fill="${INK}"/><circle r="104" fill="${CREAM}" stroke="${INK}" stroke-width="8"/>
+        <use href="#bowl" x="-64" y="-66" width="128" height="132"/></g>`;
+      return `${tag(262, 344, -4, "TAZÓN PARA DOS", 66, SUN, INK, "cond")}
+        ${tag(290, 442, 2, "ESPACIO CULTURAL · ENGATIVÁ", 24, CREAM, INK)}
+        ${seal}
+        ${tag(110, 538, -3, v.etiqueta, D.fit(v.etiqueta, 30, 760, "sans", 700, 2), CORAL, INK)}
+        ${sticker(v.sticker, 935, 350, 0.95)}
+        ${D.sparkle(1000, 520, 54, SUN)}${D.sparkle(960, 580, 26, CREAM)}
+        ${tag(64, 1328, 2, v.info, D.fit(v.info, 28, 780, "sans", 700, 2), SUN, INK)}
+        ${tag(64, 1420, -3, v.usuario, D.fit(v.usuario, 36, 780, "sans", 700, 2), CREAM, INK)}`;
+    },
+  });
+
+  // Marco para clips verticales: ventana transparente 960×1000 en (60, 400); montaje.py pone el clip ahí
+  add({
+    id: "marco_vertical", name: "Marco para video vertical en Reel (transparente)", group: "Video", w: 1080, h: 1920, transparent: true,
+    fields: [f.receta, f.etiqueta("SÁBADO DE JUEGOS"), f.usuario, infoField, { key: "sticker", label: "Sticker", type: "select", options: STICKER_OPTS, default: "d20" }],
+    render(v) {
+      const r = RECIPES[v.receta];
+      const W = { x: 60, y: 400, w: 960, h: 1000, r: 32 };
+      const win = roundRect(W.x, W.y, W.w, W.h, W.r), full = "M0,0 H1080 V1920 H0 Z";
+      const band = "M0,1666 L1080,1606 V1920 H0 Z";
+      const dark = r.ink === CREAM;
+      return `<path fill-rule="evenodd" d="${full} ${win}" fill="${r.bg}"/><path fill-rule="evenodd" d="${full} ${win}" fill="url(#${r.light ? "dotsLight" : "dots"})"/>
+        <path d="M0,1640 L1080,1580 L1080,1606 L0,1666 Z" fill="${CREAM}"/><path d="${band}" fill="${r.block}"/><path d="${band}" fill="url(#dots)"/>
+        <path fill-rule="evenodd" d="${roundRect(W.x + 16, W.y + 16, W.w, W.h, W.r)} ${win}" fill="${INK}"/>
+        <path d="${win}" fill="none" stroke="${INK}" stroke-width="10"/>
+        ${D.corner(1080, ...r.corner, 240)}
+        ${headerChip(64, 250, 1.1)}
+        ${v.etiqueta ? D.pillAuto(100, 368, 64, dark ? SUN : INK, dark ? INK : CREAM, v.etiqueta, D.fit(v.etiqueta, 28, 330, "sans", 700, 2)) : ""}
+        ${D.pillAuto(980, 368, 64, CREAM, INK, v.usuario, D.fit(v.usuario, 30, 330, "sans", 700, 2), { anchor: "end", stroke: INK })}
+        ${sticker(v.sticker, 118, 1392, 0.8)}
+        ${v.info ? D.pillAuto(560, 1430, 68, SUN, INK, v.info, D.fit(v.info, 28, 640, "sans", 700, 2), { anchor: "middle", stroke: INK, shadow: true }) : ""}
+        ${D.sparkle(1000, 1440, 50, dark ? SUN : CREAM)}`;
+    },
+  });
+
+  add({
+    id: "overlay_video_h_banda", name: "Capa de marca 16:9: banda (transparente)", group: "Video", w: 1920, h: 1080, transparent: true,
+    fields: [f.receta, f.etiqueta("SÁBADO DE JUEGOS"), f.usuario, infoField],
+    render(v) {
+      const r = RECIPES[v.receta];
+      const top = "M0,0 H1920 V110 L0,170 Z";
+      const info = v.info ? `<text x="1640" y="70" text-anchor="end" class="sans" font-weight="700" font-size="${D.fit(v.info, 30, 760, "sans", 700, 2)}" fill="${r.ink}" letter-spacing="2">${D.esc(v.info)}</text>` : "";
+      return `<path d="${top}" fill="${r.bg}"/><path d="${top}" fill="url(#${r.light ? "dotsLight" : "dots"})"/>
+        <path d="M0,170 L1920,110 L1920,134 L0,194 Z" fill="${CREAM}"/><path d="M0,194 L1920,134" stroke="${INK}" stroke-width="6"/>
+        ${D.corner(1920, ...r.corner, 200)}
+        ${D.header(96, 80, 1.2, r.ink)}
+        ${info}
+        <text x="1640" y="${v.info ? 116 : 90}" text-anchor="end" class="sans" font-weight="700" font-size="${D.fit(v.usuario, 36, 760, "sans", 700)}" fill="${r.ink}">${D.esc(v.usuario)}</text>
+        ${v.etiqueta ? `<g transform="rotate(-3 56 230)">${D.pillAuto(56, 214, 72, r.bg === SUN ? CORAL : SUN, INK, v.etiqueta, 30, { stroke: INK, shadow: true })}</g>` : ""}`;
+    },
+  });
+
+  add({
+    id: "video_portada_banda", name: "Portada de Reel: banda 9:16", group: "Video", w: 1080, h: 1920,
+    fields: [foto("foto", "Foto o fotograma"), enfoque(), f.receta, f.etiqueta("REEL"),
+      { key: "titulo", label: "Título", type: "text", default: "ASÍ SE VIVE UNA PARTIDA." },
+      { key: "play", label: "Mostrar botón de reproducción", type: "checkbox", default: true }, f.usuario],
+    render(v) {
+      const r = RECIPES[v.receta];
+      const block = "M0,0 H1080 V820 L0,900 Z";
+      const t = fitLines(v.titulo, 120, 950, 2, 64);
+      const lh = t.size * 0.95, y0 = 560 + t.size * 0.72;
+      const title = t.lines.map((l, i) => D.headline(64, Math.round(y0 + i * lh), l, t.size, i === t.lines.length - 1 ? r.hl : r.ink, i === t.lines.length - 1 ? r.hlShadow : null, 10)).join("");
+      return `${D.photo(0, 0, 1080, 1920, v.foto, { focus: v.enfoque, stroke: false, rx: 0 })}
+        <path d="${block}" fill="${r.bg}"/><path d="${block}" fill="url(#${r.light ? "dotsLight" : "dots"})"/>
+        <path d="M0,900 L1080,820 L1080,856 L0,936 Z" fill="${CREAM}"/><path d="M0,936 L1080,856" stroke="${INK}" stroke-width="7"/>
+        ${D.corner(1080, ...r.corner, 240)}
+        ${D.header(150, 340, 1.65, r.ink)}
+        ${v.etiqueta ? D.pillAuto(64, 440, 72, r.ink === CREAM ? SUN : INK, r.ink === CREAM ? INK : CREAM, v.etiqueta, 30) : ""}
+        ${title}
+        ${v.play ? D.playBadge(540, 1150, 120) : ""}
+        ${D.pillAuto(540, 1330, 84, CREAM, INK, v.usuario, D.fit(v.usuario, 36, 760, "sans", 700, 2), { anchor: "middle", stroke: INK, shadow: true })}`;
+    },
+  });
+
+  add({
+    id: "aviso_nuevo_reel", name: "Historia «Nuevo Reel» 9:16", group: "Video", w: 1080, h: 1920, safe: "story",
+    fields: [f.receta, { key: "titulo", label: "Título", type: "text", default: "NUEVO REEL." },
+      { key: "texto", label: "Texto", type: "text", default: "Así se vive un sábado de juegos." },
+      { key: "cta", label: "Botón", type: "text", default: "TÓCALO PARA VERLO" },
+      { key: "guia", label: "Mostrar recuadro donde va el Reel", type: "checkbox", default: true }, f.usuario],
+    render(v) {
+      const r = RECIPES[v.receta];
+      const t = fitLines(v.titulo, 150, 950, 1, 80);
+      const box = { x: 190, y: 600, w: 700, h: 800 };
+      const dark = r.ink === CREAM;
+      return `${D.background(1080, 1920, r.bg, r.light)}${D.corner(1080, ...r.corner, 240)}
+        ${headerChip(64, 250, 1.1)}
+        ${D.headline(64, 500, t.lines[0], t.size, r.hl, r.hlShadow, 10)}
+        <text x="64" y="562" class="sans" font-weight="700" font-size="${D.fit(v.texto, 38, 950, "sans", 700)}" fill="${r.ink}">${D.esc(v.texto)}</text>
+        ${v.guia ? `<rect x="${box.x}" y="${box.y}" width="${box.w}" height="${box.h}" rx="40" fill="${CREAM}" fill-opacity="0.35" stroke="${r.ink}" stroke-width="6" stroke-dasharray="22 14"/>
+          <text data-guia="1" x="540" y="${box.y + box.h / 2}" text-anchor="middle" class="sans" font-weight="700" font-size="28" fill="${r.ink}" letter-spacing="3" opacity="0.8">PON AQUÍ EL REEL</text>` : ""}
+        ${D.sparkle(120, 760, 70, r.accent)}${D.sparkle(970, 1300, 80, SUN)}${D.sparkle(1000, 1200, 30, CREAM)}
+        <path d="M540,1428 v44 m-22,-22 l22,22 l22,-22" fill="none" stroke="${r.ink}" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+        ${D.pillAuto(540, 1500, 90, dark ? SUN : INK, dark ? INK : CREAM, v.cta, D.fit(v.cta, 38, 800, "sans", 700, 2), { anchor: "middle", shadow: !dark })}
+        <text x="540" y="1650" text-anchor="middle" class="sans" font-weight="700" font-size="34" fill="${r.ink}">${D.esc(v.usuario)}</text>`;
+    },
+  });
+
   function introLogo(w, h, v) {
     const H = w < h;
     const cx = H ? 540 : 560, cy = H ? 760 : 540, R = H ? 270 : 280;
     const seal = `<circle cx="${cx + 18}" cy="${cy + 18}" r="${R}" fill="${INK}"/><circle cx="${cx}" cy="${cy}" r="${R}" fill="${CREAM}" stroke="${INK}" stroke-width="16"/>
       <use href="#bowl" x="${cx - R * 0.62}" y="${cy - R * 0.66}" width="${R * 1.24}" height="${R * 1.28}"/>`;
-    const tx = H ? 540 : 940, a = H ? "middle" : "start", mw = H ? 980 : 920;
+    const tx = H ? 540 : 940, a = H ? "middle" : "start", mw = H ? 800 : 860;
     const ns = D.fit("TAZÓN PARA DOS", H ? 170 : 160, mw);
     const ty = H ? 1250 : 500;
     const sub = String(v.sub || "").toUpperCase();
+    let ss = 40;
+    while (ss > 18 && D.measure(sub, "sans", ss, 700, ss * 0.2) > mw - 20) ss -= 1;   // el espaciado escala con el tamaño
     return `${seal}
       ${D.headline(tx, ty, "TAZÓN PARA DOS", ns, INK, null, 0, a)}
-      <text x="${tx}" y="${ty + 70}" text-anchor="${a}" class="sans" font-weight="700" font-size="${D.fit(sub, 40, mw, "sans", 700, 8)}" fill="${INK}" letter-spacing="8">${D.esc(sub)}</text>
-      ${v.info ? D.pillAuto(tx, ty + 120, 88, INK, CREAM, v.info, 36, H ? { anchor: "middle" } : {}) : ""}`;
+      <text x="${tx}" y="${ty + 70}" text-anchor="${a}" class="sans" font-weight="700" font-size="${ss}" fill="${INK}" letter-spacing="${ss * 0.2}">${D.esc(sub)}</text>
+      ${v.info ? D.pillAuto(tx, ty + 120, 88, INK, CREAM, v.info, D.fit(v.info, 36, mw - 110, "sans", 700, 2), H ? { anchor: "middle" } : {}) : ""}`;
   }
   const introFields = [{ key: "sub", label: "Subtítulo", type: "text", default: "Espacio cultural · Engativá" }, { key: "info", label: "Información", type: "text", default: INFO }];
   add({ id: "intro_logo_v", name: "Logo para intro de video 9:16 (transparente)", group: "Video", w: 1080, h: 1920, transparent: true, fields: introFields, render: (v) => introLogo(1080, 1920, v) });

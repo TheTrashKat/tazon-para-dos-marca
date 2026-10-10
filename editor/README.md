@@ -63,6 +63,12 @@ Un editor web para hacer publicaciones sin saber diseño. Eliges la plantilla, c
 | `overlay_video_h` | Capa de marca 16:9 (transparente) | 1920 × 1080 |
 | `separador_v` / `separador_h` | Separador de capítulo para videos | 1080 × 1920 / 1920 × 1080 |
 | `intro_logo_v` / `intro_logo_h` | Sello, nombre y horario grandes para la intro (transparente; lo anima `tools/video.py`) | 1080 × 1920 / 1920 × 1080 |
+| `overlay_reel_banda` | Capa de Reel estilo **banda**: bloque diagonal arriba con la cabecera grande y franja tinta abajo (transparente) | 1080 × 1920 |
+| `overlay_reel_stickers` | Capa de Reel estilo **stickers**: sello, nombre y datos como etiquetas inclinadas (transparente) | 1080 × 1920 |
+| `marco_vertical` | Capa de Reel estilo **marco**: el clip va en una ventana con borde tinta (transparente) | 1080 × 1920 |
+| `overlay_video_h_banda` | Capa 16:9 estilo banda (transparente) | 1920 × 1080 |
+| `video_portada_banda` | Portada de Reel que combina con el estilo banda | 1080 × 1920 |
+| `aviso_nuevo_reel` | Historia para avisar que hay Reel nuevo (con recuadro donde pegas el Reel) | 1080 × 1920 |
 | `audiograma` | Clip de podcast: foto, onda de sonido y frase | 1080 × 1080 |
 
 **Fotos:** pulsa *Elegir foto* y la foto se reduce sola a un máximo de 2400 px. En el JSON para `render_editor.py`, el campo de foto lleva la ruta de la imagen, relativa al archivo JSON. Hay un ejemplo en [`ejemplos/fotos_video.json`](ejemplos/fotos_video.json).
@@ -111,3 +117,12 @@ También puedes ver una pieza directamente por URL (modo *embed*):
 3. Dibuja en `render` usando las funciones de `TPDDraw`.
 4. Usa `D.fit()` en todo texto editable para que nunca se desborde.
 5. Revisa con `render_editor.py` y mira el PNG.
+
+## Validación (dos pasadas)
+
+Cada plantilla se valida dos veces antes de publicarse en el repositorio:
+
+1. **Automática:** `python -I tools/validar.py`. Pinta cada plantilla con sus textos normales y con textos muy largos, y revisa con las fuentes reales que ningún texto se salga, se encime, quede pegado a otro o tapado por una píldora. También avisa de textos en la zona que tapa Instagram, bajo los botones del Reel o de menos de 18 px. También puedes abrir `editor/validar.html` en el navegador y ver la tabla.
+2. **Visual:** `python -I tools/validar.py --hojas` crea hojas de contacto en `salida/validacion/` (versión normal y versión con textos largos lado a lado) para revisarlas a ojo.
+
+Una plantilla está lista cuando la validación automática da **0 errores** y las hojas se ven bien.

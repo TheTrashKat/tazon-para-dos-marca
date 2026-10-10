@@ -1,0 +1,11 @@
+{
+  "formato": "9x16",
+  "salida": "salida/reel_banda.mp4",
+  "intro": true,
+  "cierre": true,
+  "capa": { "estilo": "banda", "receta": "general", "etiqueta": "SÁBADO DE JUEGOS", "usuario": "@tazonparados" },
+  "segmentos": [
+    { "foto": "../../editor/ejemplos/fotos/tablero.jpg", "duracion": 3.5, "texto": "La mesa ya está lista.", "estilo_texto": "sol" },
+    { "foto": "../../editor/ejemplos/fotos/grabacion-podcast.jpg", "duracion": 3.5, "texto": "Y la partida se vuelve podcast.", "estilo_texto": "sol" }
+  ]
+}

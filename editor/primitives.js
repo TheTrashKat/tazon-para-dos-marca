@@ -76,7 +76,7 @@
     return `<circle cx="${x}" cy="${y}" r="${46 * s}" fill="${CREAM}" stroke="${INK}" stroke-width="${4 * s}"/>
     <use href="#bowl" x="${x - 29 * s}" y="${y - 31 * s}" width="${58 * s}" height="${60 * s}"/>
     <text x="${x + 66 * s}" y="${y + 2 * s}" class="cond" font-size="${44 * s}" fill="${ink}" letter-spacing="1">TAZÓN PARA DOS</text>
-    <text x="${x + 68 * s}" y="${y + 32 * s}" class="sans" font-weight="600" font-size="${15 * s}" fill="${ink}" letter-spacing="${5 * s}" opacity="0.9">${esc(sub)}</text>`;
+    <text x="${x + 68 * s}" y="${y + 33 * s}" class="sans" font-weight="600" font-size="${19 * s}" fill="${ink}" letter-spacing="${3.2 * s}">${esc(sub)}</text>`;
   }
 
   function pill(x, y, w, h, fill, ink, label, size, opts = {}) {
@@ -264,7 +264,7 @@
       out += `<g clip-path="url(#${id})"><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${C.cream}"/><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#dots)"/></g>`;
       const s = Math.min(w, h) * 0.18;
       out += icon("camara", x + w / 2, y + h / 2 - s * 0.35, s, C.muted, 3);
-      out += `<text x="${x + w / 2}" y="${n(y + h / 2 + s * 0.75)}" text-anchor="middle" class="sans" font-weight="700" font-size="${n(Math.max(18, s * 0.28))}" fill="${C.muted}" letter-spacing="3">TU FOTO AQUÍ</text>`;
+      out += `<text data-guia="1" x="${x + w / 2}" y="${n(y + h / 2 + s * 0.75)}" text-anchor="middle" class="sans" font-weight="700" font-size="${n(Math.max(18, s * 0.28))}" fill="${C.muted}" letter-spacing="3">TU FOTO AQUÍ</text>`;
     }
     if (opts.stroke !== false) out += `${outline} fill="none" stroke="${INK}" stroke-width="${opts.strokeWidth || 8}" stroke-linejoin="round"/>`;
     return out;
