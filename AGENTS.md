@@ -55,7 +55,7 @@ Instructions for AI agents (Claude, Codex, Cursor, etc.) that create or edit vis
 
 ## Editable template editor (preferred for routine posts)
 
-`editor/` is a web editor with 39 editable templates. **For routine content, prefer it over writing new SVG:**
+`editor/` is a web editor with 41 editable templates. **For routine content, prefer it over writing new SVG:**
 - weekly event
 - general post or story
 - call for stories
@@ -150,7 +150,8 @@ Image fields take a local path in `render_editor.py` jobs (relative to the JSON 
 
 Follow `brand.json → video`:
 - Safe zones in 9:16: top 250 px, bottom 420 px and the right button strip.
-- On-screen text: max 2 lines, 48–60 px at 1080 width, cream on ink or ink on sun.
+- On-screen text: max 2 lines, 60–72 px at 1080 width, cream on ink or ink on sun.
+- Branding must read on a phone: never shrink the header chip, info pill or @usuario below the sizes in `brand.json → video.branding_scale`.
 - Simple cuts.
 - The kit's MP4s have no audio.
 

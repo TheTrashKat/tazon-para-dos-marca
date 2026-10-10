@@ -340,7 +340,7 @@ Además de clips, un guion puede llevar:
    - La portada del Reel se recorta a 4:5 en la cuadrícula del perfil, así que pon el título en el centro.
 3. **Texto en pantalla y subtítulos:**
    - **Estilo:** Barlow Bold, en caja con esquinas redondeadas y contorno tinta. Usa **crema sobre tinta** para subtítulos y **tinta sobre sol** para remarcar.
-   - **Tamaño y posición:** máximo 2 líneas, entre 48 y 60 px en 1080 de ancho, siempre dentro de la zona segura.
+   - **Tamaño y posición:** máximo 2 líneas, entre 60 y 72 px en 1080 de ancho, siempre dentro de la zona segura.
    - **Plantilla:** "Texto en pantalla" del editor.
 4. **Rótulo de nombre:**
    - Aparece en los primeros segundos en que alguien habla y dura entre 3 y 5 s.
@@ -396,7 +396,7 @@ Además de clips, un guion puede llevar:
 
 ## 15. Cómo hacer una pieza nueva
 
-> 💡 **La forma más fácil es el [editor de plantillas](https://thetrashkat.github.io/tazon-para-dos-marca/editor/).** Eliges la plantilla, cambias los textos y descargas el PNG. Tiene 39 plantillas: publicaciones, eventos, convocatorias, podcast, carrusel, destacadas, **fotos** y **video**. Más detalles en [`editor/README.md`](editor/README.md).
+> 💡 **La forma más fácil es el [editor de plantillas](https://thetrashkat.github.io/tazon-para-dos-marca/editor/).** Eliges la plantilla, cambias los textos y descargas el PNG. Tiene 41 plantillas: publicaciones, eventos, convocatorias, podcast, carrusel, destacadas, **fotos** y **video**. Más detalles en [`editor/README.md`](editor/README.md).
 
 Para piezas que no estén en el editor:
 

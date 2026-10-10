@@ -62,6 +62,7 @@ Un editor web para hacer publicaciones sin saber diseño. Eliges la plantilla, c
 | `texto_pantalla_h` | Texto en pantalla 16:9 (transparente) | 1920 × 1080 |
 | `overlay_video_h` | Capa de marca 16:9 (transparente) | 1920 × 1080 |
 | `separador_v` / `separador_h` | Separador de capítulo para videos | 1080 × 1920 / 1920 × 1080 |
+| `intro_logo_v` / `intro_logo_h` | Sello, nombre y horario grandes para la intro (transparente; lo anima `tools/video.py`) | 1080 × 1920 / 1920 × 1080 |
 | `audiograma` | Clip de podcast: foto, onda de sonido y frase | 1080 × 1080 |
 
 **Fotos:** pulsa *Elegir foto* y la foto se reduce sola a un máximo de 2400 px. En el JSON para `render_editor.py`, el campo de foto lleva la ruta de la imagen, relativa al archivo JSON. Hay un ejemplo en [`ejemplos/fotos_video.json`](ejemplos/fotos_video.json).

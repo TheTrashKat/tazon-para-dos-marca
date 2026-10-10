@@ -16,6 +16,7 @@
   const SCHEDULE = L.schedule ? `${L.schedule.open === "11:00" ? "11:00 a.m." : L.schedule.open} – ${L.schedule.close === "21:00" ? "9:00 p.m." : L.schedule.close}` : "";
   const PLACE = `${L.address} · ${L.locality}`;
   const STEP = T.process.map((p) => p.short);
+  const INFO = SCHEDULE ? `SÁBADOS · ${SCHEDULE.toUpperCase()}` : "";
 
   const f = {
     receta: { key: "receta", label: "Combinación de color", type: "select", options: RECIPE_OPTS, default: "general" },
@@ -433,11 +434,11 @@
       let size = 120, tb;
       for (;;) { tb = D.textBox(540, 700, String(v.titulo).toUpperCase(), size, 900, fill, ink, { kind: "cond", weight: 800, maxLines: 3 }); if (tb.width <= 940 || size <= 70) break; size -= 6; }
       return `${D.photo(0, 0, 1080, 1920, v.foto, { focus: v.enfoque, stroke: false, rx: 0 })}
-        ${headerChip(64, 250)}
-        ${v.etiqueta ? D.pillAuto(540, 600, 60, INK, CREAM, v.etiqueta, 24, { anchor: "middle" }) : ""}
+        ${headerChip(64, 250, 1.3)}
+        ${v.etiqueta ? D.pillAuto(540, 590, 76, INK, CREAM, v.etiqueta, 32, { anchor: "middle" }) : ""}
         ${tb.svg}
-        ${v.play ? D.playBadge(540, 700 + tb.height + 180, 90) : ""}
-        ${D.pillAuto(540, 1500, 64, CREAM, INK, v.usuario, 28, { anchor: "middle", stroke: INK })}`;
+        ${v.play ? D.playBadge(540, 700 + tb.height + 190, 110) : ""}
+        ${D.pillAuto(540, 1400, 84, CREAM, INK, v.usuario, 36, { anchor: "middle", stroke: INK })}`;
     },
   });
 
@@ -465,17 +466,22 @@
 
   add({
     id: "overlay_reel", name: "Capa de marca para Reel (transparente)", group: "Video", w: 1080, h: 1920, transparent: true,
-    fields: [f.etiqueta(""), f.usuario, { key: "sello", label: "Mostrar sello", type: "checkbox", default: true },
-      { key: "pos", label: "Posición del usuario", type: "select", options: [["izquierda", "Abajo a la izquierda"], ["centro", "Abajo al centro"]], default: "izquierda" }],
+    fields: [f.etiqueta(""), f.usuario, { key: "info", label: "Información (horario, lugar…)", type: "text", default: INFO },
+      { key: "sello", label: "Mostrar cabecera con el logo", type: "checkbox", default: true },
+      { key: "pos", label: "Posición de usuario e información", type: "select", options: [["izquierda", "Abajo a la izquierda"], ["centro", "Abajo al centro"]], default: "izquierda" }],
     render(v) {
-      const seal = v.sello ? `<circle cx="972" cy="318" r="62" fill="${CREAM}" stroke="${INK}" stroke-width="5"/><use href="#bowl" x="932" y="276" width="80" height="83"/>` : "";
-      const user = v.pos === "centro" ? D.pillAuto(540, 1400, 64, CREAM, INK, v.usuario, 28, { anchor: "middle", stroke: INK }) : D.pillAuto(64, 1400, 64, CREAM, INK, v.usuario, 28, { stroke: INK });
-      return `${seal}${v.etiqueta ? D.pillAuto(64, 290, 60, INK, CREAM, v.etiqueta, 24) : ""}${user}`;
+      const c = v.pos === "centro";
+      const o = (extra = {}) => (c ? { anchor: "middle", ...extra } : extra);
+      const x = c ? 540 : 64;
+      return `${v.sello ? headerChip(64, 250, 1.25) : ""}
+        ${v.etiqueta ? D.pillAuto(64, v.sello ? 404 : 270, 72, INK, CREAM, v.etiqueta, 30) : ""}
+        ${v.info ? D.pillAuto(x, 1306, 72, SUN, INK, v.info, 30, o({ stroke: INK })) : ""}
+        ${D.pillAuto(x, 1396, 84, CREAM, INK, v.usuario, 36, o({ stroke: INK }))}`;
     },
   });
 
-  function lowerThird(x, y, nombre, rol, s = 1) {
-    const ns = D.fit(String(nombre).toUpperCase(), 64 * s, 1100 * s), rs = D.fit(rol, 30 * s, 1100 * s, "sans", 700);
+  function lowerThird(x, y, nombre, rol, s = 1, maxW = 1100) {
+    const ns = D.fit(String(nombre).toUpperCase(), 64 * s, maxW - 210 * s), rs = D.fit(rol, 30 * s, maxW - 210 * s, "sans", 700);
     const w = Math.max(D.measure(String(nombre).toUpperCase(), "cond", ns), D.measure(rol, "sans", rs, 700)) + 210 * s;
     const h = 150 * s;
     return `<rect x="${x + 10 * s}" y="${y + 10 * s}" width="${w}" height="${h}" rx="${24 * s}" fill="${INK}" opacity="0.35"/>
@@ -487,22 +493,22 @@
       <text x="${x + 162 * s}" y="${y + 116 * s}" class="sans" font-weight="700" font-size="${rs}" fill="${SUN}">${D.esc(rol)}</text>`;
   }
   const ltFields = [{ key: "nombre", label: "Nombre", type: "text", default: "Nombre Apellido" }, { key: "rol", label: "Rol / descripción", type: "text", default: "Narración · Tazón para Dos" }];
-  add({ id: "tercio_inferior_h", name: "Rótulo de nombre 16:9 (transparente)", group: "Video", w: 1920, h: 1080, transparent: true, fields: ltFields, render: (v) => lowerThird(96, 820, v.nombre, v.rol, 1) });
-  add({ id: "tercio_inferior_v", name: "Rótulo de nombre 9:16 (transparente)", group: "Video", w: 1080, h: 1920, transparent: true, fields: ltFields, render: (v) => lowerThird(64, 1280, v.nombre, v.rol, 0.85) });
+  add({ id: "tercio_inferior_h", name: "Rótulo de nombre 16:9 (transparente)", group: "Video", w: 1920, h: 1080, transparent: true, fields: ltFields, render: (v) => lowerThird(96, 790, v.nombre, v.rol, 1.2, 1300) });
+  add({ id: "tercio_inferior_v", name: "Rótulo de nombre 9:16 (transparente)", group: "Video", w: 1080, h: 1920, transparent: true, fields: ltFields, render: (v) => lowerThird(64, 1130, v.nombre, v.rol, 1.05, 952) });
 
   add({
     id: "texto_pantalla", name: "Texto en pantalla 9:16 (transparente)", group: "Video", w: 1080, h: 1920, transparent: true,
     fields: [{ key: "texto", label: "Texto", type: "textarea", default: "¿Qué harías si tu personaje tuviera que elegir?" },
       { key: "caja", label: "Estilo", type: "select", options: BOX_OPTS, default: "tinta" },
       { key: "fuente", label: "Tipografía", type: "select", options: [["sans", "Texto (Barlow)"], ["cond", "Titular (Barlow Condensed)"]], default: "sans" },
-      { key: "tam", label: "Tamaño", type: "number", default: 54 },
+      { key: "tam", label: "Tamaño", type: "number", default: 66 },
       { key: "pos", label: "Posición", type: "select", options: [["arriba", "Arriba"], ["centro", "Centro"], ["abajo", "Abajo (zona de subtítulos)"]], default: "abajo" }],
     render(v) {
       const [fill, ink] = BOX[v.caja] || BOX.tinta;
       const kind = v.fuente === "cond" ? "cond" : "sans";
       const txt = kind === "cond" ? String(v.texto).toUpperCase() : v.texto;
       const tb = D.textBox(540, 0, txt, Math.max(24, Math.min(120, Number(v.tam) || 54)), 900, fill, ink, { kind, weight: kind === "cond" ? 800 : 700, maxLines: 4 });
-      const y = v.pos === "arriba" ? 330 : v.pos === "centro" ? 960 - tb.height / 2 : 1376 - tb.height;   // termina sobre el usuario de la capa de marca
+      const y = v.pos === "arriba" ? 440 : v.pos === "centro" ? 960 - tb.height / 2 : 1276 - tb.height;   // termina sobre la información de la capa de marca
       return `<g transform="translate(0,${Math.round(y)})">${tb.svg}</g>`;
     },
   });
@@ -511,21 +517,21 @@
     const r = RECIPES[v.receta];
     const H = w < h;   // vertical
     const icons = ["dado", "d20", "microfono"].map((ic, i) => {
-      const cx = H ? 540 + (i - 1) * 170 : 1060 + i * 150, cy = H ? 1500 : 900;
-      return `<circle cx="${cx}" cy="${cy}" r="58" fill="${[TEAL, CORAL, SUN][i] === r.bg ? CREAM : [TEAL, CORAL, SUN][i]}" stroke="${INK}" stroke-width="5"/>${D.icon(ic, cx, cy, 64)}`;
+      const cx = H ? 540 + (i - 1) * 200 : 1080 + i * 180, cy = H ? 1520 : 920;
+      return `<circle cx="${cx}" cy="${cy}" r="72" fill="${[TEAL, CORAL, SUN][i] === r.bg ? CREAM : [TEAL, CORAL, SUN][i]}" stroke="${INK}" stroke-width="6"/>${D.icon(ic, cx, cy, 80)}`;
     }).join("");
     const seal = (cx, cy, rr) => `<circle cx="${cx + 12}" cy="${cy + 12}" r="${rr}" fill="${INK}"/><circle cx="${cx}" cy="${cy}" r="${rr}" fill="${CREAM}" stroke="${INK}" stroke-width="10"/><use href="#bowl" x="${cx - rr * 0.6}" y="${cy - rr * 0.63}" width="${rr * 1.2}" height="${rr * 1.24}"/>`;
     if (H) return `${D.background(w, h, r.bg, r.light)}${D.corner(w, ...r.corner, 260)}${seal(540, 560, 180)}
       ${D.headline(540, 920, v.linea1, D.fit(v.linea1, 130, 940), r.ink, null, 0, "middle")}
       ${D.headline(540, 1080, v.linea2, D.fit(v.linea2, 170, 900), r.hl, r.hlShadow, 10, "middle")}
-      ${D.pillAuto(540, 1160, 90, r.bg === INK ? SUN : INK, r.bg === INK ? INK : CREAM, v.cta, 40, { anchor: "middle" })}
-      <text x="540" y="1330" text-anchor="middle" class="sans" font-weight="700" font-size="32" fill="${r.ink}">${D.esc(v.sub)}</text>${icons}
+      ${D.pillAuto(540, 1150, 104, r.bg === INK ? SUN : INK, r.bg === INK ? INK : CREAM, v.cta, 46, { anchor: "middle" })}
+      <text x="540" y="1350" text-anchor="middle" class="sans" font-weight="700" font-size="${D.fit(v.sub, 42, 960, "sans", 700)}" fill="${r.ink}">${D.esc(v.sub)}</text>${icons}
       ${D.sparkle(180, 360, 80, r.accent)}${D.sparkle(900, 820, 50, CREAM)}`;
     return `${D.background(w, h, r.bg, r.light)}${D.corner(w, ...r.corner, 260)}${seal(440, 540, 240)}
       ${D.headline(780, 400, v.linea1, D.fit(v.linea1, 120, 1060), r.ink)}
       ${D.headline(780, 560, v.linea2, D.fit(v.linea2, 160, 1040), r.hl, r.hlShadow, 10)}
-      ${D.pillAuto(780, 620, 90, r.bg === INK ? SUN : INK, r.bg === INK ? INK : CREAM, v.cta, 40)}
-      <text x="782" y="790" class="sans" font-weight="700" font-size="32" fill="${r.ink}">${D.esc(v.sub)}</text>${icons}
+      ${D.pillAuto(780, 610, 104, r.bg === INK ? SUN : INK, r.bg === INK ? INK : CREAM, v.cta, 46)}
+      <text x="782" y="800" class="sans" font-weight="700" font-size="${D.fit(v.sub, 42, 1080, "sans", 700)}" fill="${r.ink}">${D.esc(v.sub)}</text>${icons}
       ${D.sparkle(160, 180, 80, r.accent)}`;
   }
   const endFields = [f.receta, { key: "linea1", label: "Línea 1", type: "text", default: "¿TE GUSTÓ?" }, { key: "linea2", label: "Línea 2 (destacada)", type: "text", default: "VEN A JUGAR." },
@@ -557,20 +563,25 @@
       const W = { x: 60, y: 650, w: 960, h: 540, r: 26 };
       const win = roundRect(W.x, W.y, W.w, W.h, W.r);
       const full = "M0,0 H1080 V1920 H0 Z";
+      const top = v.etiqueta ? 486 : 400;                       // debajo de la cabecera (y la etiqueta)
       let size = 100, lines;
-      for (;;) { lines = D.wrapBalanced(String(v.titulo).toUpperCase(), size, 960, "cond", 800); if (lines.length <= 2 || size <= 60) break; size -= 6; }
+      for (;;) {
+        lines = D.wrapBalanced(String(v.titulo).toUpperCase(), size, 960, "cond", 800);
+        const fits = lines.length <= 2 && top + size * (0.72 + (lines.length - 1) * 0.95) <= W.y - 28;
+        if (fits || size <= 56) break;
+        size -= 4;
+      }
       lines = lines.slice(0, 2);
-      const top = v.etiqueta ? 446 : 390;                       // debajo de la cabecera (y la etiqueta)
       const ty = Math.max(top + size * 0.72, W.y - 30 - (lines.length - 1) * size * 0.95);
       const title = lines.map((l, i) => D.headline(60, Math.round(ty + i * size * 0.95), l, size, i === lines.length - 1 ? r.hl : r.ink, i === lines.length - 1 ? r.hlShadow : null, 8)).join("");
-      const tb = v.texto ? D.textBox(540, 1240, v.texto, 46, 960, r.bg === INK ? SUN : INK, r.bg === INK ? INK : CREAM, { maxLines: 2 }) : { svg: "" };
+      const tb = v.texto ? D.textBox(540, 1236, v.texto, 54, 960, r.bg === INK ? SUN : INK, r.bg === INK ? INK : CREAM, { maxLines: 2 }) : { svg: "" };
       return `<path fill-rule="evenodd" d="${full} ${win}" fill="${r.bg}"/><path fill-rule="evenodd" d="${full} ${win}" fill="url(#${r.light ? "dotsLight" : "dots"})"/>
         <path fill-rule="evenodd" d="${roundRect(W.x + 14, W.y + 14, W.w, W.h, W.r)} ${win}" fill="${INK}"/>
         <path d="${win}" fill="none" stroke="${INK}" stroke-width="10"/>
-        ${D.corner(1080, ...r.corner, 260)}${headerChip(64, 250)}
-        ${v.etiqueta ? D.pillAuto(64, 378, 50, r.ink === CREAM ? TEAL : INK, r.ink === CREAM ? INK : CREAM, v.etiqueta, 20) : ""}
+        ${D.corner(1080, ...r.corner, 260)}${headerChip(64, 250, 1.2)}
+        ${v.etiqueta ? D.pillAuto(64, 398, 62, r.ink === CREAM ? TEAL : INK, r.ink === CREAM ? INK : CREAM, v.etiqueta, 26) : ""}
         ${title}${tb.svg}
-        ${D.pillAuto(540, 1424, 60, CREAM, INK, v.usuario, 26, { anchor: "middle", stroke: INK })}
+        ${D.pillAuto(540, 1412, 80, CREAM, INK, v.usuario, 34, { anchor: "middle", stroke: INK })}
         ${D.sparkle(1012, 1212, 56, r.accent)}`;
     },
   });
@@ -580,24 +591,27 @@
     fields: [{ key: "texto", label: "Texto", type: "textarea", default: "Ven a jugar. Quédate a compartir." },
       { key: "caja", label: "Estilo", type: "select", options: BOX_OPTS, default: "tinta" },
       { key: "fuente", label: "Tipografía", type: "select", options: [["sans", "Texto (Barlow)"], ["cond", "Titular (Barlow Condensed)"]], default: "sans" },
-      { key: "tam", label: "Tamaño", type: "number", default: 56 },
+      { key: "tam", label: "Tamaño", type: "number", default: 72 },
       { key: "pos", label: "Posición", type: "select", options: [["arriba", "Arriba"], ["centro", "Centro"], ["abajo", "Abajo (subtítulos)"]], default: "abajo" }],
     render(v) {
       const [fill, ink] = BOX[v.caja] || BOX.tinta;
       const kind = v.fuente === "cond" ? "cond" : "sans";
       const txt = kind === "cond" ? String(v.texto).toUpperCase() : v.texto;
       const tb = D.textBox(960, 0, txt, Math.max(24, Math.min(140, Number(v.tam) || 56)), 1500, fill, ink, { kind, weight: kind === "cond" ? 800 : 700, maxLines: 3 });
-      const y = v.pos === "arriba" ? 90 : v.pos === "centro" ? 540 - tb.height / 2 : 990 - tb.height;
+      const y = v.pos === "arriba" ? 230 : v.pos === "centro" ? 540 - tb.height / 2 : 1000 - tb.height;
       return `<g transform="translate(0,${Math.round(y)})">${tb.svg}</g>`;
     },
   });
 
   add({
     id: "overlay_video_h", name: "Capa de marca 16:9 (transparente)", group: "Video", w: 1920, h: 1080, transparent: true,
-    fields: [f.etiqueta(""), f.usuario, { key: "sello", label: "Mostrar sello", type: "checkbox", default: true }],
+    fields: [f.etiqueta(""), f.usuario, { key: "info", label: "Información (horario, lugar…)", type: "text", default: INFO },
+      { key: "sello", label: "Mostrar cabecera con el logo", type: "checkbox", default: true }],
     render(v) {
-      const seal = v.sello ? `<circle cx="1800" cy="120" r="66" fill="${CREAM}" stroke="${INK}" stroke-width="5"/><use href="#bowl" x="1757" y="75" width="86" height="89"/>` : "";
-      return `${seal}${v.etiqueta ? D.pillAuto(64, 80, 60, INK, CREAM, v.etiqueta, 24) : ""}${D.pillAuto(1856, 960, 60, CREAM, INK, v.usuario, 26, { anchor: "end", stroke: INK })}`;
+      return `${v.sello ? headerChip(56, 48, 1.25) : ""}
+        ${v.etiqueta ? D.pillAuto(56, v.sello ? 200 : 56, 72, INK, CREAM, v.etiqueta, 30) : ""}
+        ${D.pillAuto(1864, 56, 84, CREAM, INK, v.usuario, 36, { anchor: "end", stroke: INK })}
+        ${v.info ? D.pillAuto(1864, 160, 72, SUN, INK, v.info, 30, { anchor: "end", stroke: INK }) : ""}`;
     },
   });
 
@@ -834,6 +848,24 @@
         <text x="1016" y="1040" text-anchor="end" class="sans" font-weight="700" font-size="26" fill="${r.ink}">${D.esc(v.usuario)}</text>`;
     },
   });
+
+  function introLogo(w, h, v) {
+    const H = w < h;
+    const cx = H ? 540 : 560, cy = H ? 760 : 540, R = H ? 270 : 280;
+    const seal = `<circle cx="${cx + 18}" cy="${cy + 18}" r="${R}" fill="${INK}"/><circle cx="${cx}" cy="${cy}" r="${R}" fill="${CREAM}" stroke="${INK}" stroke-width="16"/>
+      <use href="#bowl" x="${cx - R * 0.62}" y="${cy - R * 0.66}" width="${R * 1.24}" height="${R * 1.28}"/>`;
+    const tx = H ? 540 : 940, a = H ? "middle" : "start", mw = H ? 980 : 920;
+    const ns = D.fit("TAZÓN PARA DOS", H ? 170 : 160, mw);
+    const ty = H ? 1250 : 500;
+    const sub = String(v.sub || "").toUpperCase();
+    return `${seal}
+      ${D.headline(tx, ty, "TAZÓN PARA DOS", ns, INK, null, 0, a)}
+      <text x="${tx}" y="${ty + 70}" text-anchor="${a}" class="sans" font-weight="700" font-size="${D.fit(sub, 40, mw, "sans", 700, 8)}" fill="${INK}" letter-spacing="8">${D.esc(sub)}</text>
+      ${v.info ? D.pillAuto(tx, ty + 120, 88, INK, CREAM, v.info, 36, H ? { anchor: "middle" } : {}) : ""}`;
+  }
+  const introFields = [{ key: "sub", label: "Subtítulo", type: "text", default: "Espacio cultural · Engativá" }, { key: "info", label: "Información", type: "text", default: INFO }];
+  add({ id: "intro_logo_v", name: "Logo para intro de video 9:16 (transparente)", group: "Video", w: 1080, h: 1920, transparent: true, fields: introFields, render: (v) => introLogo(1080, 1920, v) });
+  add({ id: "intro_logo_h", name: "Logo para intro de video 16:9 (transparente)", group: "Video", w: 1920, h: 1080, transparent: true, fields: introFields, render: (v) => introLogo(1920, 1080, v) });
 
   window.TPDTemplates = templates;
 })();

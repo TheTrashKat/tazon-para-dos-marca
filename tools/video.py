@@ -1,6 +1,6 @@
 """Genera el kit de video de Tazón para Dos en video/.
 
-  video/intro_9x16.mp4 · intro_16x9.mp4     logo que aparece con rebote (2,5 s)
+  video/intro_9x16.mp4 · intro_16x9.mp4     sello, nombre y horario que aparecen con rebote (2,5 s)
   video/cierre_9x16.mp4 · cierre_16x9.mp4   tarjeta final con zoom suave (4 s)
   video/capas/*.png                          capas transparentes para poner encima del video
   video/portadas/*.png                       tarjetas finales en imagen fija
@@ -16,6 +16,8 @@ OUT = ROOT / "video"
 TOKENS = json.loads((ROOT / "brand/tokens.json").read_text(encoding="utf-8"))
 TEAL = TOKENS["color"]["teal"]["value"]
 INK = TOKENS["color"]["ink"]["value"]
+SUN = TOKENS["color"]["sun"]["value"]
+CORAL = TOKENS["color"]["coral"]["value"]
 
 
 def find_ffmpeg():
@@ -40,7 +42,7 @@ def hex_rgb(h):
 
 
 def dotted_background(w, h, path):
-    """Fondo turquesa con el patrón de puntos de la marca."""
+    """Fondo turquesa con el patrón de puntos y la esquina sol + coral de la marca."""
     from PIL import Image, ImageDraw
     img = Image.new("RGB", (w, h), hex_rgb(TEAL))
     dot = Image.new("RGBA", (w, h), (0, 0, 0, 0))
@@ -50,6 +52,10 @@ def dotted_background(w, h, path):
         for x in range(11, w, 22):
             d.ellipse((x - 1.6, y - 1.6, x + 1.6, y + 1.6), fill=ink)
     img.paste(dot, (0, 0), dot)
+    d = ImageDraw.Draw(img)
+    s = 260
+    d.polygon([(w - s, 0), (w, 0), (w, s)], fill=hex_rgb(SUN))
+    d.polygon([(w - s // 2, 0), (w, 0), (w, s // 2)], fill=hex_rgb(CORAL))
     img.save(path)
 
 
@@ -63,7 +69,7 @@ def render_editor(jobs, workdir):
 def intro(w, h, logo, out, work):
     bg = work / f"bg_{w}x{h}.png"
     dotted_background(w, h, bg)
-    base = int(min(w, h) * (0.86 if w < h else 0.62))       # ancho del logotipo apilado
+    base = w                                                 # la capa del logo ocupa todo el cuadro
     # Rebote: crece de 40 % a 115 % y se asienta en 100 %
     s = "if(lt(t,0.35),0.4+0.75*t/0.35,if(lt(t,0.55),1.15-0.15*(t-0.35)/0.2,1))"
     vf = (f"[1:v]format=rgba,scale=w='trunc({base}*{s}/2)*2':h=-2:eval=frame,"
@@ -94,15 +100,14 @@ def main():
         {"template": "guia_zonas", "output": str(OUT / "capas/guia_zonas_seguras_9x16.png")},
         {"template": "marco_video", "output": str(OUT / "capas/marco_video_9x16.png")},
         {"template": "overlay_video_h", "output": str(OUT / "capas/marca_video_16x9.png")},
+        {"template": "intro_logo_v", "output": str(work / "intro_logo_9x16.png")},
+        {"template": "intro_logo_h", "output": str(work / "intro_logo_16x9.png")},
     ]
     print("Renderizando tarjetas y capas…")
     render_editor(jobs, work)
-    logo = ROOT / "assets/logo/png/logotipo-apilado.png"
-    if not logo.exists():
-        raise SystemExit("Falta assets/logo/png/logotipo-apilado.png: ejecuta antes tools/export.py")
     print("Generando videos…")
-    intro(1080, 1920, logo, OUT / "intro_9x16.mp4", work)
-    intro(1920, 1080, logo, OUT / "intro_16x9.mp4", work)
+    intro(1080, 1920, work / "intro_logo_9x16.png", OUT / "intro_9x16.mp4", work)
+    intro(1920, 1080, work / "intro_logo_16x9.png", OUT / "intro_16x9.mp4", work)
     outro(OUT / "portadas/tarjeta_final_9x16.png", 1080, 1920, OUT / "cierre_9x16.mp4")
     outro(OUT / "portadas/tarjeta_final_16x9.png", 1920, 1080, OUT / "cierre_16x9.mp4")
     for p in sorted(OUT.rglob("*.*")):
