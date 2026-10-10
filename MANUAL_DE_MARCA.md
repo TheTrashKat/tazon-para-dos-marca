@@ -258,28 +258,60 @@ El podcast de Tazón para Dos es un **podcast de rol que habla en lenguaje de co
 
 ---
 
-## 11. Productos y aplicaciones
+## 11. Fotografía
+
+Las fotos muestran **la mesa viva**: manos con dados, cartas y fichas, grupos riendo, la grabación del podcast y detalles como tazas, mapas u hojas de personaje.
+
+| Aspecto | Guía |
+|---|---|
+| **Luz** | Cálida y natural. Evita el flash directo |
+| **Encuadre** | Fotos desde arriba de la mesa, primeros planos de manos y planos medios de grupo. Deja espacio libre para poner titulares |
+| **Color** | Sin filtros fuertes. El color de marca lo ponen los bloques gráficos, no la foto |
+| **Tratamiento** | Marco con esquinas redondeadas y contorno tinta, o recorte siguiendo las diagonales |
+| **Evitar** | Fotos de banco de imágenes, pantallas con datos personales y filtros que cambien el tono de piel |
+
+### 🛡️ Consentimiento (obligatorio)
+
+Somos un **espacio seguro LGBTI+**. Antes de publicar una foto donde se reconozca a alguien, **pide permiso explícito**. Ofrece siempre la opción de salir solo con las manos. Nunca etiquetes ni nombres a nadie sin su consentimiento.
+
+---
+
+## 12. Productos y aplicaciones
 
 | Aplicación | Estado | Notas |
 |---|---|---|
 | Hoja de stickers | ✅ Plantilla lista | `aplicaciones/stickers.svg`, en vinilo mate con corte a 6 mm |
-| Tazón de cerámica | Propuesta | Mascota en tinta y "Jugar también es escuchar." al reverso |
-| Bolsa de tela | Propuesta | Logotipo apilado en tinta sobre lona cruda |
-| Set de dados | Propuesta | d20 sol y turquesa con el tazón en la cara del 20 |
-| Fichas de personaje | Propuesta | A4 en papel crema, con cabecera de marca |
+| Tarjeta de presentación | ✅ Lista (PDF) | `tarjeta_frente` / `tarjeta_reverso`, 85 × 55 mm |
+| Letrero de horario | ✅ Listo (PDF) | `letrero_horario_a4`, para la puerta del espacio |
+| Ficha de personaje | ✅ Lista (PDF) | `ficha_personaje_a4`, sirve para cualquier sistema de rol y tiene campo de pronombres |
+| Certificado de taller | ✅ Listo (PDF) | `certificado_taller`: cambia el nombre, el taller y la fecha |
+| Firma de correo | ✅ Lista | `firma_correo.html`: ábrela, cópiala y pégala en Gmail |
+| Tazón de cerámica | Propuesta con fotomontaje (`merch_mockups`) | Mascota en tinta y "Jugar también es escuchar." al reverso |
+| Bolsa de tela | Propuesta con fotomontaje | Logotipo apilado en tinta sobre lona cruda |
+| Set de dados | Propuesta con fotomontaje | d20 sol y turquesa con el tazón en la cara del 20 |
 
 ---
 
-## 12. Para imprimir
+## 13. Para imprimir
 
-- **Imprime desde el SVG,** no desde el PNG. El PNG solo sirve para pantalla.
-- **Fuentes:** las plantillas cargan Barlow desde Google Fonts. Antes de mandarlas a imprenta, ábrelas en Inkscape o Illustrator con la fuente instalada (está en `tools/fonts/`) y **convierte los textos a contornos**.
-- **Formato para la imprenta:** exporta a **PDF** en CMYK con 3 mm de sangrado.
-- **Colores:** pide a la imprenta una **prueba de color**. El turquesa y el coral cambian bastante entre pantalla e impresión.
+- **PDF listos en `impresion/`.** Tienen el tamaño físico real y las fuentes incrustadas, así que no hace falta convertir textos a trazos:
+
+  | Archivo | Tamaño |
+  |---|---|
+  | `tarjeta_frente.pdf` y `tarjeta_reverso.pdf` | 85 × 55 mm |
+  | `letrero_horario_a4.pdf` y `ficha_personaje_a4.pdf` | A4 |
+  | `certificado_taller.pdf` | A4 horizontal |
+  | `stickers.pdf` | 20 × 20 cm |
+  | `pancarta_80x180.pdf` | 80 × 180 cm |
+
+- **Sangrado y CMYK:** los PDF vienen **en RGB y sin sangrado**. Para impresión offset o una pancarta grande, pregunta a la imprenta si necesita 3 mm de sangrado y conversión a CMYK. Normalmente lo hacen ellos.
+- **Colores:** pide una **prueba de color**. El turquesa y el coral cambian bastante entre pantalla e impresión.
+- **Para regenerar los PDF:** `python -I tools/export.py`.
+- **Logos en PNG con fondo transparente:** están en `assets/logo/png/` y sirven para Word, Canva o el correo. El ícono de pestaña está en `assets/logo/favicon.ico` y `favicon.svg`.
 
 ---
 
-## 13. Cómo hacer una pieza nueva
+## 14. Cómo hacer una pieza nueva
 
 1. Copia la plantilla más parecida de `plantillas/`.
 2. Cambia los textos y respeta la estructura del punto 9.

@@ -18,13 +18,14 @@ Este repositorio reúne la identidad visual de [Tazón para Dos](https://tazon-p
 
 ```
 brand/          tokens.json · tokens.css · brand.json (fuente de verdad)
-assets/logo/    mascota, sello, logotipo horizontal y apilado (+ inversos)
-assets/iconos/  19 íconos de línea 64 px + sprite.svg
+assets/logo/    mascota, sello, logotipos (+ inversos), favicon, png/ transparentes
+assets/iconos/  21 íconos de línea 64 px + sprite.svg
 assets/elementos/ d20, d6, carta, meeple, micrófono, destello
-plantillas/     posts, historias, banner web y pancarta (SVG + png/)
-aplicaciones/   hoja de stickers
+plantillas/     posts, historias, carrusel, evento, destacadas, perfil, podcast, banner, pancarta
+aplicaciones/   stickers, tarjeta, letrero, ficha de personaje, certificado, firma de correo, merch
+impresion/      PDF listos para imprenta (tamaño real, fuentes incrustadas)
 referencias/    pancarta y logo originales
-tools/          build.py (generador) · render.ps1 (exporta PNG) · fonts/ (Barlow, OFL)
+tools/          build.py (genera SVG) · render.ps1 (PNG) · export.py (PDF, logos PNG, favicon) · fonts/
 ```
 
 ## Paleta
@@ -38,9 +39,10 @@ tools/          build.py (generador) · render.ps1 (exporta PNG) · fonts/ (Barl
 ```bash
 python -I tools/build.py                                   # SVG desde los tokens
 powershell -ExecutionPolicy Bypass -File tools/render.ps1  # PNG (Edge/Chrome)
+python -I tools/export.py                                  # PDF de imprenta, logos PNG, favicon
 ```
 
-Requiere Python 3 con `fonttools` (`pip install fonttools`) para convertir a trazos los textos de los logos.
+Requiere Python 3 con `fonttools` y `Pillow` (`pip install fonttools pillow`) para convertir a trazos los textos de los logos.
 
 ## Licencias
 

@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 1754" width="1240" height="1754">
+  <title>Ficha de personaje A4 · Tazón para Dos</title>
+  <!-- Generado por tools/build.py · Paleta: ink #28203B · coral #EA6077 · sun #F8CB67 · teal #55C4BF · cream #F7F2E8 · paper #FFFDF8 · muted #665F68 -->
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&amp;family=Barlow:wght@500;600;700&amp;display=swap');
+      .cond { font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif; font-weight: 800; }
+      .sans { font-family: 'Barlow', 'Segoe UI', sans-serif; }
+    </style>
+    <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="11" cy="11" r="1.6" fill="#28203B" opacity="0.10"/></pattern>
+    <pattern id="dotsLight" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="11" cy="11" r="1.6" fill="#F7F2E8" opacity="0.07"/></pattern>
+    <symbol id="bowl" viewBox="0 0 120 124"><g stroke="#28203B" stroke-width="7" stroke-linecap="round">
+      <line x1="16" y1="20" x2="29" y2="38"/><line x1="35" y1="12" x2="43" y2="31"/>
+      <line x1="85" y1="12" x2="77" y2="31"/><line x1="104" y1="20" x2="91" y2="38"/>
+    </g>
+    <g fill="#28203B">
+      <circle cx="60" cy="54" r="20"/><circle cx="42" cy="61" r="16"/><circle cx="78" cy="61" r="16"/>
+      <circle cx="30" cy="70" r="11"/><circle cx="90" cy="70" r="11"/>
+      <rect x="20" y="64" width="80" height="12"/>
+      <path d="M14,80 H106 C106,101 92,112 75,112 H45 C28,112 14,101 14,80 Z"/>
+      <rect x="45" y="116" width="30" height="7" rx="3.5"/>
+    </g>
+    <g fill="#F7F2E8">
+      <rect x="44" y="85" width="6" height="13" rx="3"/><rect x="70" y="85" width="6" height="13" rx="3"/>
+      <path d="M53,101 H67 A7,7 0 0 1 53,101 Z"/>
+    </g></symbol>
+    <symbol id="sparkle" viewBox="-50 -50 100 100"><path d="M0,-50 C6,-10 10,-6 50,0 C10,6 6,10 0,50 C-6,10 -10,6 -50,0 C-10,-6 -6,-10 0,-50 Z"/></symbol>
+    <symbol id="meeple" viewBox="0 0 100 100"><path d="M50,4 C62,4 70,13 70,24 C70,31 67,36 63,40 L94,52 C99,54 99,62 94,64 L72,70 L84,96 H58 L50,78 L42,96 H16 L28,70 L6,64 C1,62 1,54 6,52 L37,40 C33,36 30,31 30,24 C30,13 38,4 50,4 Z"/></symbol>
+  </defs>
+
+  <rect width="1240" height="1754" fill="#FFFDF8"/>
+  <rect width="1240" height="230" fill="#55C4BF"/><rect width="1240" height="230" fill="url(#dots)"/>
+  <path d="M1090,0 H1240 V150 Z" fill="#F8CB67"/><path d="M1165.0,0 H1240 V75.0 Z" fill="#EA6077"/>
+  <circle cx="140" cy="115" r="72" fill="#F7F2E8" stroke="#28203B" stroke-width="6"/>
+  <use href="#bowl" x="95" y="68" width="90" height="93"/>
+  <text x="240" y="125" class="cond" font-size="96" fill="#28203B">FICHA DE PERSONAJE</text>
+  <text x="243" y="168" class="sans" font-weight="600" font-size="22" fill="#28203B" letter-spacing="6">TAZÓN PARA DOS · LA MESA ES UN TERRITORIO</text>
+  <rect x="60" y="270" width="740" height="110" rx="16" fill="#FFFFFF" stroke="#28203B" stroke-width="4"/>
+  <text x="82" y="306" class="sans" font-weight="700" font-size="20" fill="#28203B" letter-spacing="3">NOMBRE DEL PERSONAJE</text>
+  <rect x="820" y="270" width="360" height="110" rx="16" fill="#FFFFFF" stroke="#28203B" stroke-width="4"/>
+  <text x="842" y="306" class="sans" font-weight="700" font-size="20" fill="#28203B" letter-spacing="3">PRONOMBRES</text>
+  <rect x="60" y="400" width="560" height="110" rx="16" fill="#FFFFFF" stroke="#28203B" stroke-width="4"/>
+  <text x="82" y="436" class="sans" font-weight="700" font-size="20" fill="#28203B" letter-spacing="3">PERSONA QUE JUEGA</text>
+  <rect x="640" y="400" width="540" height="110" rx="16" fill="#FFFFFF" stroke="#28203B" stroke-width="4"/>
+  <text x="662" y="436" class="sans" font-weight="700" font-size="20" fill="#28203B" letter-spacing="3">CONCEPTO / ROL</text>
+  <rect x="60" y="530" width="1120" height="330" rx="16" fill="#FFFFFF" stroke="#28203B" stroke-width="4"/>
+  <text x="82" y="566" class="sans" font-weight="700" font-size="20" fill="#28203B" letter-spacing="3">¿QUIÉN ES? · SU HISTORIA</text>
+  <line x1="82" y1="621" x2="1158" y2="621" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <line x1="82" y1="672" x2="1158" y2="672" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <line x1="82" y1="723" x2="1158" y2="723" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <line x1="82" y1="774" x2="1158" y2="774" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <line x1="82" y1="825" x2="1158" y2="825" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <rect x="60" y="880" width="550" height="400" rx="16" fill="#FFFFFF" stroke="#28203B" stroke-width="4"/>
+  <text x="82" y="916" class="sans" font-weight="700" font-size="20" fill="#28203B" letter-spacing="3">RASGOS Y HABILIDADES</text>
+  <line x1="82" y1="969" x2="588" y2="969" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <line x1="82" y1="1015" x2="588" y2="1015" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <line x1="82" y1="1062" x2="588" y2="1062" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <line x1="82" y1="1108" x2="588" y2="1108" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <line x1="82" y1="1154" x2="588" y2="1154" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <line x1="82" y1="1201" x2="588" y2="1201" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <line x1="82" y1="1247" x2="588" y2="1247" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <rect x="630" y="880" width="550" height="400" rx="16" fill="#FFFFFF" stroke="#28203B" stroke-width="4"/>
+  <text x="652" y="916" class="sans" font-weight="700" font-size="20" fill="#28203B" letter-spacing="3">INVENTARIO</text>
+  <line x1="652" y1="969" x2="1158" y2="969" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <line x1="652" y1="1015" x2="1158" y2="1015" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <line x1="652" y1="1062" x2="1158" y2="1062" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <line x1="652" y1="1108" x2="1158" y2="1108" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <line x1="652" y1="1154" x2="1158" y2="1154" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <line x1="652" y1="1201" x2="1158" y2="1201" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <line x1="652" y1="1247" x2="1158" y2="1247" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <rect x="60" y="1300" width="550" height="300" rx="16" fill="#FFFFFF" stroke="#28203B" stroke-width="4"/>
+  <text x="82" y="1336" class="sans" font-weight="700" font-size="20" fill="#28203B" letter-spacing="3">VÍNCULOS</text>
+  <line x1="82" y1="1388" x2="588" y2="1388" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <line x1="82" y1="1433" x2="588" y2="1433" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <line x1="82" y1="1478" x2="588" y2="1478" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <line x1="82" y1="1523" x2="588" y2="1523" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <line x1="82" y1="1568" x2="588" y2="1568" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <rect x="630" y="1300" width="550" height="300" rx="16" fill="#FFFFFF" stroke="#28203B" stroke-width="4"/>
+  <text x="652" y="1336" class="sans" font-weight="700" font-size="20" fill="#28203B" letter-spacing="3">NOTAS DE LA MESA</text>
+  <line x1="652" y1="1388" x2="1158" y2="1388" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <line x1="652" y1="1433" x2="1158" y2="1433" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <line x1="652" y1="1478" x2="1158" y2="1478" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <line x1="652" y1="1523" x2="1158" y2="1523" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <line x1="652" y1="1568" x2="1158" y2="1568" stroke="#28203B" stroke-width="2" opacity="0.18"/>
+  <g transform="translate(1150,1660) rotate(12)" stroke="#28203B" stroke-width="3.0" stroke-linejoin="round">
+    <path d="M0.0,-46.0 L39.8,-23.0 L39.8,23.0 L0.0,46.0 L-39.8,23.0 L-39.8,-23.0 Z" fill="#F8CB67"/>
+    <path d="M0.0,-24.2 L21.2,13.3 L-21.2,13.3 Z" fill="#FBD98A"/>
+    <path d="M0.0,-46.0 L0.0,-24.2 M0.0,-24.2 L39.8,-23.0 M0.0,-24.2 L-39.8,-23.0 M21.2,13.3 L39.8,-23.0 M21.2,13.3 L39.8,23.0 M21.2,13.3 L0.0,46.0 M-21.2,13.3 L-39.8,-23.0 M-21.2,13.3 L-39.8,23.0 M-21.2,13.3 L0.0,46.0" fill="none"/><text x="0" y="8.3" text-anchor="middle" class="cond" font-size="21.2" fill="#28203B" stroke="none">20</text>
+  </g>
+  <text x="60" y="1690" class="sans" font-weight="700" font-size="22" fill="#28203B" letter-spacing="3">tazon-para-dos.online · @tazonparados</text>
+
+</svg>

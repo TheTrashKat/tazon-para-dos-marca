@@ -1,6 +1,6 @@
 {
   "$description": "Perfil de marca legible por máquina. Úsalo junto a tokens.json para generar piezas nuevas. Textos tomados de tazon-para-dos.online (oct 2026) salvo los marcados como 'propuesta'.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "updated": "2026-10-10",
   "identity": {
     "name": "Tazón para Dos",
@@ -381,6 +381,87 @@
         "plantillas/podcast_episodio_ejemplo.svg",
         "plantillas/podcast_episodio_plantilla.svg"
       ]
+    },
+    {
+      "id": "tarjeta",
+      "size": [
+        1020,
+        660
+      ],
+      "physical": "85 × 55 mm",
+      "use": "Tarjeta de presentación (frente y reverso)",
+      "templates": [
+        "aplicaciones/tarjeta_frente.svg",
+        "aplicaciones/tarjeta_reverso.svg"
+      ],
+      "pdf": [
+        "impresion/tarjeta_frente.pdf",
+        "impresion/tarjeta_reverso.pdf"
+      ]
+    },
+    {
+      "id": "letrero",
+      "size": [
+        1240,
+        1754
+      ],
+      "physical": "A4 vertical",
+      "use": "Letrero de horario para la puerta",
+      "templates": [
+        "aplicaciones/letrero_horario_a4.svg"
+      ],
+      "pdf": [
+        "impresion/letrero_horario_a4.pdf"
+      ]
+    },
+    {
+      "id": "ficha-personaje",
+      "size": [
+        1240,
+        1754
+      ],
+      "physical": "A4 vertical",
+      "use": "Ficha de personaje genérica (cualquier sistema de rol). Incluye campo de pronombres.",
+      "templates": [
+        "aplicaciones/ficha_personaje_a4.svg"
+      ],
+      "pdf": [
+        "impresion/ficha_personaje_a4.pdf"
+      ]
+    },
+    {
+      "id": "certificado",
+      "size": [
+        1754,
+        1240
+      ],
+      "physical": "A4 horizontal",
+      "use": "Certificado de participación en talleres. Reemplazar [NOMBRE COMPLETO], [NOMBRE DEL TALLER], [FECHA].",
+      "templates": [
+        "aplicaciones/certificado_taller.svg"
+      ],
+      "pdf": [
+        "impresion/certificado_taller.pdf"
+      ]
+    },
+    {
+      "id": "firma-correo",
+      "use": "Firma HTML para Gmail/Outlook (tablas + PNG alojados en GitHub Pages)",
+      "templates": [
+        "aplicaciones/firma_correo.html"
+      ]
+    },
+    {
+      "id": "favicon",
+      "size": [
+        64,
+        64
+      ],
+      "use": "Ícono de pestaña del navegador",
+      "templates": [
+        "assets/logo/favicon.svg",
+        "assets/logo/favicon.ico"
+      ]
     }
   ],
   "products_merch": {
@@ -393,23 +474,27 @@
       },
       {
         "name": "Tazón de cerámica con la mascota",
-        "status": "propuesta",
-        "notes": "Mascota en tinta sobre cerámica crema; frase 'Jugar también es escuchar.' al reverso."
+        "status": "propuesta con mockup",
+        "notes": "Mascota en tinta sobre cerámica crema; frase 'Jugar también es escuchar.' al reverso.",
+        "file": "aplicaciones/merch_mockups.svg"
       },
       {
         "name": "Bolsa de tela",
-        "status": "propuesta",
-        "notes": "Logotipo apilado en tinta sobre lona cruda."
+        "status": "propuesta con mockup",
+        "notes": "Logotipo apilado en tinta sobre lona cruda.",
+        "file": "aplicaciones/merch_mockups.svg"
       },
       {
         "name": "Set de dados",
-        "status": "propuesta",
-        "notes": "d20 sol y turquesa con el tazón en la cara del 20."
+        "status": "propuesta con mockup",
+        "notes": "d20 sol y turquesa con el tazón en la cara del 20.",
+        "file": "aplicaciones/merch_mockups.svg"
       },
       {
         "name": "Fichas de personaje",
-        "status": "propuesta",
-        "notes": "Hoja A4 con cabecera de marca, papel crema, tipografía Barlow."
+        "status": "plantilla lista",
+        "notes": "Hoja A4 con cabecera de marca, papel crema, tipografía Barlow.",
+        "file": "aplicaciones/ficha_personaje_a4.svg"
       }
     ]
   },
@@ -422,7 +507,9 @@
     "templates": "plantillas/",
     "generator": "tools/build.py",
     "renderer": "tools/render.ps1",
-    "fonts": "tools/fonts/ (Barlow, licencia OFL)"
+    "fonts": "tools/fonts/ (Barlow, licencia OFL)",
+    "exporter": "tools/export.py (logos PNG transparentes, favicon.ico, PDF de imprenta al tamaño real con fuentes incrustadas)",
+    "print": "impresion/*.pdf"
   },
   "podcast": {
     "$description": "Identidad del podcast (fuente: página del show en Spotify, oct 2026).",
@@ -468,5 +555,25 @@
       "receta"
     ],
     "episode_cover_rule": "Fondo = color de la sección del menú; píldora 'MENÚ · <SECCIÓN>'; plato crema con d20; título en Barlow Condensed con sombra crema. Generar con episodio(slug, menu, title, bg, accent) en tools/build.py."
+  },
+  "photography": {
+    "$description": "Guía de fotografía (propuesta basada en el tono de la marca).",
+    "subjects": [
+      "manos sobre la mesa: dados, cartas, fichas, micrófonos",
+      "grupos jugando y riendo",
+      "detalles: tazas, mapas, hojas de personaje",
+      "la grabación del podcast"
+    ],
+    "light": "Cálida y natural; evitar flash directo. Interiores con luz de ventana o lámparas cálidas.",
+    "framing": "Cenitales de la mesa, primeros planos de manos y objetos, planos medios de grupo. Dejar aire para superponer titulares.",
+    "color": "Sin filtros fuertes. Si se edita, empujar levemente cálidos; los colores de marca los aportan los bloques gráficos, no la foto.",
+    "treatment": "Fotos dentro de marcos con esquinas redondeadas (22 px) y contorno tinta de 4–6 px, o recortadas por las diagonales de los bloques.",
+    "consent": "Pedir permiso explícito antes de publicar rostros. Ofrecer siempre la opción de no salir o de salir solo con manos. Nunca etiquetar ni nombrar sin consentimiento: es un espacio seguro LGBTI+.",
+    "avoid": [
+      "fotos de stock",
+      "personas identificables sin permiso",
+      "pantallas o datos personales visibles",
+      "filtros que cambien el tono de piel"
+    ]
   }
 }

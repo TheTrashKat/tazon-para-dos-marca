@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1754 1240" width="1754" height="1240">
+  <title>Certificado de taller A4 horizontal · Tazón para Dos</title>
+  <!-- Generado por tools/build.py · Paleta: ink #28203B · coral #EA6077 · sun #F8CB67 · teal #55C4BF · cream #F7F2E8 · paper #FFFDF8 · muted #665F68 -->
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&amp;family=Barlow:wght@500;600;700&amp;display=swap');
+      .cond { font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif; font-weight: 800; }
+      .sans { font-family: 'Barlow', 'Segoe UI', sans-serif; }
+    </style>
+    <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="11" cy="11" r="1.6" fill="#28203B" opacity="0.10"/></pattern>
+    <pattern id="dotsLight" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="11" cy="11" r="1.6" fill="#F7F2E8" opacity="0.07"/></pattern>
+    <symbol id="bowl" viewBox="0 0 120 124"><g stroke="#28203B" stroke-width="7" stroke-linecap="round">
+      <line x1="16" y1="20" x2="29" y2="38"/><line x1="35" y1="12" x2="43" y2="31"/>
+      <line x1="85" y1="12" x2="77" y2="31"/><line x1="104" y1="20" x2="91" y2="38"/>
+    </g>
+    <g fill="#28203B">
+      <circle cx="60" cy="54" r="20"/><circle cx="42" cy="61" r="16"/><circle cx="78" cy="61" r="16"/>
+      <circle cx="30" cy="70" r="11"/><circle cx="90" cy="70" r="11"/>
+      <rect x="20" y="64" width="80" height="12"/>
+      <path d="M14,80 H106 C106,101 92,112 75,112 H45 C28,112 14,101 14,80 Z"/>
+      <rect x="45" y="116" width="30" height="7" rx="3.5"/>
+    </g>
+    <g fill="#F7F2E8">
+      <rect x="44" y="85" width="6" height="13" rx="3"/><rect x="70" y="85" width="6" height="13" rx="3"/>
+      <path d="M53,101 H67 A7,7 0 0 1 53,101 Z"/>
+    </g></symbol>
+    <symbol id="sparkle" viewBox="-50 -50 100 100"><path d="M0,-50 C6,-10 10,-6 50,0 C10,6 6,10 0,50 C-6,10 -10,6 -50,0 C-10,-6 -6,-10 0,-50 Z"/></symbol>
+    <symbol id="meeple" viewBox="0 0 100 100"><path d="M50,4 C62,4 70,13 70,24 C70,31 67,36 63,40 L94,52 C99,54 99,62 94,64 L72,70 L84,96 H58 L50,78 L42,96 H16 L28,70 L6,64 C1,62 1,54 6,52 L37,40 C33,36 30,31 30,24 C30,13 38,4 50,4 Z"/></symbol>
+  </defs>
+
+  <rect width="1754" height="1240" fill="#F7F2E8"/><rect width="1754" height="1240" fill="url(#dots)"/>
+  <rect x="40" y="40" width="1674" height="1160" rx="40" fill="none" stroke="#28203B" stroke-width="8"/>
+  <path d="M40,80 a40,40 0 0 1 40,-40 H360 L180,1200 H80 a40,40 0 0 1 -40,-40 Z" fill="#55C4BF"/>
+  <path d="M360,40 H410 L230,1200 H180 Z" fill="#F8CB67"/>
+  <circle cx="200" cy="230" r="110" fill="#F7F2E8" stroke="#28203B" stroke-width="7"/>
+  <use href="#bowl" x="130" y="158" width="140" height="145"/>
+  <g transform="translate(170,1000) rotate(-12)" stroke="#28203B" stroke-width="4.4" stroke-linejoin="round">
+    <path d="M0.0,-90.0 L77.9,-45.0 L77.9,45.0 L0.0,90.0 L-77.9,45.0 L-77.9,-45.0 Z" fill="#F8CB67"/>
+    <path d="M0.0,-47.2 L41.4,26.1 L-41.4,26.1 Z" fill="#FBD98A"/>
+    <path d="M0.0,-90.0 L0.0,-47.2 M0.0,-47.2 L77.9,-45.0 M0.0,-47.2 L-77.9,-45.0 M41.4,26.1 L77.9,-45.0 M41.4,26.1 L77.9,45.0 M41.4,26.1 L0.0,90.0 M-41.4,26.1 L-77.9,-45.0 M-41.4,26.1 L-77.9,45.0 M-41.4,26.1 L0.0,90.0" fill="none"/><text x="0" y="16.2" text-anchor="middle" class="cond" font-size="41.4" fill="#28203B" stroke="none">20</text>
+  </g>
+  <use href="#sparkle" x="1565.0" y="125.0" width="70" height="70" fill="#EA6077"/>
+  <use href="#sparkle" x="1502.0" y="242.0" width="36" height="36" fill="#F8CB67"/>
+  <rect x="520" y="150" width="420" height="64" rx="32.0" fill="#28203B"/><text x="730.0" y="191.36" text-anchor="middle" class="sans" font-weight="700" font-size="26" fill="#F7F2E8" letter-spacing="2">TAZÓN PARA DOS</text>
+  <text x="515" y="360" class="cond" font-size="150" fill="#28203B">CERTIFICADO</text>
+  <text x="520" y="440" class="cond" font-size="80" fill="#EA6077">DE PARTICIPACIÓN</text>
+  <text x="520" y="540" class="sans" font-weight="600" font-size="34" fill="#28203B">Se otorga a</text>
+  <text x="520" y="660" class="cond" font-size="110" fill="#28203B">[NOMBRE COMPLETO]</text>
+  <line x1="520" y1="690" x2="1600" y2="690" stroke="#28203B" stroke-width="4"/>
+  <text class="sans" font-weight="600" font-size="34" fill="#28203B">
+    <tspan x="520" y="770">por su participación en el taller</tspan>
+    <tspan x="520" y="825" font-weight="700">[NOMBRE DEL TALLER]</tspan>
+  </text>
+  <text x="520" y="900" class="sans" font-weight="600" font-size="28" fill="#665F68">Engativá, Bogotá · [FECHA]</text>
+  <line x1="520" y1="1080" x2="960" y2="1080" stroke="#28203B" stroke-width="3"/>
+  <line x1="1120" y1="1080" x2="1560" y2="1080" stroke="#28203B" stroke-width="3"/>
+  <text x="740" y="1120" text-anchor="middle" class="sans" font-weight="700" font-size="24" fill="#28203B" letter-spacing="3">TAZÓN PARA DOS</text>
+  <text x="1340" y="1120" text-anchor="middle" class="sans" font-weight="700" font-size="24" fill="#28203B" letter-spacing="3">PERSONA FACILITADORA</text>
+
+</svg>

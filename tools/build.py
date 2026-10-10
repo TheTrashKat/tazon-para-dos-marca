@@ -293,6 +293,8 @@ ICONS = {
     "votacion": ("Votación abierta", '<path d="M10 32h44v22H10Z"/><path d="M22 32V10h20v22"/><path d="m27 20 4 4 7-8M24 43h16"/>'),
     "destello": ("Destello", '<path d="M32 6C34 26 38 30 58 32 38 34 34 38 32 58 30 38 26 34 6 32 26 30 30 26 32 6Z"/>'),
     "reloj": ("Horario", '<circle cx="32" cy="32" r="24"/><path d="M32 18v14l10 6"/>'),
+    "web": ("Sitio web", '<circle cx="32" cy="32" r="24"/><path d="M8 32h48M32 8c9 8 9 40 0 48M32 8c-9 8-9 40 0 48"/>'),
+    "camara": ("Redes sociales", '<rect x="10" y="10" width="44" height="44" rx="12"/><circle cx="32" cy="32" r="10"/><circle cx="45" cy="19" r="1.5" fill="currentColor"/>'),
     "tazon": ("Tazón",'<path d="M8 32h48c0 13-10 21-24 21S8 45 8 32Z"/><path d="M24 59h16M14 30c0-8 5-13 11-13 2-4 12-4 14 0 6 0 11 5 11 13M17 6l4 6M47 6l-4 6M27 38v5M37 38v5"/>'),
 }
 
@@ -744,6 +746,165 @@ def build_social():
     episodio("plantilla", "MENÚ · MESA PRINCIPAL", "[Título del episodio]", CORAL, TEAL)
 
 
+# ------------------------------------------------------------------ papelería, espacio y merch
+LONA = "#E9E0D6"  # color de tela cruda (del CSS del sitio), solo para mockups
+CONTACTO = [("web", "tazon-para-dos.online"), ("camara", "@tazonparados"),
+            ("ubicacion", f'{LOC["address"]} · {LOC["locality"]}'), ("reloj", "Sábados · 11:00 a.m. – 9:00 p.m.")]
+
+
+def field(x, y, w, h, label, lines=0, size=20):
+    """Caja de formulario con etiqueta en mayúscula y renglones opcionales."""
+    out = [f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="16" fill="#FFFFFF" stroke="{INK}" stroke-width="4"/>',
+           f'<text x="{x+22}" y="{y+size+16}" class="sans" font-weight="700" font-size="{size}" fill="{INK}" letter-spacing="3">{label}</text>']
+    if lines:
+        top = y + size + 40
+        step = (h - (size + 40) - 16) / lines
+        for k in range(1, lines + 1):
+            ly = top + step * k - step / 2 + 6
+            out.append(f'<line x1="{x+22}" y1="{ly:.0f}" x2="{x+w-22}" y2="{ly:.0f}" stroke="{INK}" stroke-width="2" opacity="0.18"/>')
+    return "\n  ".join(out)
+
+
+def build_print():
+    # --- Tarjeta de presentación 85 x 55 mm (12 px/mm) ---
+    frente = f'''
+  {background(1020, 660, TEAL)}
+  {corner(1020, SUN, CORAL, 150)}
+  <circle cx="510" cy="250" r="128" fill="{CREAM}" stroke="{INK}" stroke-width="8"/>
+  <use href="#bowl" x="428" y="168" width="164" height="170"/>
+  <text x="510" y="478" text-anchor="middle" class="cond" font-size="92" fill="{INK}" letter-spacing="1">TAZÓN PARA DOS</text>
+  <text x="510" y="528" text-anchor="middle" class="sans" font-weight="600" font-size="22" fill="{INK}" letter-spacing="9">ESPACIO CULTURAL</text>
+  {sparkle(130, 130, 50, SUN)}
+  {sparkle(880, 520, 36, CREAM)}
+'''
+    write("aplicaciones/tarjeta_frente.svg", svg(1020, 660, "Tarjeta de presentación (frente) 85x55 mm", frente))
+    rows = "".join(icon(ic, 96, 250 + k * 78, 48) +
+                   f'<text x="140" y="{262 + k*78}" class="sans" font-weight="700" font-size="32" fill="{INK}">{t}</text>'
+                   for k, (ic, t) in enumerate(CONTACTO))
+    reverso = f'''
+  {background(1020, 660, CREAM)}
+  <text x="64" y="140" class="cond" font-size="72" fill="{INK}">JUGAR TAMBIÉN ES ESCUCHAR.</text>
+  {rows}
+  <path d="M0,600 L1020,560 L1020,660 L0,660 Z" fill="{CORAL}"/>
+  <path d="M0,590 L1020,550 L1020,560 L0,600 Z" fill="{SUN}"/>
+  {d20(890, 330, 90, rot=12)}
+'''
+    write("aplicaciones/tarjeta_reverso.svg", svg(1020, 660, "Tarjeta de presentación (reverso) 85x55 mm", reverso))
+
+    # --- Letrero de horario A4 vertical (1240 x 1754 ≈ 150 dpi) ---
+    letrero = f'''
+  {background(1240, 1754, TEAL)}
+  {corner(1240, SUN, CORAL, 240)}
+  {header(130, 130, 1.4, INK)}
+  {pill(76, 270, 330, 70, INK, CREAM, "ABRIMOS", 30)}
+  <text x="70" y="540" class="cond" font-size="230" fill="{INK}">LOS SÁBADOS</text>
+  {headline_shadow(70, 730, "11 A.M. – 9 P.M.", 190, CREAM, off=12)}
+  <path d="M0,840 L1240,770 L1240,815 L0,885 Z" fill="{CREAM}"/>
+  <path d="M0,885 L1240,815 L1240,1340 L0,1400 Z" fill="{CORAL}"/>
+  <path d="M0,885 L1240,815 L1240,1340 L0,1400 Z" fill="url(#dots)"/>
+  <ellipse cx="620" cy="1300" rx="360" ry="26" fill="{INK}" opacity="0.22"/>
+  {card(330, 1110, 1.1, rot=-14)}
+  {d20(620, 1090, 200, rot=-8)}
+  <use href="#meeple" x="840" y="1060" width="170" height="170" fill="{INK}"/>
+  {d6(990, 1250, 1.0)}
+  {sparkle(160, 920, 56, INK)}
+  {sparkle(1060, 900, 44, CREAM)}
+  <path d="M0,1400 L1240,1340 L1240,1754 L0,1754 Z" fill="{INK}"/>
+  <text x="620" y="1500" text-anchor="middle" class="sans" font-weight="700" font-size="36" fill="{CREAM}" letter-spacing="6">ROL · JUEGOS DE MESA · PODCAST</text>
+  <text x="620" y="1570" text-anchor="middle" class="cond" font-size="60" fill="{SUN}">UN ESPACIO SEGURO PARA CREAR EN COMUNIDAD.</text>
+  <text x="620" y="1660" text-anchor="middle" class="sans" font-weight="600" font-size="32" fill="{CREAM}">{LOC["address"]} · {LOC["locality"]} · @tazonparados</text>
+'''
+    write("aplicaciones/letrero_horario_a4.svg", svg(1240, 1754, "Letrero de horario A4", letrero))
+
+    # --- Ficha de personaje A4 (pensada para imprimir en blanco y negro también) ---
+    ficha = f'''
+  <rect width="1240" height="1754" fill="{C["paper"]}"/>
+  <rect width="1240" height="230" fill="{TEAL}"/><rect width="1240" height="230" fill="url(#dots)"/>
+  {corner(1240, SUN, CORAL, 150)}
+  <circle cx="140" cy="115" r="72" fill="{CREAM}" stroke="{INK}" stroke-width="6"/>
+  <use href="#bowl" x="95" y="68" width="90" height="93"/>
+  <text x="240" y="125" class="cond" font-size="96" fill="{INK}">FICHA DE PERSONAJE</text>
+  <text x="243" y="168" class="sans" font-weight="600" font-size="22" fill="{INK}" letter-spacing="6">TAZÓN PARA DOS · LA MESA ES UN TERRITORIO</text>
+  {field(60, 270, 740, 110, "NOMBRE DEL PERSONAJE")}
+  {field(820, 270, 360, 110, "PRONOMBRES")}
+  {field(60, 400, 560, 110, "PERSONA QUE JUEGA")}
+  {field(640, 400, 540, 110, "CONCEPTO / ROL")}
+  {field(60, 530, 1120, 330, "¿QUIÉN ES? · SU HISTORIA", lines=5)}
+  {field(60, 880, 550, 400, "RASGOS Y HABILIDADES", lines=7)}
+  {field(630, 880, 550, 400, "INVENTARIO", lines=7)}
+  {field(60, 1300, 550, 300, "VÍNCULOS", lines=5)}
+  {field(630, 1300, 550, 300, "NOTAS DE LA MESA", lines=5)}
+  {d20(1150, 1660, 46, rot=12)}
+  <text x="60" y="1690" class="sans" font-weight="700" font-size="22" fill="{INK}" letter-spacing="3">tazon-para-dos.online · @tazonparados</text>
+'''
+    write("aplicaciones/ficha_personaje_a4.svg", svg(1240, 1754, "Ficha de personaje A4", ficha))
+
+    # --- Certificado de taller A4 horizontal ---
+    cert = f'''
+  {background(1754, 1240, CREAM)}
+  <rect x="40" y="40" width="1674" height="1160" rx="40" fill="none" stroke="{INK}" stroke-width="8"/>
+  <path d="M40,80 a40,40 0 0 1 40,-40 H360 L180,1200 H80 a40,40 0 0 1 -40,-40 Z" fill="{TEAL}"/>
+  <path d="M360,40 H410 L230,1200 H180 Z" fill="{SUN}"/>
+  <circle cx="200" cy="230" r="110" fill="{CREAM}" stroke="{INK}" stroke-width="7"/>
+  <use href="#bowl" x="130" y="158" width="140" height="145"/>
+  {d20(170, 1000, 90, rot=-12)}
+  {sparkle(1600, 160, 70, CORAL)}
+  {sparkle(1520, 260, 36, SUN)}
+  {pill(520, 150, 420, 64, INK, CREAM, "TAZÓN PARA DOS", 26)}
+  <text x="515" y="360" class="cond" font-size="150" fill="{INK}">CERTIFICADO</text>
+  <text x="520" y="440" class="cond" font-size="80" fill="{CORAL}">DE PARTICIPACIÓN</text>
+  <text x="520" y="540" class="sans" font-weight="600" font-size="34" fill="{INK}">Se otorga a</text>
+  <text x="520" y="660" class="cond" font-size="110" fill="{INK}">[NOMBRE COMPLETO]</text>
+  <line x1="520" y1="690" x2="1600" y2="690" stroke="{INK}" stroke-width="4"/>
+  <text class="sans" font-weight="600" font-size="34" fill="{INK}">
+    <tspan x="520" y="770">por su participación en el taller</tspan>
+    <tspan x="520" y="825" font-weight="700">[NOMBRE DEL TALLER]</tspan>
+  </text>
+  <text x="520" y="900" class="sans" font-weight="600" font-size="28" fill="{C["muted"]}">Engativá, Bogotá · [FECHA]</text>
+  <line x1="520" y1="1080" x2="960" y2="1080" stroke="{INK}" stroke-width="3"/>
+  <line x1="1120" y1="1080" x2="1560" y2="1080" stroke="{INK}" stroke-width="3"/>
+  <text x="740" y="1120" text-anchor="middle" class="sans" font-weight="700" font-size="24" fill="{INK}" letter-spacing="3">TAZÓN PARA DOS</text>
+  <text x="1340" y="1120" text-anchor="middle" class="sans" font-weight="700" font-size="24" fill="{INK}" letter-spacing="3">PERSONA FACILITADORA</text>
+'''
+    write("aplicaciones/certificado_taller.svg", svg(1754, 1240, "Certificado de taller A4 horizontal", cert))
+
+    # --- Mockups de merch ---
+    sello_mini = (lambda x, y, s: f'<circle cx="{x}" cy="{y}" r="{60*s}" fill="{CREAM}" stroke="{INK}" stroke-width="{5*s}"/>'
+                  f'<use href="#bowl" x="{x-40*s}" y="{y-42*s}" width="{80*s}" height="{83*s}"/>')
+    merch = f'''
+  {background(1620, 1080, CREAM)}
+  <text x="60" y="110" class="cond" font-size="72" fill="{INK}">MERCH · PROPUESTAS</text>
+  <rect x="60" y="170" width="480" height="760" rx="36" fill="{TEAL}"/><rect x="570" y="170" width="480" height="760" rx="36" fill="{CORAL}"/><rect x="1080" y="170" width="480" height="760" rx="36" fill="{SUN}"/>
+  <!-- tazón / taza -->
+  <ellipse cx="300" cy="790" rx="170" ry="22" fill="{INK}" opacity="0.22"/>
+  <path d="M410,470 a70,70 0 0 1 0,160" fill="none" stroke="{INK}" stroke-width="22"/>
+  <path d="M410,470 a70,70 0 0 1 0,160" fill="none" stroke="{CREAM}" stroke-width="10"/>
+  <path d="M150,400 H430 V720 a40,40 0 0 1 -40,40 H190 a40,40 0 0 1 -40,-40 Z" fill="{CREAM}" stroke="{INK}" stroke-width="7"/>
+  <ellipse cx="290" cy="400" rx="140" ry="26" fill="#FFFFFF" stroke="{INK}" stroke-width="7"/>
+  <use href="#bowl" x="215" y="500" width="150" height="155"/>
+  <!-- bolsa de tela -->
+  <ellipse cx="810" cy="860" rx="190" ry="20" fill="{INK}" opacity="0.22"/>
+  <path d="M740,420 C740,280 880,280 880,420" fill="none" stroke="{INK}" stroke-width="18"/>
+  <path d="M740,420 C740,280 880,280 880,420" fill="none" stroke="{LONA}" stroke-width="8"/>
+  <path d="M640,410 H980 L1000,850 H620 Z" fill="{LONA}" stroke="{INK}" stroke-width="7" stroke-linejoin="round"/>
+  {sello_mini(810, 560, 1.3)}
+  <text x="810" y="720" text-anchor="middle" class="cond" font-size="58" fill="{INK}">TAZÓN PARA DOS</text>
+  <text x="810" y="760" text-anchor="middle" class="sans" font-weight="600" font-size="16" fill="{INK}" letter-spacing="6">ESPACIO CULTURAL</text>
+  <!-- dados -->
+  <ellipse cx="1320" cy="800" rx="200" ry="22" fill="{INK}" opacity="0.22"/>
+  {d20(1250, 560, 130, rot=-10)}
+  {d20(1430, 700, 90, rot=14, fill=TEAL, inner=TEAL_L)}
+  {d6(1180, 760, 0.9)}
+  {"".join(f'<text x="{x}" y="1000" text-anchor="middle" class="sans" font-weight="700" font-size="26" fill="{INK}" letter-spacing="4">{t}</text>' for x, t in [(300, "TAZA / TAZÓN"), (810, "BOLSA DE TELA"), (1320, "SET DE DADOS")])}
+'''
+    write("aplicaciones/merch_mockups.svg", svg(1620, 1080, "Mockups de merch (propuestas)", merch))
+
+    # --- Favicon ---
+    write("assets/logo/favicon.svg",
+          f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"><title>Favicon Tazón para Dos</title>'
+          f'<circle cx="32" cy="32" r="31" fill="{TEAL}"/><g transform="translate(9,9) scale(0.383)">{bowl_shapes()}</g></svg>\n')
+
+
 if __name__ == "__main__":
     print("Construyendo kit de marca en", ROOT)
     build_css()
@@ -754,4 +915,5 @@ if __name__ == "__main__":
     normalize_static()
     build_stickers()
     build_social()
+    build_print()
     print("Listo. Ejecuta tools/render.ps1 para exportar PNG.")

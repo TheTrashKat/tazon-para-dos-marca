@@ -68,7 +68,13 @@ Instructions for AI agents (Claude, Codex, Cursor, etc.) that create or edit vis
 | Instagram highlight covers | `destacada_*` | `build_social()` loop: (slug, label, bg, icon) |
 | Website hero | `banner_web` | static |
 | Printed roll-up 80×180 cm | `pancarta_80x180` | static |
-| Stickers / merch | `aplicaciones/stickers` | `build_stickers()` |
+| Stickers / merch | `aplicaciones/stickers`, `aplicaciones/merch_mockups` | `build_stickers()`, `build_print()` |
+| Business card 85×55 mm | `aplicaciones/tarjeta_frente`, `tarjeta_reverso` | `build_print()` |
+| Door sign with opening hours (A4) | `aplicaciones/letrero_horario_a4` | `build_print()` |
+| Character sheet (A4, any RPG system) | `aplicaciones/ficha_personaje_a4` | `build_print()` + `field()` |
+| Workshop certificate (A4 landscape) | `aplicaciones/certificado_taller` | `build_print()` |
+| Email signature | `aplicaciones/firma_correo.html` | hand-written HTML (tables + hosted PNG, no SVG) |
+| Print-ready PDF / logo PNG / favicon | `impresion/*.pdf`, `assets/logo/png/`, `favicon.ico` | `python -I tools/export.py` (add new print pieces to `PRINT`) |
 
 Useful helpers in `tools/build.py`:
 - `icon(name, cx, cy, size)` draws a line icon from `ICONS`.
@@ -90,9 +96,15 @@ When writing podcast copy, use the food vocabulary in `podcast.vocabulary` ("cad
 1. Pick a format from `brand.json → formats`, then copy the closest template from `plantillas/`. Alternatively, add a new function in `tools/build.py` that reuses the primitives.
 2. Write copy from `brand.json` (taglines, offerings, process, ctas). Only write new copy if it follows `voice`.
 3. Build: `python -I tools/build.py`
-4. Render PNGs (Windows): `powershell -ExecutionPolicy Bypass -File tools/render.ps1 [-Only <name>]`. The script uses Edge or Chrome headless.
+4. Render PNGs (Windows). For print pieces, also run `python -I tools/export.py` to produce PDFs at real physical size with embedded fonts: `powershell -ExecutionPolicy Bypass -File tools/render.ps1 [-Only <name>]`. The script uses Edge or Chrome headless.
 5. **Look at the PNG** and check for overlaps, clipped text (Barlow Condensed is narrow, so fallback fonts overflow), and contrast.
 6. Add the new files to `index.html` and, if they introduce a new format, to `brand.json → formats`.
+
+## Photography
+
+Follow `brand.json → photography`. Photos should show real people playing, hands on the table, dice, cards and microphones, in warm natural light. Put them in rounded frames with an ink outline.
+
+**Consent is mandatory.** This is an LGBTI+ safe space, so never publish identifiable faces or names without explicit permission. Offer a hands-only option.
 
 ## Gotchas
 
