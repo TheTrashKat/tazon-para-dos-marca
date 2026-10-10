@@ -1,6 +1,6 @@
 {
   "$description": "Perfil de marca legible por máquina. Úsalo junto a tokens.json para generar piezas nuevas. Textos tomados de tazon-para-dos.online (oct 2026) salvo los marcados como 'propuesta'.",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "updated": "2026-10-10",
   "identity": {
     "name": "Tazón para Dos",
@@ -582,7 +582,14 @@
       "foto_cuadrado",
       "foto_historia",
       "foto_cita",
-      "collage"
+      "collage",
+      "foto_polaroid",
+      "foto_comparada",
+      "foto_carrusel",
+      "collage_4",
+      "foto_evento",
+      "foto_pregunta",
+      "cuenta_regresiva"
     ],
     "rule_color": "Nunca poner filtros o capas de color sobre la foto: el color de marca va alrededor (marcos, bloques, stickers)."
   },
@@ -617,7 +624,17 @@
       "guia_zonas",
       "marco_video",
       "texto_pantalla_h",
-      "overlay_video_h"
+      "overlay_video_h",
+      "foto_polaroid",
+      "foto_comparada",
+      "foto_carrusel",
+      "collage_4",
+      "foto_evento",
+      "foto_pregunta",
+      "cuenta_regresiva",
+      "separador_v",
+      "separador_h",
+      "audiograma"
     ],
     "job_format": {
       "template": "<id>",
@@ -746,6 +763,22 @@
               "nombre": "",
               "rol": ""
             }
+          },
+          {
+            "foto": "ruta a jpg/png",
+            "duracion": "s",
+            "texto": "opcional",
+            "nota": "foto fija con paneo lento, sin audio"
+          },
+          {
+            "separador": {
+              "numero": "01",
+              "titulo": "",
+              "subtitulo": "",
+              "receta": "general"
+            },
+            "duracion": "s",
+            "nota": "tarjeta de capítulo (separador_v / separador_h)"
           }
         ]
       },

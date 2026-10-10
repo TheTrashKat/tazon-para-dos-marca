@@ -366,7 +366,7 @@
       { key: "texto", label: "Texto", type: "textarea", default: "Personas que se reúnen para imaginar juntas." }, f.usuario],
     render(v) {
       const r = RECIPES[v.receta];
-      const p = D.paragraph(76, 1610, v.texto, 34, 920, r.ink, { maxLines: 2, lineHeight: 42 });
+      const p = D.paragraph(76, 1615, v.texto, 40, 920, r.ink, { maxLines: 2, lineHeight: 50 });
       return `${D.background(1080, 1920, r.bg, r.light)}
         ${D.photo(0, 0, 1080, 1260, v.foto, { focus: v.enfoque, stroke: false, path: "M0,0 H1080 V1180 L0,1262 Z" })}
         <path d="M0,1262 L1080,1180 L1080,1222 L0,1304 Z" fill="${CREAM}"/><path d="M0,1262 L1080,1180" stroke="${INK}" stroke-width="6"/>
@@ -598,6 +598,240 @@
     render(v) {
       const seal = v.sello ? `<circle cx="1800" cy="120" r="66" fill="${CREAM}" stroke="${INK}" stroke-width="5"/><use href="#bowl" x="1757" y="75" width="86" height="89"/>` : "";
       return `${seal}${v.etiqueta ? D.pillAuto(64, 80, 60, INK, CREAM, v.etiqueta, 24) : ""}${D.pillAuto(1856, 960, 60, CREAM, INK, v.usuario, 26, { anchor: "end", stroke: INK })}`;
+    },
+  });
+
+  // ============================================================ FOTOS (más formatos)
+  // Líneas de titular que caben en maxW, bajando el tamaño hasta maxLines
+  function fitLines(text, size, maxW, maxLines, min = 48) {
+    let lines;
+    for (;;) { lines = D.wrapBalanced(String(text).toUpperCase(), size, maxW, "cond", 800); if (lines.length <= maxLines || size <= min) break; size -= 4; }
+    return { lines: lines.slice(0, maxLines), size };
+  }
+
+  add({
+    id: "foto_polaroid", name: "Fotos instantáneas 4:5", group: "Fotos", w: 1080, h: 1350,
+    fields: [foto("foto", "Foto principal"), enfoque(), { key: "pie", label: "Pie de la foto principal", type: "text", default: "la primera tirada de la noche" },
+      foto("foto2", "Segunda foto (opcional)"), enfoque("enfoque2"), f.receta,
+      { key: "titulo", label: "Título", type: "text", default: "RECUERDOS DE LA MESA." }, f.usuario],
+    render(v) {
+      const r = RECIPES[v.receta];
+      const two = !!v.foto2;
+      const pola = (cx, cy, rot, w, href, focus, cap, tape) => {
+        const pw = w - 80, h = pw + (cap !== null ? 200 : 80);
+        const x = -w / 2, y = -h / 2;
+        const cs = cap ? D.fit(cap, 44, pw, "sans", 600) : 0;
+        return `<g transform="translate(${cx},${cy}) rotate(${rot})">
+          <rect x="${x + 14}" y="${y + 14}" width="${w}" height="${h}" rx="10" fill="${INK}"/>
+          <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="${CREAM}" stroke="${INK}" stroke-width="7"/>
+          ${D.photo(x + 40, y + 40, pw, pw, href, { focus, rx: 4, strokeWidth: 5 })}
+          ${cap ? `<text x="0" y="${y + pw + 135}" text-anchor="middle" class="sans" font-weight="600" font-style="italic" font-size="${cs}" fill="${INK}">${D.esc(cap)}</text>` : ""}
+          <rect x="-80" y="${y - 28}" width="160" height="56" fill="${tape}" stroke="${INK}" stroke-width="4" transform="rotate(${-rot * 0.8 + 3} 0 ${y})"/></g>`;
+      };
+      const t = fitLines(v.titulo, 96, 950, 1, 56);
+      return `${D.background(1080, 1350, r.bg, r.light)}${D.corner(1080, ...r.corner)}${D.header(110, 96, 1, r.ink)}
+        ${two ? pola(820, 470, 8, 380, v.foto2, v.enfoque2, null, r.accent) : D.sparkle(930, 330, 80, r.accent) + D.sparkle(1000, 430, 36, CREAM)}
+        ${pola(two ? 440 : 520, 690, -4, 720, v.foto, v.enfoque, v.pie, SUN)}
+        ${D.headline(64, 1240, t.lines[0], t.size, r.ink)}
+        <text x="1016" y="1305" text-anchor="end" class="sans" font-weight="700" font-size="28" fill="${r.ink}">${D.esc(v.usuario)}</text>`;
+    },
+  });
+
+  add({
+    id: "foto_comparada", name: "Dos fotos comparadas 4:5", group: "Fotos", w: 1080, h: 1350,
+    fields: [foto("foto1", "Foto izquierda"), enfoque("enfoque1"), { key: "etiqueta1", label: "Etiqueta izquierda", type: "text", default: "PERSONAJE" },
+      foto("foto2", "Foto derecha"), enfoque("enfoque2"), { key: "etiqueta2", label: "Etiqueta derecha", type: "text", default: "JUGADOR" },
+      { key: "insignia", label: "Insignia central", type: "select", options: [["flecha", "Flecha"], ["vs", "VS"], ["ninguna", "Ninguna"]], default: "flecha" },
+      f.receta, { key: "titulo", label: "Título", type: "text", default: "DETRÁS DE CADA PERSONAJE." },
+      { key: "texto", label: "Texto (1 línea)", type: "text", default: "Hay alguien que lo imaginó." }, f.usuario],
+    render(v) {
+      const r = RECIPES[v.receta];
+      const L = "M64,170 H600 L480,1110 H64 Z", R = "M624,170 H1016 V1110 H504 Z";
+      const badge = v.insignia === "vs"
+        ? `<circle cx="562" cy="650" r="74" fill="${SUN}" stroke="${INK}" stroke-width="7"/><text x="562" y="680" text-anchor="middle" class="cond" font-size="84" fill="${INK}">VS</text>`
+        : v.insignia === "flecha"
+          ? `<circle cx="562" cy="650" r="74" fill="${SUN}" stroke="${INK}" stroke-width="7"/><path d="M522,650 H600 M574,620 L604,650 L574,680" fill="none" stroke="${INK}" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>`
+          : "";
+      const t = fitLines(v.titulo, 90, 950, 1, 56);
+      return `${D.background(1080, 1350, r.bg, r.light)}${D.corner(1080, ...r.corner, 150)}${D.header(110, 96, 1, r.ink)}
+        <path d="M76,182 H1028 V1122 H76 Z" fill="${INK}"/>
+        ${D.photo(64, 170, 536, 940, v.foto1, { focus: v.enfoque1, path: L })}
+        ${D.photo(504, 170, 512, 940, v.foto2, { focus: v.enfoque2, path: R })}
+        ${D.pillAuto(96, 200, 56, INK, CREAM, v.etiqueta1, 22)}${D.pillAuto(984, 1030, 56, CREAM, INK, v.etiqueta2, 22, { anchor: "end", stroke: INK })}
+        ${badge}
+        ${D.headline(64, 1225, t.lines[0], t.size, r.ink)}
+        <text x="64" y="1290" class="sans" font-weight="600" font-size="${D.fit(v.texto, 32, 620, "sans", 600)}" fill="${r.ink}">${D.esc(v.texto)}</text>
+        <text x="1016" y="1290" text-anchor="end" class="sans" font-weight="700" font-size="28" fill="${r.ink}">${D.esc(v.usuario)}</text>`;
+    },
+  });
+
+  add({
+    id: "foto_carrusel", name: "Carrusel de fotos (lámina) 4:5", group: "Fotos", w: 1080, h: 1350,
+    fields: [foto(), enfoque(), f.receta, { key: "numero", label: "Número de lámina", type: "number", default: 2 }, { key: "total", label: "Total de láminas", type: "number", default: 5 },
+      { key: "titulo", label: "Título", type: "text", default: "PRIMERO, LA MESA." },
+      { key: "texto", label: "Texto (hasta 2 líneas)", type: "textarea", default: "Llegamos temprano, sacamos los dados y repartimos las fichas de personaje." },
+      { key: "desliza", label: "Mostrar «Desliza»", type: "checkbox", default: true }, f.usuario],
+    render(v) {
+      const r = RECIPES[v.receta];
+      const num = `${Number(v.numero) || 1}/${Number(v.total) || 1}`;
+      const t = fitLines(v.titulo, 84, 800, 1, 52);
+      const p = D.paragraph(64, 1185, v.texto, 32, 950, r.ink, { maxLines: 2, lineHeight: 42 });
+      return `${D.background(1080, 1350, r.bg, r.light)}
+        ${D.photo(0, 0, 1080, 1010, v.foto, { focus: v.enfoque, stroke: false, path: "M0,0 H1080 V940 L0,1010 Z" })}
+        <path d="M0,1010 L1080,940 L1080,980 L0,1050 Z" fill="${CREAM}"/><path d="M0,1010 L1080,940" stroke="${INK}" stroke-width="6"/>
+        ${headerChip(48, 48, 0.85)}
+        <circle cx="${960 + 8}" cy="${960 + 8}" r="76" fill="${INK}"/><circle cx="960" cy="960" r="76" fill="${SUN}" stroke="${INK}" stroke-width="7"/>
+        <text x="960" y="${960 + D.fit(num, 64, 120) * 0.36}" text-anchor="middle" class="cond" font-size="${D.fit(num, 64, 120)}" fill="${INK}">${D.esc(num)}</text>
+        ${D.headline(64, 1125, t.lines[0], t.size, r.ink)}
+        ${p.svg}
+        ${v.desliza ? D.pillAuto(1016, 1250, 60, r.ink === CREAM ? SUN : INK, r.ink === CREAM ? INK : CREAM, "DESLIZA →", 24, { anchor: "end" }) : ""}
+        <text x="64" y="1290" class="sans" font-weight="700" font-size="28" fill="${r.ink}">${D.esc(v.usuario)}</text>`;
+    },
+  });
+
+  add({
+    id: "collage_4", name: "Collage de 4 fotos 1:1", group: "Fotos", w: 1080, h: 1080,
+    fields: [foto("foto1", "Foto 1"), enfoque("enfoque1"), foto("foto2", "Foto 2"), enfoque("enfoque2"), foto("foto3", "Foto 3"), enfoque("enfoque3"), foto("foto4", "Foto 4"), enfoque("enfoque4"),
+      f.receta, f.etiqueta(""), { key: "titulo", label: "Título", type: "text", default: "UN SÁBADO CUALQUIERA." }, f.usuario],
+    render(v) {
+      const r = RECIPES[v.receta];
+      const cells = [[64, 160], [550, 160], [64, 560], [550, 560]];
+      const ph = cells.map(([x, y], i) => D.photo(x, y, 466, 380, v[`foto${i + 1}`], { focus: v[`enfoque${i + 1}`], shadow: true, rx: 22, strokeWidth: 6 })).join("");
+      const t = fitLines(v.titulo, 80, 700, 1, 48);
+      return `${D.background(1080, 1080, r.bg, r.light)}${D.corner(1080, ...r.corner, 150)}${D.header(110, 90, 0.95, r.ink)}
+        ${ph}
+        <circle cx="552" cy="562" r="88" fill="${INK}"/><circle cx="540" cy="550" r="88" fill="${CREAM}" stroke="${INK}" stroke-width="8"/>
+        <use href="#bowl" x="487" y="495" width="106" height="110"/>
+        ${v.etiqueta ? D.pillAuto(92, 186, 50, INK, CREAM, v.etiqueta, 20) : ""}
+        ${D.headline(64, 1030, t.lines[0], t.size, r.ink)}
+        <text x="1016" y="1030" text-anchor="end" class="sans" font-weight="700" font-size="26" fill="${r.ink}">${D.esc(v.usuario)}</text>`;
+    },
+  });
+
+  add({
+    id: "foto_evento", name: "Foto + datos del evento 4:5", group: "Fotos", w: 1080, h: 1350,
+    fields: [foto(), enfoque(), f.receta, f.etiqueta("ESTE SÁBADO"),
+      { key: "dia", label: "Día (número)", type: "text", default: "18" }, { key: "mes", label: "Mes (abreviado)", type: "text", default: "OCT" },
+      { key: "titulo", label: "Título", type: "text", default: "NOCHE DE ROL ABIERTA." },
+      { key: "hora", label: "Hora", type: "text", default: SCHEDULE ? `Sábado · ${SCHEDULE}` : "[HORA]" },
+      { key: "lugar", label: "Lugar", type: "text", default: PLACE },
+      { key: "cta", label: "Botón", type: "text", default: "ESCRÍBENOS PARA RESERVAR" }, f.usuario],
+    render(v) {
+      const r = RECIPES[v.receta];
+      const t = fitLines(v.titulo, 96, 950, 1, 56);
+      const card = D.infoCard(64, 930, 952, [["reloj", v.hora], ["ubicacion", v.lugar]], 30);
+      const date = v.dia ? `<g transform="translate(900,250) rotate(6)">
+          <rect x="-96" y="-90" width="192" height="200" rx="22" fill="${INK}" transform="translate(10,10)"/>
+          <rect x="-96" y="-90" width="192" height="200" rx="22" fill="${SUN}" stroke="${INK}" stroke-width="7"/>
+          <rect x="-96" y="-90" width="192" height="56" rx="22" fill="${CORAL}" stroke="${INK}" stroke-width="7"/><rect x="-92" y="-50" width="184" height="14" fill="${CORAL}"/>
+          <text x="0" y="-48" text-anchor="middle" class="sans" font-weight="700" font-size="${D.fit(v.mes, 30, 160, "sans", 700, 3)}" fill="${INK}" letter-spacing="3">${D.esc(String(v.mes).toUpperCase())}</text>
+          <text x="0" y="88" text-anchor="middle" class="cond" font-size="${D.fit(v.dia, 120, 160)}" fill="${INK}">${D.esc(v.dia)}</text></g>` : "";
+      return `${D.background(1080, 1350, r.bg, r.light)}${D.corner(1080, ...r.corner, 150)}${D.header(110, 96, 1, r.ink)}
+        ${D.photo(64, 170, 952, 600, v.foto, { focus: v.enfoque, shadow: true })}
+        ${v.etiqueta ? D.pillAuto(96, 200, 56, INK, CREAM, v.etiqueta, 22) : ""}
+        ${date}
+        ${D.headline(64, 880, t.lines[0], t.size, r.ink)}
+        ${card.svg}
+        ${v.cta ? D.pillAuto(64, 930 + card.height + 40, 76, r.ink === CREAM ? SUN : INK, r.ink === CREAM ? INK : CREAM, v.cta, 28, { shadow: r.ink !== CREAM }) : ""}
+        <text x="1016" y="1305" text-anchor="end" class="sans" font-weight="700" font-size="28" fill="${r.ink}">${D.esc(v.usuario)}</text>`;
+    },
+  });
+
+  add({
+    id: "foto_pregunta", name: "Historia con pregunta (encuesta) 9:16", group: "Fotos", w: 1080, h: 1920,
+    fields: [foto(), enfoque(), f.receta, f.etiqueta("PREGUNTA DE LA SEMANA"),
+      { key: "pregunta", label: "Pregunta", type: "textarea", default: "¿Qué clase jugarías en tu primera partida?" },
+      { key: "guia", label: "Mostrar recuadro para el sticker de Instagram", type: "checkbox", default: true }, f.usuario],
+    render(v) {
+      const r = RECIPES[v.receta];
+      const q = fitLines(v.pregunta, 104, 940, 3, 60);
+      const qTop = 1040, lh = q.size * 0.95;
+      const qsvg = q.lines.map((l, i) => D.headline(72, Math.round(qTop + q.size * 0.8 + i * lh), l, q.size, i === q.lines.length - 1 ? r.hl : r.ink, i === q.lines.length - 1 ? r.hlShadow : null, 8)).join("");
+      const zy = Math.round(qTop + q.lines.length * lh + 70), zh = Math.max(200, 1560 - zy);
+      return `${D.background(1080, 1920, r.bg, r.light)}${D.corner(1080, ...r.corner, 200)}
+        ${D.photo(0, 0, 1080, 920, v.foto, { focus: v.enfoque, stroke: false, path: "M0,0 H1080 V840 L0,920 Z" })}
+        <path d="M0,920 L1080,840 L1080,880 L0,960 Z" fill="${CREAM}"/><path d="M0,920 L1080,840" stroke="${INK}" stroke-width="6"/>
+        ${headerChip(64, 250)}
+        ${v.etiqueta ? D.pillAuto(72, 970, 56, r.ink === CREAM ? TEAL : INK, r.ink === CREAM ? INK : CREAM, v.etiqueta, 22) : ""}
+        ${qsvg}
+        ${v.guia ? `<rect x="140" y="${zy}" width="800" height="${zh}" rx="36" fill="${CREAM}" fill-opacity="0.35" stroke="${r.ink}" stroke-width="5" stroke-dasharray="20 14"/>
+          <text x="540" y="${zy + zh / 2 + 10}" text-anchor="middle" class="sans" font-weight="700" font-size="26" fill="${r.ink}" letter-spacing="3" opacity="0.8">PON AQUÍ LA ENCUESTA</text>` : ""}
+        ${D.sparkle(990, zy + 30, 70, r.accent)}${D.sparkle(90, zy + zh - 10, 40, CREAM)}
+        ${D.pillAuto(540, 1600, 60, CREAM, INK, v.usuario, 26, { anchor: "middle", stroke: INK })}`;
+    },
+  });
+
+  add({
+    id: "cuenta_regresiva", name: "Cuenta regresiva (historia) 9:16", group: "Fotos", w: 1080, h: 1920,
+    fields: [foto("foto", "Foto (opcional)"), enfoque(), f.receta, { key: "numero", label: "Número", type: "text", default: "3" },
+      { key: "unidad", label: "Unidad", type: "text", default: "DÍAS" }, { key: "evento", label: "Para qué", type: "text", default: "PARA LA NOCHE DE ROL." },
+      { key: "fecha", label: "Fecha", type: "text", default: "SÁBADO 18 DE OCTUBRE" }, f.usuario],
+    render(v) {
+      const r = RECIPES[v.receta];
+      const ns = Math.min(360, D.fit(v.numero, 360, 480));
+      const nw = D.measure(v.numero, "cond", ns);
+      const us = D.fit(String(v.unidad).toUpperCase(), 140, 1016 - (64 + nw + 40));
+      const ev = fitLines(v.evento, 80, 950, 1, 48);
+      const ph = v.foto ? D.photo(64, 400, 952, 560, v.foto, { focus: v.enfoque, shadow: true }) : D.illustration("mixto", 540, 700, 0.85);
+      return `${D.background(1080, 1920, r.bg, r.light)}${D.corner(1080, ...r.corner, 220)}${D.header(110, 320, 1, r.ink)}
+        ${ph}
+        ${D.headline(64, 1110, "FALTAN", 96, r.ink)}
+        ${D.headline(64, 1420, v.numero, ns, r.hl, r.hlShadow, 14)}
+        ${D.headline(64 + nw + 40, 1420, String(v.unidad).toUpperCase(), us, r.ink)}
+        ${D.headline(64, 1520, ev.lines[0], ev.size, r.ink)}
+        ${v.fecha ? D.pillAuto(64, 1560, 70, r.ink === CREAM ? SUN : INK, r.ink === CREAM ? INK : CREAM, v.fecha, 28) : ""}
+        ${D.sparkle(960, 1180, 90, r.accent)}${D.sparkle(880, 1290, 40, CREAM)}
+        <text x="1016" y="1660" text-anchor="end" class="sans" font-weight="700" font-size="30" fill="${r.ink}">${D.esc(v.usuario)}</text>`;
+    },
+  });
+
+  // ============================================================ VIDEO (más formatos)
+  function separador(w, h, v) {
+    const r = RECIPES[v.receta];
+    const H = w < h;
+    const num = String(v.numero || "");
+    const t = fitLines(v.titulo, H ? 150 : 140, H ? 940 : 960, 2, 70);
+    const cx = H ? 540 : 470, cy = H ? 720 : 540, R = H ? 210 : 230;
+    const circle = num ? `<circle cx="${cx + 14}" cy="${cy + 14}" r="${R}" fill="${INK}"/><circle cx="${cx}" cy="${cy}" r="${R}" fill="${SUN}" stroke="${INK}" stroke-width="12"/>
+      <text x="${cx}" y="${cy + D.fit(num, 230, R * 1.5) * 0.36}" text-anchor="middle" class="cond" font-size="${D.fit(num, 230, R * 1.5)}" fill="${INK}">${D.esc(num)}</text>` : "";
+    const lh = t.size * 0.95;
+    const tx = H ? 540 : (num ? 800 : 960), anchor = H || !num ? "middle" : "start";
+    const ty0 = H ? 1120 : 540 - ((t.lines.length - 1) * lh) / 2 + t.size * 0.3 - (v.subtitulo ? 30 : 0);
+    const title = t.lines.map((l, i) => D.headline(tx, Math.round(ty0 + i * lh), l, t.size, i === t.lines.length - 1 ? r.hl : r.ink, i === t.lines.length - 1 ? r.hlShadow : null, 10, anchor)).join("");
+    const sy = Math.round(ty0 + (t.lines.length - 1) * lh + (H ? 90 : 80));
+    const sub = v.subtitulo ? `<text x="${tx}" y="${sy}" text-anchor="${anchor}" class="sans" font-weight="700" font-size="${D.fit(v.subtitulo, 40, H ? 900 : 1000, "sans", 700)}" fill="${r.ink}">${D.esc(v.subtitulo)}</text>` : "";
+    const band = H ? `<path d="M0,1640 L1080,1560 L1080,1600 L0,1680 Z" fill="${CREAM}"/><path d="M0,1680 L1080,1600 V1920 H0 Z" fill="${r.block}"/><path d="M0,1680 L1080,1600 V1920 H0 Z" fill="url(#dots)"/>`
+      : `<path d="M0,1000 L1920,940 L1920,964 L0,1024 Z" fill="${CREAM}"/><path d="M0,1024 L1920,964 V1080 H0 Z" fill="${r.block}"/>`;
+    return `${D.background(w, h, r.bg, r.light)}${D.corner(w, ...r.corner, H ? 260 : 220)}${band}
+      ${circle}${title}${sub}
+      ${D.sparkle(H ? 200 : 140, H ? 420 : 160, 80, r.accent)}${D.sparkle(H ? 900 : 1780, H ? 1000 : 820, 50, CREAM)}`;
+  }
+  const sepFields = [f.receta, { key: "numero", label: "Número (opcional)", type: "text", default: "01" },
+    { key: "titulo", label: "Título", type: "text", default: "LA PARTIDA." }, { key: "subtitulo", label: "Subtítulo (opcional)", type: "text", default: "Donde todo empieza a rodar." }];
+  add({ id: "separador_v", name: "Separador de capítulo 9:16", group: "Video", w: 1080, h: 1920, fields: sepFields, render: (v) => separador(1080, 1920, v) });
+  add({ id: "separador_h", name: "Separador de capítulo 16:9", group: "Video", w: 1920, h: 1080, fields: sepFields, render: (v) => separador(1920, 1080, v) });
+
+  add({
+    id: "audiograma", name: "Clip de podcast (audiograma) 1:1", group: "Video", w: 1080, h: 1080,
+    fields: [foto("foto", "Foto o portada"), enfoque(), { key: "receta", label: "Combinación de color", type: "select", options: RECIPE_OPTS, default: "podcast" },
+      f.etiqueta("PODCAST · EP. 07"), { key: "cita", label: "Frase del clip", type: "textarea", default: "En la mesa aprendimos que cada voz cuenta una parte de la historia." },
+      { key: "episodio", label: "Episodio", type: "text", default: "La taberna del dragón" }, f.usuario],
+    render(v) {
+      const r = RECIPES[v.receta];
+      let size = 58, lines;
+      for (;;) { lines = D.wrap(String(v.cita).toUpperCase(), size, 950, "cond", 800); if (lines.length <= 3 || size <= 36) break; size -= 3; }
+      lines = lines.slice(0, 3);
+      const y0 = 790, lh = size * 1.0;
+      const quote = lines.map((l, i) => `<text x="64" y="${Math.round(y0 + size * 0.8 + i * lh)}" class="cond" font-size="${size}" fill="${r.ink}">${D.esc(l)}</text>`).join("");
+      const ey = Math.round(y0 + size * 0.8 + (lines.length - 1) * lh + 58);
+      return `${D.background(1080, 1080, r.bg, r.light)}${D.corner(1080, ...r.corner, 150)}${D.header(110, 90, 0.95, r.ink)}
+        ${D.photo(64, 160, 952, 470, v.foto, { focus: v.enfoque, shadow: true })}
+        ${v.etiqueta ? D.pillAuto(92, 186, 52, r.ink === CREAM ? SUN : INK, r.ink === CREAM ? INK : CREAM, v.etiqueta, 20) : ""}
+        ${D.playBadge(950, 600, 62)}
+        ${D.waveform(64, 860, 720, 80, r.ink === CREAM ? TEAL : INK)}
+        ${quote}
+        <text x="64" y="${ey}" class="sans" font-weight="700" font-size="${D.fit("— " + v.episodio, 30, 640, "sans", 700)}" fill="${r.ink === CREAM ? SUN : r.ink}">— ${D.esc(v.episodio)}</text>
+        <text x="1016" y="1040" text-anchor="end" class="sans" font-weight="700" font-size="26" fill="${r.ink}">${D.esc(v.usuario)}</text>`;
     },
   });
 

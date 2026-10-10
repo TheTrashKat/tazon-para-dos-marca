@@ -55,7 +55,7 @@ Instructions for AI agents (Claude, Codex, Cursor, etc.) that create or edit vis
 
 ## Editable template editor (preferred for routine posts)
 
-`editor/` is a web editor with 12 editable templates. **For routine content, prefer it over writing new SVG:**
+`editor/` is a web editor with 39 editable templates. **For routine content, prefer it over writing new SVG:**
 - weekly event
 - general post or story
 - call for stories
@@ -125,15 +125,22 @@ When writing podcast copy, use the food vocabulary in `podcast.vocabulary` ("cad
 
 ## Photo & video
 
-**Photos:** use the editor templates `foto_post`, `foto_cuadrado`, `foto_historia`, `foto_cita` and `collage`. Image fields take a local path in `render_editor.py` jobs (relative to the JSON file), and `enfoque` sets the crop focus. Never tint the photo; brand color goes around it.
+**Photos:** use the editor templates:
+- Single photo: `foto_post`, `foto_cuadrado`, `foto_historia`, `foto_cita`, `foto_polaroid`.
+- Several photos: `collage` (3), `collage_4` (4), `foto_comparada` (2, side by side), `foto_carrusel` (one slide per photo, with `numero`/`total`).
+- Photo + call to action: `foto_evento` (date, time, place, button), `foto_pregunta` (story with a box for the Instagram poll sticker), `cuenta_regresiva` (countdown story).
+
+Image fields take a local path in `render_editor.py` jobs (relative to the JSON file), and `enfoque` sets the crop focus. Never tint the photo; brand color goes around it.
 
 **Video kit:** lives in `video/` and is regenerated with `python -I tools/video.py` (needs ffmpeg and the `logotipo-apilado.png` from `tools/export.py`).
 - Intro: 2.5 s. Outro: 4 s.
 - Transparent overlays: `overlay_reel`, `tercio_inferior_h/_v`, `texto_pantalla`, `guia_zonas`. They export with alpha.
+- Chapter cards: `separador_v` / `separador_h`. Podcast clip still: `audiograma`.
 - Covers: `video_portada` and `miniatura`.
 
 **Automatic editing:** to turn raw clips into a branded video, write a *guion* JSON (see `brand.json → video.montaje` and `video/ejemplos/`) and run `python -I tools/montaje.py guion.json`.
 - Formats: `9x16-marco` (horizontal clips framed in a Reel), `9x16` (full-screen vertical) and `16x9`.
+- Segments can be clips (`clip`), still photos with a slow pan (`foto`) or chapter cards (`separador`).
 - Keep segments 2.5–5 s and Reels 15–30 s.
 - One short on-screen text per segment, in brand voice.
 - Inspect frames of the result (for example with `ffmpeg -ss <t> -frames:v 1`) before delivering.

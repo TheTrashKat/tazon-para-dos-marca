@@ -36,6 +36,7 @@ def git(*args, check=True):
 
 
 def say(msg):
+    sys.stdout.reconfigure(encoding="utf-8")
     print(json.dumps({"systemMessage": msg}, ensure_ascii=False))
 
 

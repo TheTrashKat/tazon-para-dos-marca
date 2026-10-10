@@ -16,7 +16,9 @@ Formato del guion:
     { "clip": "ruta/al/video.mp4", "inicio": 2.0, "duracion": 4.0,
       "texto": "Jugamos en comunidad.",          # opcional
       "estilo_texto": "tinta",                   # tinta | sol | crema | turquesa | coral
-      "rotulo": { "nombre": "...", "rol": "..." } }   # opcional: rótulo de nombre (pedir permiso antes)
+      "rotulo": { "nombre": "...", "rol": "..." } },  # opcional: rótulo de nombre (pedir permiso antes)
+    { "foto": "ruta/a/foto.jpg", "duracion": 3.5, "texto": "..." },   # foto fija con paneo suave (sin audio)
+    { "separador": { "numero": "02", "titulo": "LA GRABACIÓN", "receta": "podcast" }, "duracion": 2.5 }   # tarjeta de capítulo
   ]
 }
 Requiere ffmpeg, Edge/Chrome y el kit de video generado (python -I tools/video.py).
@@ -72,6 +74,9 @@ def main():
     jobs = []
     vertical = fmt.startswith("9x16")
     for i, s in enumerate(segs):
+        if s.get("separador") is not None:
+            jobs.append({"template": "separador_v" if vertical else "separador_h", "values": s["separador"], "output": str(work / f"sep_{i}.png")})
+            continue
         if fmt == "9x16-marco":
             jobs.append({"template": "marco_video", "values": {**g.get("marco", {}), "texto": s.get("texto", "")}, "output": str(work / f"capa_{i}.png")})
         elif s.get("texto"):
@@ -89,15 +94,33 @@ def main():
     if g.get("intro", True):
         parts.append(("intro", ROOT / ("video/intro_9x16.mp4" if vertical else "video/intro_16x9.mp4")))
     for i, s in enumerate(segs):
-        clip = pathlib.Path(s["clip"])
-        clip = clip if clip.is_absolute() else base / clip
         dur = float(s.get("duracion", 4))
-        inputs = ["-ss", str(s.get("inicio", 0)), "-t", str(dur), "-i", str(clip)]
+        if s.get("separador") is not None:
+            seg = work / f"seg_{i:02d}.mp4"
+            ff("-loop", "1", "-framerate", "30", "-t", str(dur), "-i", str(work / f"sep_{i}.png"), "-f", "lavfi", "-t", str(dur), "-i", "anullsrc=r=48000:cl=stereo",
+               "-vf", f"scale={W}:{H},setsar=1,fade=t=in:d=0.25,fade=t=out:st={max(0, dur - 0.25)}:d=0.25,format=yuv420p", "-map", "0:v", "-map", "1:a", "-t", str(dur), *ENC, str(seg))
+            parts.append((f"segmento {i + 1}", seg))
+            print(f"  segmento {i + 1}/{len(segs)} listo (separador)")
+            continue
+        still = s.get("foto") is not None
+        if still:   # foto fija: se trata como un clip sin audio, con paneo lento de izquierda a derecha
+            clip = pathlib.Path(s["foto"])
+            clip = clip if clip.is_absolute() else base / clip
+            inputs = ["-loop", "1", "-framerate", "30", "-t", str(dur), "-i", str(clip)]
+        else:
+            clip = pathlib.Path(s["clip"])
+            clip = clip if clip.is_absolute() else base / clip
+            inputs = ["-ss", str(s.get("inicio", 0)), "-t", str(dur), "-i", str(clip)]
+        def cover(w, h):
+            if not still:
+                return f"scale={w}:{h}:force_original_aspect_ratio=increase,crop={w}:{h}"
+            bw, bh = int(w * 1.12) // 2 * 2, int(h * 1.12) // 2 * 2
+            return f"scale={bw}:{bh}:force_original_aspect_ratio=increase,crop={w}:{h}:x='(iw-{w})*t/{dur}':y='(ih-{h})/2'"
         if fmt == "9x16-marco":
-            chain = "[0:v]scale=960:540:force_original_aspect_ratio=increase,crop=960:540,setsar=1,pad=1080:1920:60:650:black[b0]"
+            chain = f"[0:v]{cover(960, 540)},setsar=1,pad=1080:1920:60:650:black[b0]"
             layers = [work / f"capa_{i}.png"]
         else:
-            chain = f"[0:v]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},setsar=1[b0]"
+            chain = f"[0:v]{cover(W, H)},setsar=1[b0]"
             layers = [p for p in (work / "marca.png", work / f"texto_{i}.png") if p.exists()]
         rot = work / f"rotulo_{i}.png"
         idx = 1
@@ -110,7 +133,7 @@ def main():
             chain += f";[{idx}:v]format=rgba,fade=t=in:st=0.4:d=0.3:alpha=1,fade=t=out:st={max(0.8, min(dur, 5) - 0.4)}:d=0.3:alpha=1[r];[b{idx - 1}][r]overlay=0:0[b{idx}]"
             idx += 1
         chain += f";[b{idx - 1}]fps=30,format=yuv420p[v]"
-        if g.get("audio", "original") == "original" and has_audio(clip):
+        if not still and g.get("audio", "original") == "original" and has_audio(clip):
             chain += f";[0:a]afade=t=in:d=0.15,afade=t=out:st={max(0, dur - 0.25)}:d=0.25,aresample=48000,aformat=channel_layouts=stereo[a]"
             amap = ["-map", "[a]"]
         else:

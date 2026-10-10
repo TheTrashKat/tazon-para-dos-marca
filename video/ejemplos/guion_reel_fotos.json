@@ -1,0 +1,39 @@
+{
+  "formato": "9x16-marco",
+  "salida": "salida/reel_fotos.mp4",
+  "intro": false,
+  "cierre": true,
+  "marco": {
+    "titulo": "CRÓNICA DEL SÁBADO",
+    "etiqueta": "SÁBADOS · 11 A.M. – 9 P.M."
+  },
+  "segmentos": [
+    {
+      "separador": {
+        "numero": "01",
+        "titulo": "LA MESA.",
+        "subtitulo": ""
+      },
+      "duracion": 2
+    },
+    {
+      "foto": "../../editor/ejemplos/fotos/tablero.jpg",
+      "duracion": 3.5,
+      "texto": "Llegamos, sacamos los dados."
+    },
+    {
+      "separador": {
+        "numero": "02",
+        "titulo": "EL MICRÓFONO.",
+        "subtitulo": "",
+        "receta": "podcast"
+      },
+      "duracion": 2
+    },
+    {
+      "foto": "../../editor/ejemplos/fotos/grabacion-podcast.jpg",
+      "duracion": 3.5,
+      "texto": "Y la partida se volvió podcast."
+    }
+  ]
+}

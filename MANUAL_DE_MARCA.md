@@ -326,6 +326,10 @@ python -I tools/montaje.py video/ejemplos/guion_reel_marco.json
 
 El script agrega solo la intro, el cierre, la capa de marca y los textos, y conserva el audio original de los clips. Hay ejemplos de guion en `video/ejemplos/`.
 
+Además de clips, un guion puede llevar:
+- **Fotos:** `{ "foto": "foto.jpg", "duracion": 3.5, "texto": "..." }`. La foto se mueve despacio de izquierda a derecha. Sirve para hacer un video solo con fotos de la jornada.
+- **Separadores:** `{ "separador": { "numero": "02", "titulo": "LA GRABACIÓN" }, "duracion": 2.5 }`. Es una tarjeta de capítulo con los colores de marca.
+
 > 🛡️ Si en los clips aparecen personas, y sobre todo **menores de edad**, confirma el permiso antes de publicar.
 
 ### Reglas de video
@@ -392,7 +396,7 @@ El script agrega solo la intro, el cierre, la capa de marca y los textos, y cons
 
 ## 15. Cómo hacer una pieza nueva
 
-> 💡 **La forma más fácil es el [editor de plantillas](https://thetrashkat.github.io/tazon-para-dos-marca/editor/).** Eliges la plantilla, cambias los textos y descargas el PNG. Tiene 29 plantillas: publicaciones, eventos, convocatorias, podcast, carrusel, destacadas, **fotos** y **video**. Más detalles en [`editor/README.md`](editor/README.md).
+> 💡 **La forma más fácil es el [editor de plantillas](https://thetrashkat.github.io/tazon-para-dos-marca/editor/).** Eliges la plantilla, cambias los textos y descargas el PNG. Tiene 39 plantillas: publicaciones, eventos, convocatorias, podcast, carrusel, destacadas, **fotos** y **video**. Más detalles en [`editor/README.md`](editor/README.md).
 
 Para piezas que no estén en el editor:
 

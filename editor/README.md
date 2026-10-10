@@ -44,6 +44,13 @@ Un editor web para hacer publicaciones sin saber diseño. Eliges la plantilla, c
 | `foto_historia` | Foto historia | 1080 × 1920 |
 | `foto_cita` | Foto con cita 4:5 | 1080 × 1350 |
 | `collage` | Collage de 3 fotos | 1080 × 1350 |
+| `foto_polaroid` | Una o dos fotos instantáneas con pie de foto | 1080 × 1350 |
+| `foto_comparada` | Dos fotos comparadas (personaje / jugador, antes / después) | 1080 × 1350 |
+| `foto_carrusel` | Lámina de carrusel con foto, número y «Desliza» | 1080 × 1350 |
+| `collage_4` | Collage de 4 fotos con el sello al centro | 1080 × 1080 |
+| `foto_evento` | Foto con fecha, hora, lugar y botón | 1080 × 1350 |
+| `foto_pregunta` | Historia con pregunta y recuadro para la encuesta de Instagram | 1080 × 1920 |
+| `cuenta_regresiva` | Historia «Faltan 3 días», con foto o ilustración | 1080 × 1920 |
 | `video_portada` | Portada de Reel / video | 1080 × 1920 |
 | `miniatura` | Miniatura de video | 1280 × 720 |
 | `overlay_reel` | Capa de marca para Reel (transparente) | 1080 × 1920 |
@@ -54,6 +61,8 @@ Un editor web para hacer publicaciones sin saber diseño. Eliges la plantilla, c
 | `marco_video` | Marco para video horizontal en Reel (transparente, con ventana 16:9) | 1080 × 1920 |
 | `texto_pantalla_h` | Texto en pantalla 16:9 (transparente) | 1920 × 1080 |
 | `overlay_video_h` | Capa de marca 16:9 (transparente) | 1920 × 1080 |
+| `separador_v` / `separador_h` | Separador de capítulo para videos | 1080 × 1920 / 1920 × 1080 |
+| `audiograma` | Clip de podcast: foto, onda de sonido y frase | 1080 × 1080 |
 
 **Fotos:** pulsa *Elegir foto* y la foto se reduce sola a un máximo de 2400 px. En el JSON para `render_editor.py`, el campo de foto lleva la ruta de la imagen, relativa al archivo JSON. Hay un ejemplo en [`ejemplos/fotos_video.json`](ejemplos/fotos_video.json).
 
