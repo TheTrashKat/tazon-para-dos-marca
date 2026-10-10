@@ -12,7 +12,8 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 BROWSERS = [r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
             r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
             r"C:\Program Files\Google\Chrome\Application\chrome.exe",
-            shutil.which("google-chrome") or "", shutil.which("chromium") or ""]
+            shutil.which("google-chrome") or "", shutil.which("chromium") or "",
+            shutil.which("chromium-browser") or ""]
 BROWSER = next((b for b in BROWSERS if b and pathlib.Path(b).exists()), None)
 PROFILE = pathlib.Path(tempfile.mkdtemp(prefix="tpd-export-"))  # perfil nuevo por ejecución
 

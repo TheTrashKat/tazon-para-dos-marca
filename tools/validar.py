@@ -19,7 +19,7 @@ import functools, http.server, json, pathlib, re, socketserver, subprocess, sys,
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
-from render_editor import BROWSER  # noqa: E402
+from render_editor import BROWSER, browser_command  # noqa: E402
 
 try:
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -46,8 +46,8 @@ def run_checks(timeout=300):
     threading.Thread(target=httpd.serve_forever, daemon=True).start()
     url = f"http://127.0.0.1:{httpd.server_address[1]}/editor/validar.html?enviar=1"
     profile = tempfile.mkdtemp(prefix="tpd-validar-")
-    proc = subprocess.Popen([BROWSER, "--headless=new", "--disable-gpu", f"--user-data-dir={profile}", "--window-size=1400,1000",
-                             "--remote-debugging-port=0", url], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    proc = subprocess.Popen(browser_command(f"--user-data-dir={profile}", "--window-size=1400,1000",
+                             "--remote-debugging-port=0", url), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     try:
         if not done.wait(timeout):
             raise SystemExit("La página de validación no devolvió resultados a tiempo (¿Edge/Chrome disponible?).")
