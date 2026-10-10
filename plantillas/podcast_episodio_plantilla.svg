@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="3000" height="3000">
+  <title>Portada episodio [Título del episodio] · Tazón para Dos</title>
+  <!-- Generado por tools/build.py · Paleta: ink #28203B · coral #EA6077 · sun #F8CB67 · teal #55C4BF · cream #F7F2E8 · paper #FFFDF8 · muted #665F68 -->
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&amp;family=Barlow:wght@500;600;700&amp;display=swap');
+      .cond { font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif; font-weight: 800; }
+      .sans { font-family: 'Barlow', 'Segoe UI', sans-serif; }
+    </style>
+    <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="11" cy="11" r="1.6" fill="#28203B" opacity="0.10"/></pattern>
+    <pattern id="dotsLight" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="11" cy="11" r="1.6" fill="#F7F2E8" opacity="0.07"/></pattern>
+    <symbol id="bowl" viewBox="0 0 120 124"><g stroke="#28203B" stroke-width="7" stroke-linecap="round">
+      <line x1="16" y1="20" x2="29" y2="38"/><line x1="35" y1="12" x2="43" y2="31"/>
+      <line x1="85" y1="12" x2="77" y2="31"/><line x1="104" y1="20" x2="91" y2="38"/>
+    </g>
+    <g fill="#28203B">
+      <circle cx="60" cy="54" r="20"/><circle cx="42" cy="61" r="16"/><circle cx="78" cy="61" r="16"/>
+      <circle cx="30" cy="70" r="11"/><circle cx="90" cy="70" r="11"/>
+      <rect x="20" y="64" width="80" height="12"/>
+      <path d="M14,80 H106 C106,101 92,112 75,112 H45 C28,112 14,101 14,80 Z"/>
+      <rect x="45" y="116" width="30" height="7" rx="3.5"/>
+    </g>
+    <g fill="#F7F2E8">
+      <rect x="44" y="85" width="6" height="13" rx="3"/><rect x="70" y="85" width="6" height="13" rx="3"/>
+      <path d="M53,101 H67 A7,7 0 0 1 53,101 Z"/>
+    </g></symbol>
+    <symbol id="sparkle" viewBox="-50 -50 100 100"><path d="M0,-50 C6,-10 10,-6 50,0 C10,6 6,10 0,50 C-6,10 -10,6 -50,0 C-10,-6 -6,-10 0,-50 Z"/></symbol>
+    <symbol id="meeple" viewBox="0 0 100 100"><path d="M50,4 C62,4 70,13 70,24 C70,31 67,36 63,40 L94,52 C99,54 99,62 94,64 L72,70 L84,96 H58 L50,78 L42,96 H16 L28,70 L6,64 C1,62 1,54 6,52 L37,40 C33,36 30,31 30,24 C30,13 38,4 50,4 Z"/></symbol>
+  </defs>
+
+  <rect width="1080" height="1080" fill="#EA6077"/><rect width="1080" height="1080" fill="url(#dots)"/>
+  <path d="M920,0 H1080 V160 Z" fill="#55C4BF"/><path d="M1000.0,0 H1080 V80.0 Z" fill="#F7F2E8"/>
+  <circle cx="100" cy="96" r="41.4" fill="#F7F2E8" stroke="#28203B" stroke-width="3.6"/>
+  <use href="#bowl" x="73.9" y="68.1" width="52.2" height="54.0"/>
+  <text x="159.4" y="97.8" class="cond" font-size="39.6" fill="#28203B" letter-spacing="1">TAZÓN PARA DOS</text>
+  <text x="161.2" y="124.8" class="sans" font-weight="600" font-size="13.5" fill="#28203B" letter-spacing="4.5" opacity="0.9">PODCAST DE ROL</text>
+  <rect x="64" y="170" width="427" height="52" rx="26.0" fill="#28203B"/><text x="277.5" y="203.92" text-anchor="middle" class="sans" font-weight="700" font-size="22" fill="#F7F2E8" letter-spacing="2">MENÚ · MESA PRINCIPAL</text>
+  <circle cx="540" cy="440" r="210" fill="#F7F2E8" stroke="#28203B" stroke-width="8"/>
+  <circle cx="540" cy="440" r="160" fill="none" stroke="#28203B" stroke-width="3" opacity="0.25"/>
+  <g transform="translate(540,430) rotate(-10)" stroke="#28203B" stroke-width="5.9" stroke-linejoin="round">
+    <path d="M0.0,-120.0 L103.8,-60.0 L103.8,60.0 L0.0,120.0 L-103.8,60.0 L-103.8,-60.0 Z" fill="#55C4BF"/>
+    <path d="M0.0,-63.0 L55.2,34.8 L-55.2,34.8 Z" fill="#FBD98A"/>
+    <path d="M0.0,-120.0 L0.0,-63.0 M0.0,-63.0 L103.8,-60.0 M0.0,-63.0 L-103.8,-60.0 M55.2,34.8 L103.8,-60.0 M55.2,34.8 L103.8,60.0 M55.2,34.8 L0.0,120.0 M-55.2,34.8 L-103.8,-60.0 M-55.2,34.8 L-103.8,60.0 M-55.2,34.8 L0.0,120.0" fill="none"/><text x="0" y="21.6" text-anchor="middle" class="cond" font-size="55.2" fill="#28203B" stroke="none">20</text>
+  </g>
+  <use href="#sparkle" x="792.0" y="262.0" width="56" height="56" fill="#F7F2E8"/>
+  <text x="548" y="778" class="cond" font-size="140" fill="#F7F2E8" text-anchor="middle">[TÍTULO DEL</text><text x="540" y="770" class="cond" font-size="140" fill="#28203B" text-anchor="middle">[TÍTULO DEL</text><text x="548" y="908" class="cond" font-size="140" fill="#F7F2E8" text-anchor="middle">EPISODIO]</text><text x="540" y="900" class="cond" font-size="140" fill="#28203B" text-anchor="middle">EPISODIO]</text>
+
+</svg>

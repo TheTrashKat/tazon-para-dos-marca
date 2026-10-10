@@ -125,6 +125,7 @@ Los íconos son de **línea**, como los del sitio web: grilla de 64 × 64, trazo
 | corazón | `corazon.svg` | Espacio seguro |
 | ubicación | `ubicacion.svg` | Engativá |
 | calendario | `calendario.svg` | Fechas |
+| reloj | `reloj.svg` | Horario |
 | votación | `votacion.svg` | Votación abierta |
 | destello | `destello.svg` | Acento decorativo |
 | tazón | `tazon.svg` | Marca |
@@ -198,11 +199,13 @@ Hablamos como **amistades que te invitan a la mesa**, no como una empresa.
 | Formato | Tamaño (px) | Zona segura | Plantillas |
 |---|---|---|---|
 | Post cuadrado | 1080 × 1080 | 64 px de margen | `post_cuadrado`, `podcast_cuadrado`, `convocatoria_cuadrado` |
-| Post vertical 4:5 | 1080 × 1350 | 64 px | *(pendiente: adaptar el cuadrado)* |
+| Post vertical 4:5 | 1080 × 1350 | 64 px | `evento_vertical`, `carrusel_01`…`05` |
 | Historia / estado | 1080 × 1920 | 250 px arriba y abajo libres de texto clave | `historia`, `podcast_historia`, `convocatoria_historia` |
 | Banner web | 1920 × 720 | 86 px | `banner_web` |
 | Pancarta roll-up | 80 × 180 cm | 4 cm | `pancarta_80x180` |
-| Portada podcast | 3000 × 3000 | — | *(pendiente)* |
+| Portada podcast y episodio | 3000 × 3000 | 100 px | `podcast_portada`, `podcast_episodio_plantilla` |
+| Foto de perfil | 1080 × 1080 | círculo central | `perfil` |
+| Destacadas | 1080 × 1920 | círculo central | `destacada_*` |
 
 Cada plantilla está en `plantillas/` (SVG editable) y en `plantillas/png/` (lista para subir).
 
@@ -221,7 +224,41 @@ Cada plantilla está en `plantillas/` (SVG editable) y en `plantillas/png/` (lis
 
 ---
 
-## 10. Productos y aplicaciones
+### Kit de redes para el día a día
+
+| Pieza | Archivos | Para qué |
+|---|---|---|
+| **Evento semanal** | `evento_vertical` (4:5), `evento_historia` | Invitar cada sábado: día, horario, dirección y actividades |
+| **Carrusel "De la idea al aire"** | `carrusel_01` … `carrusel_05` | Explicar cómo funciona Tazón para Dos en 5 láminas |
+| **Foto de perfil** | `perfil` | Instagram, Facebook, Spotify y WhatsApp (se recorta en círculo) |
+| **Portadas de destacadas** | `destacada_rol`, `_mesa`, `_podcast`, `_convocatoria`, `_ubicacion`, `_horario` | Historias destacadas de Instagram |
+
+**Reglas del carrusel**
+- **Portada:** fondo tinta.
+- **Láminas de contenido:** cada una en un color (turquesa, coral, sol), con número gigante, ícono en un círculo y "DESLIZA →" abajo.
+- **Cierre:** fondo tinta con el llamado a la acción.
+
+---
+
+## 10. Podcast: identidad propia
+
+El podcast de Tazón para Dos es un **podcast de rol que habla en lenguaje de cocina**: *"cada episodio es un platillo distinto, servido con imaginación y sazón narrativa"*. Los episodios se organizan como un **menú**:
+
+| Sección del menú | Qué es | Color de portada |
+|---|---|---|
+| **Mesa Principal** | Campañas largas "cocinadas a fuego lento" | Coral |
+| **Entremeses** | Historias más ligeras | Turquesa |
+| **Dessert** | Por ejemplo, el episodio "Press Start - Dessert" | Sol |
+
+**Vocabulario:** menú, platillo, comensales, sazón, a fuego lento, chef, receta.
+
+**Portadas (3000 × 3000)**
+- **Del show:** `podcast_portada` lleva la mascota en un círculo turquesa, un d20 que sale como vapor y el lema "Cada episodio es un platillo distinto."
+- **De cada episodio:** `podcast_episodio_plantilla` tiene el fondo del color de la sección, la etiqueta "MENÚ · SECCIÓN", un d20 servido en un plato crema y el título. El ejemplo real es `podcast_episodio_ejemplo` ("Press Start").
+
+---
+
+## 11. Productos y aplicaciones
 
 | Aplicación | Estado | Notas |
 |---|---|---|
@@ -233,7 +270,7 @@ Cada plantilla está en `plantillas/` (SVG editable) y en `plantillas/png/` (lis
 
 ---
 
-## 11. Para imprimir
+## 12. Para imprimir
 
 - **Imprime desde el SVG,** no desde el PNG. El PNG solo sirve para pantalla.
 - **Fuentes:** las plantillas cargan Barlow desde Google Fonts. Antes de mandarlas a imprenta, ábrelas en Inkscape o Illustrator con la fuente instalada (está en `tools/fonts/`) y **convierte los textos a contornos**.
@@ -242,7 +279,7 @@ Cada plantilla está en `plantillas/` (SVG editable) y en `plantillas/png/` (lis
 
 ---
 
-## 12. Cómo hacer una pieza nueva
+## 13. Cómo hacer una pieza nueva
 
 1. Copia la plantilla más parecida de `plantillas/`.
 2. Cambia los textos y respeta la estructura del punto 9.

@@ -53,6 +53,38 @@ Instructions for AI agents (Claude, Codex, Cursor, etc.) that create or edit vis
 | Convocatoria | sun | coral | ink | speech bubble "Mi historia trata sobre..." + teal d20 |
 | Juegos de mesa | coral | teal | ink | d6 / meeple / card |
 
+## Template catalog (what to copy for each request)
+
+| Request | Template(s) | Generator |
+|---|---|---|
+| "Invite people this Saturday" / weekly agenda | `evento_vertical`, `evento_historia` | `build_social()`, `info_card(AGENDA)`, `chips(ACTIVIDADES)` |
+| Explain the process / educational post | `carrusel_01`…`carrusel_05` | `build_social()`, slides 2–4 loop over `brand.json → process` |
+| General brand post / story | `post_cuadrado`, `historia` | static |
+| Podcast promo | `podcast_cuadrado`, `podcast_historia` | `build_templates()` |
+| Episode cover (Spotify 3000×3000) | `podcast_episodio_plantilla` | `episodio(slug, "MENÚ · <SECCIÓN>", title, bg, accent)` |
+| Show cover | `podcast_portada` | `build_social()` |
+| Call for stories | `convocatoria_cuadrado`, `convocatoria_historia` | `build_templates()` |
+| Profile picture | `perfil` | `build_social()` |
+| Instagram highlight covers | `destacada_*` | `build_social()` loop: (slug, label, bg, icon) |
+| Website hero | `banner_web` | static |
+| Printed roll-up 80×180 cm | `pancarta_80x180` | static |
+| Stickers / merch | `aplicaciones/stickers` | `build_stickers()` |
+
+Useful helpers in `tools/build.py`:
+- `icon(name, cx, cy, size)` draws a line icon from `ICONS`.
+- `headline_shadow(x, y, text, size, fg, shadow, off)` draws a display headline with its comic shadow.
+- `wrap(text, maxchars)` breaks text into lines. For Barlow Condensed 800, average glyph width is about 0.44 × font-size.
+- `background(w, h, color)` and `corner(w, c1, c2)` draw the background and the corner triangles.
+
+## Podcast sub-brand
+
+`brand.json → podcast` describes the show, a role-playing podcast that uses **cooking language**. Episodes are "platillos" (dishes) on a "menú". The menu sections and their colors are:
+- **Mesa Principal** (long campaigns): coral
+- **Entremeses** (lighter stories): teal
+- **Dessert**: sun
+
+When writing podcast copy, use the food vocabulary in `podcast.vocabulary` ("cada episodio es un platillo distinto"). Episode covers use the episode's section color as background, with the d20 on a cream plate.
+
 ## Workflow for a new piece
 
 1. Pick a format from `brand.json → formats`, then copy the closest template from `plantillas/`. Alternatively, add a new function in `tools/build.py` that reuses the primitives.

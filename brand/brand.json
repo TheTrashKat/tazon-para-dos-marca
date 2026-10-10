@@ -1,8 +1,7 @@
 {
   "$description": "Perfil de marca legible por máquina. Úsalo junto a tokens.json para generar piezas nuevas. Textos tomados de tazon-para-dos.online (oct 2026) salvo los marcados como 'propuesta'.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "updated": "2026-10-10",
-
   "identity": {
     "name": "Tazón para Dos",
     "name_display": "TAZÓN PARA DOS",
@@ -24,14 +23,24 @@
       "Nos reunimos para inventar mundos y terminamos encontrando nuevas formas de habitar el nuestro.",
       "Desde Engativá, hacemos de cada mesa un pequeño mundo posible: uno donde escuchar también es una forma de crear."
     ],
-    "pillars": ["COMUNIDAD", "ORALIDAD", "MEMORIA LOCAL", "PODCAST"],
+    "pillars": [
+      "COMUNIDAD",
+      "ORALIDAD",
+      "MEMORIA LOCAL",
+      "PODCAST"
+    ],
     "location": {
       "address": "Tv. 76b #81f-08",
       "locality": "Engativá",
       "city": "Bogotá",
       "country": "Colombia",
       "display": "Engativá · Bogotá",
-      "schedule": { "days": "Sábados", "open": "11:00", "close": "21:00", "display": "Sábados · 11:00 a.m. – 9:00 p.m." }
+      "schedule": {
+        "days": "Sábados",
+        "open": "11:00",
+        "close": "21:00",
+        "display": "Sábados · 11:00 a.m. – 9:00 p.m."
+      }
     },
     "links": {
       "web": "https://tazon-para-dos.online/",
@@ -42,31 +51,86 @@
       "whatsapp_community": "https://chat.whatsapp.com/Gf85g13vkeuBiRvgvgYj1q"
     }
   },
-
   "offerings": [
-    { "id": "rol", "name": "Juegos de rol", "icon": "d20", "color": "teal",
+    {
+      "id": "rol",
+      "name": "Juegos de rol",
+      "icon": "d20",
+      "color": "teal",
       "description": "Construimos personajes, mundos y decisiones en talleres y partidas de rol.",
-      "copy": ["Tu historia empieza aquí.", "Imagina un personaje. Vive su aventura."] },
-    { "id": "mesa", "name": "Juegos de mesa", "icon": "dado", "color": "coral",
+      "copy": [
+        "Tu historia empieza aquí.",
+        "Imagina un personaje. Vive su aventura."
+      ]
+    },
+    {
+      "id": "mesa",
+      "name": "Juegos de mesa",
+      "icon": "dado",
+      "color": "coral",
       "description": "Encuentros para jugar en comunidad. Personas que se reúnen para imaginar juntas.",
-      "copy": ["Ven a jugar. Quédate a compartir.", "La mesa es un territorio."] },
-    { "id": "podcast", "name": "Podcast narrativo", "icon": "microfono", "color": "sun",
+      "copy": [
+        "Ven a jugar. Quédate a compartir.",
+        "La mesa es un territorio."
+      ]
+    },
+    {
+      "id": "podcast",
+      "name": "Podcast narrativo",
+      "icon": "microfono",
+      "color": "sun",
       "description": "Grabamos, editamos y publicamos series de podcast narrativo para compartirlas.",
-      "copy": ["Del juego al aire.", "Reproduce nuestras series narrativas y acompáñanos a imaginar nuevos mundos.", "Encuentros que luego se convierten en sonido."] },
-    { "id": "convocatoria", "name": "Convocatoria de historias", "icon": "idea", "color": "sun",
+      "copy": [
+        "Del juego al aire.",
+        "Reproduce nuestras series narrativas y acompáñanos a imaginar nuevos mundos.",
+        "Encuentros que luego se convierten en sonido."
+      ]
+    },
+    {
+      "id": "convocatoria",
+      "name": "Convocatoria de historias",
+      "icon": "idea",
+      "color": "sun",
       "description": "Convocamos historias e ideas de la comunidad y elegimos dos por votación abierta.",
-      "copy": ["¿Qué mundo quieres traer a la mesa?", "Estamos buscando voces, recuerdos y mundos para convertirlos en una nueva serie de podcast narrativo.", "Mi historia trata sobre..."] }
+      "copy": [
+        "¿Qué mundo quieres traer a la mesa?",
+        "Estamos buscando voces, recuerdos y mundos para convertirlos en una nueva serie de podcast narrativo.",
+        "Mi historia trata sobre..."
+      ]
+    }
   ],
-
   "process": [
-    { "step": 1, "title": "El punto de partida", "short": "Postula tu idea", "text": "Convocamos historias e ideas de la comunidad y elegimos dos por votación abierta.", "icon": "idea" },
-    { "step": 2, "title": "La mesa es un territorio", "short": "La jugamos en mesa", "text": "Construimos personajes, mundos y decisiones en talleres y partidas de rol.", "icon": "dado" },
-    { "step": 3, "title": "Del juego al aire", "short": "La llevamos al aire", "text": "Grabamos, editamos y publicamos series de podcast narrativo para compartirlas.", "icon": "microfono" }
+    {
+      "step": 1,
+      "title": "El punto de partida",
+      "short": "Postula tu idea",
+      "text": "Convocamos historias e ideas de la comunidad y elegimos dos por votación abierta.",
+      "icon": "idea"
+    },
+    {
+      "step": 2,
+      "title": "La mesa es un territorio",
+      "short": "La jugamos en mesa",
+      "text": "Construimos personajes, mundos y decisiones en talleres y partidas de rol.",
+      "icon": "dado"
+    },
+    {
+      "step": 3,
+      "title": "Del juego al aire",
+      "short": "La llevamos al aire",
+      "text": "Grabamos, editamos y publicamos series de podcast narrativo para compartirlas.",
+      "icon": "microfono"
+    }
   ],
-
   "voice": {
     "person": "Primera persona plural ('construimos', 'nos reunimos') y tuteo hacia quien lee ('ven', 'postula', 'tu historia').",
-    "tone": ["cálido", "lúdico", "comunitario", "poético sin ser solemne", "inclusivo"],
+    "tone": [
+      "cálido",
+      "lúdico",
+      "comunitario",
+      "poético sin ser solemne",
+      "inclusivo"
+    ],
     "do": [
       "Frases cortas, con punto final en titulares ('Ven a jugar.').",
       "Verbos de acción: jugar, imaginar, escuchar, narrar, compartir, crear.",
@@ -80,12 +144,27 @@
       "Mayúsculas y signos de exclamación en exceso.",
       "Prometer horarios, precios o fechas que no estén confirmados."
     ],
-    "ctas": ["Quiero participar", "Postula tu idea", "Escúchalo en Spotify", "Enviar historia", "Descubre el proceso", "Cómo llegar", "Ven a jugar"]
+    "ctas": [
+      "Quiero participar",
+      "Postula tu idea",
+      "Escúchalo en Spotify",
+      "Enviar historia",
+      "Descubre el proceso",
+      "Cómo llegar",
+      "Ven a jugar"
+    ]
   },
-
   "visual_style": {
     "name": "Pop y cómic",
-    "keywords": ["ilustración plana", "contorno tinta grueso", "bloques diagonales", "patrón de puntos", "sombra desplazada sin desenfoque", "destellos de 4 puntas", "titulares condensados en mayúscula"],
+    "keywords": [
+      "ilustración plana",
+      "contorno tinta grueso",
+      "bloques diagonales",
+      "patrón de puntos",
+      "sombra desplazada sin desenfoque",
+      "destellos de 4 puntas",
+      "titulares condensados en mayúscula"
+    ],
     "composition_rules": [
       "Dividir la pieza en 2–3 bloques de color separados por diagonales que suben de izquierda a derecha, con una franja crema o sol entre bloques.",
       "Cubrir los bloques de color con el patrón de puntos (22 px, tinta al 10 %).",
@@ -96,11 +175,38 @@
       "Cierre en bloque tinta: CTA en píldora + @tazonparados o la URL."
     ],
     "color_recipes": {
-      "general": { "background": "teal", "illustration_block": "coral", "closing_block": "ink", "accent": "sun" },
-      "podcast": { "background": "ink", "headline": ["cream", "sun"], "illustration_block": "teal", "accent": "coral" },
-      "convocatoria": { "background": "sun", "headline": ["ink", "cream"], "illustration_block": "coral", "closing_block": "ink" },
-      "rol": { "background": "teal", "hero_object": "d20 sol" },
-      "mesa": { "background": "coral", "hero_object": "d6 / meeple / carta" }
+      "general": {
+        "background": "teal",
+        "illustration_block": "coral",
+        "closing_block": "ink",
+        "accent": "sun"
+      },
+      "podcast": {
+        "background": "ink",
+        "headline": [
+          "cream",
+          "sun"
+        ],
+        "illustration_block": "teal",
+        "accent": "coral"
+      },
+      "convocatoria": {
+        "background": "sun",
+        "headline": [
+          "ink",
+          "cream"
+        ],
+        "illustration_block": "coral",
+        "closing_block": "ink"
+      },
+      "rol": {
+        "background": "teal",
+        "hero_object": "d20 sol"
+      },
+      "mesa": {
+        "background": "coral",
+        "hero_object": "d6 / meeple / carta"
+      }
     },
     "illustration_objects": {
       "d20": "Dado de 20 caras amarillo (sol) con cara central más clara y el número 20. Objeto héroe para rol.",
@@ -113,28 +219,200 @@
       "onda": "Barra de forma de onda en tinta, para piezas de audio."
     }
   },
-
   "formats": [
-    { "id": "post-cuadrado", "size": [1080, 1080], "use": "Instagram/Facebook feed", "safe_margin": 64, "templates": ["plantillas/post_cuadrado.svg", "plantillas/podcast_cuadrado.svg", "plantillas/convocatoria_cuadrado.svg"] },
-    { "id": "post-vertical", "size": [1080, 1350], "use": "Instagram feed 4:5 (recomendado)", "safe_margin": 64, "templates": [], "note": "Sin plantilla todavía: adaptar el cuadrado añadiendo 270 px al bloque de ilustración." },
-    { "id": "historia", "size": [1080, 1920], "use": "Historias de Instagram, estados de WhatsApp, Reels (portada)", "safe_top": 250, "safe_bottom": 250, "safe_margin": 72, "templates": ["plantillas/historia.svg", "plantillas/podcast_historia.svg", "plantillas/convocatoria_historia.svg"] },
-    { "id": "banner-web", "size": [1920, 720], "use": "Hero del sitio web, portada de Facebook (recortar)", "safe_margin": 86, "templates": ["plantillas/banner_web.svg"] },
-    { "id": "pancarta", "size": [800, 1800], "physical": "80 × 180 cm (roll-up)", "use": "Pancarta impresa", "templates": ["plantillas/pancarta_80x180.svg"], "note": "Exportar a PDF vectorial con textos convertidos a contornos." },
-    { "id": "portada-podcast", "size": [3000, 3000], "use": "Portada de Spotify", "templates": [], "note": "Pendiente." },
-    { "id": "stickers", "size": [1080, 1080], "use": "Hoja de stickers troquelados", "templates": ["aplicaciones/stickers.svg"] }
+    {
+      "id": "post-cuadrado",
+      "size": [
+        1080,
+        1080
+      ],
+      "use": "Instagram/Facebook feed",
+      "safe_margin": 64,
+      "templates": [
+        "plantillas/post_cuadrado.svg",
+        "plantillas/podcast_cuadrado.svg",
+        "plantillas/convocatoria_cuadrado.svg"
+      ]
+    },
+    {
+      "id": "historia",
+      "size": [
+        1080,
+        1920
+      ],
+      "use": "Historias de Instagram, estados de WhatsApp, Reels (portada)",
+      "safe_top": 250,
+      "safe_bottom": 250,
+      "safe_margin": 72,
+      "templates": [
+        "plantillas/historia.svg",
+        "plantillas/podcast_historia.svg",
+        "plantillas/convocatoria_historia.svg"
+      ]
+    },
+    {
+      "id": "banner-web",
+      "size": [
+        1920,
+        720
+      ],
+      "use": "Hero del sitio web, portada de Facebook (recortar)",
+      "safe_margin": 86,
+      "templates": [
+        "plantillas/banner_web.svg"
+      ]
+    },
+    {
+      "id": "pancarta",
+      "size": [
+        800,
+        1800
+      ],
+      "physical": "80 × 180 cm (roll-up)",
+      "use": "Pancarta impresa",
+      "templates": [
+        "plantillas/pancarta_80x180.svg"
+      ],
+      "note": "Exportar a PDF vectorial con textos convertidos a contornos."
+    },
+    {
+      "id": "stickers",
+      "size": [
+        1080,
+        1080
+      ],
+      "use": "Hoja de stickers troquelados",
+      "templates": [
+        "aplicaciones/stickers.svg"
+      ]
+    },
+    {
+      "id": "post-vertical",
+      "size": [
+        1080,
+        1350
+      ],
+      "use": "Instagram feed 4:5 (formato preferido)",
+      "safe_margin": 64,
+      "templates": [
+        "plantillas/evento_vertical.svg"
+      ]
+    },
+    {
+      "id": "evento-semanal",
+      "size": [
+        1080,
+        1350
+      ],
+      "also": [
+        1080,
+        1920
+      ],
+      "use": "Invitación recurrente de los sábados (agenda, horario, dirección, actividades)",
+      "templates": [
+        "plantillas/evento_vertical.svg",
+        "plantillas/evento_historia.svg"
+      ],
+      "generator": "build_social() → info_card(AGENDA) + chips(ACTIVIDADES)"
+    },
+    {
+      "id": "carrusel",
+      "size": [
+        1080,
+        1350
+      ],
+      "slides": 5,
+      "use": "Carrusel de Instagram. Ejemplo: 'De la idea al aire' (portada + 3 pasos + cierre)",
+      "templates": [
+        "plantillas/carrusel_01.svg",
+        "plantillas/carrusel_02.svg",
+        "plantillas/carrusel_03.svg",
+        "plantillas/carrusel_04.svg",
+        "plantillas/carrusel_05.svg"
+      ],
+      "rules": "Portada en tinta; cada lámina de contenido en un color de la paleta (turquesa, coral, sol); número gigante crema con sombra; ícono en círculo crema; 'DESLIZA →' y puntos de progreso abajo; cierre en tinta con CTA."
+    },
+    {
+      "id": "perfil",
+      "size": [
+        1080,
+        1080
+      ],
+      "use": "Foto de perfil de Instagram, Facebook, Spotify, WhatsApp (recorte circular)",
+      "templates": [
+        "plantillas/perfil.svg"
+      ]
+    },
+    {
+      "id": "destacadas",
+      "size": [
+        1080,
+        1920
+      ],
+      "use": "Portadas de historias destacadas de Instagram (solo el círculo central se ve)",
+      "templates": [
+        "plantillas/destacada_rol.svg",
+        "plantillas/destacada_mesa.svg",
+        "plantillas/destacada_podcast.svg",
+        "plantillas/destacada_convocatoria.svg",
+        "plantillas/destacada_ubicacion.svg",
+        "plantillas/destacada_horario.svg"
+      ]
+    },
+    {
+      "id": "portada-podcast",
+      "size": [
+        3000,
+        3000
+      ],
+      "use": "Portada del show en Spotify",
+      "templates": [
+        "plantillas/podcast_portada.svg"
+      ]
+    },
+    {
+      "id": "portada-episodio",
+      "size": [
+        3000,
+        3000
+      ],
+      "use": "Portada de cada episodio",
+      "templates": [
+        "plantillas/podcast_episodio_ejemplo.svg",
+        "plantillas/podcast_episodio_plantilla.svg"
+      ]
+    }
   ],
-
   "products_merch": {
     "$description": "Aplicaciones de marca propuestas (no confirmadas como productos existentes).",
     "items": [
-      { "name": "Stickers troquelados", "status": "plantilla lista", "file": "aplicaciones/stickers.svg" },
-      { "name": "Tazón de cerámica con la mascota", "status": "propuesta", "notes": "Mascota en tinta sobre cerámica crema; frase 'Jugar también es escuchar.' al reverso." },
-      { "name": "Bolsa de tela", "status": "propuesta", "notes": "Logotipo apilado en tinta sobre lona cruda." },
-      { "name": "Set de dados", "status": "propuesta", "notes": "d20 sol y turquesa con el tazón en la cara del 20." },
-      { "name": "Fichas de personaje", "status": "propuesta", "notes": "Hoja A4 con cabecera de marca, papel crema, tipografía Barlow." }
+      {
+        "name": "Stickers troquelados",
+        "status": "plantilla lista",
+        "file": "aplicaciones/stickers.svg"
+      },
+      {
+        "name": "Tazón de cerámica con la mascota",
+        "status": "propuesta",
+        "notes": "Mascota en tinta sobre cerámica crema; frase 'Jugar también es escuchar.' al reverso."
+      },
+      {
+        "name": "Bolsa de tela",
+        "status": "propuesta",
+        "notes": "Logotipo apilado en tinta sobre lona cruda."
+      },
+      {
+        "name": "Set de dados",
+        "status": "propuesta",
+        "notes": "d20 sol y turquesa con el tazón en la cara del 20."
+      },
+      {
+        "name": "Fichas de personaje",
+        "status": "propuesta",
+        "notes": "Hoja A4 con cabecera de marca, papel crema, tipografía Barlow."
+      }
     ]
   },
-
   "files": {
     "tokens": "brand/tokens.json",
     "css": "brand/tokens.css",
@@ -145,5 +423,50 @@
     "generator": "tools/build.py",
     "renderer": "tools/render.ps1",
     "fonts": "tools/fonts/ (Barlow, licencia OFL)"
+  },
+  "podcast": {
+    "$description": "Identidad del podcast (fuente: página del show en Spotify, oct 2026).",
+    "show_name_on_spotify": "tazon-para-dos",
+    "display_name": "TAZÓN PARA DOS",
+    "kind": "Podcast de rol",
+    "host": "Angel Ramirez",
+    "concept": "Podcast de rol donde el menú es tan variado como las historias que contamos: cada episodio es un platillo distinto, servido con imaginación y sazón narrativa. Usa el lenguaje de la cocina para explorar las muchas formas de jugar.",
+    "audience": "Todo tipo de comensales del rol: desde quienes recién se sientan a la mesa hasta los chefs veteranos del dado de 20.",
+    "tagline": "Cada episodio es un platillo distinto.",
+    "menu_sections": [
+      {
+        "name": "Mesa Principal",
+        "meaning": "Campañas largas cocinadas a fuego lento, con personajes complejos y tramas llenas de sabor.",
+        "color": "coral",
+        "source": "Spotify"
+      },
+      {
+        "name": "Entremeses",
+        "meaning": "Historias más ligeras y cortas.",
+        "color": "teal",
+        "source": "Spotify (descripción truncada)"
+      },
+      {
+        "name": "Dessert",
+        "meaning": "Aparece en el título del episodio 'Press Start - Dessert'. Significado exacto por confirmar.",
+        "color": "sun",
+        "source": "Título de episodio"
+      }
+    ],
+    "known_episodes": [
+      "Press Start - Dessert"
+    ],
+    "vocabulary": [
+      "menú",
+      "platillo",
+      "comensales",
+      "sazón",
+      "a fuego lento",
+      "mesa principal",
+      "entremeses",
+      "chef",
+      "receta"
+    ],
+    "episode_cover_rule": "Fondo = color de la sección del menú; píldora 'MENÚ · <SECCIÓN>'; plato crema con d20; título en Barlow Condensed con sombra crema. Generar con episodio(slug, menu, title, bg, accent) en tools/build.py."
   }
 }

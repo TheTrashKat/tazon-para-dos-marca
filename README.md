@@ -19,7 +19,7 @@ Este repositorio reúne la identidad visual de [Tazón para Dos](https://tazon-p
 ```
 brand/          tokens.json · tokens.css · brand.json (fuente de verdad)
 assets/logo/    mascota, sello, logotipo horizontal y apilado (+ inversos)
-assets/iconos/  18 íconos de línea 64 px + sprite.svg
+assets/iconos/  19 íconos de línea 64 px + sprite.svg
 assets/elementos/ d20, d6, carta, meeple, micrófono, destello
 plantillas/     posts, historias, banner web y pancarta (SVG + png/)
 aplicaciones/   hoja de stickers

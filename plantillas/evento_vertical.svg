@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" width="1080" height="1350">
+  <title>Evento semanal 4:5 · Tazón para Dos</title>
+  <!-- Generado por tools/build.py · Paleta: ink #28203B · coral #EA6077 · sun #F8CB67 · teal #55C4BF · cream #F7F2E8 · paper #FFFDF8 · muted #665F68 -->
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&amp;family=Barlow:wght@500;600;700&amp;display=swap');
+      .cond { font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif; font-weight: 800; }
+      .sans { font-family: 'Barlow', 'Segoe UI', sans-serif; }
+    </style>
+    <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="11" cy="11" r="1.6" fill="#28203B" opacity="0.10"/></pattern>
+    <pattern id="dotsLight" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="11" cy="11" r="1.6" fill="#F7F2E8" opacity="0.07"/></pattern>
+    <symbol id="bowl" viewBox="0 0 120 124"><g stroke="#28203B" stroke-width="7" stroke-linecap="round">
+      <line x1="16" y1="20" x2="29" y2="38"/><line x1="35" y1="12" x2="43" y2="31"/>
+      <line x1="85" y1="12" x2="77" y2="31"/><line x1="104" y1="20" x2="91" y2="38"/>
+    </g>
+    <g fill="#28203B">
+      <circle cx="60" cy="54" r="20"/><circle cx="42" cy="61" r="16"/><circle cx="78" cy="61" r="16"/>
+      <circle cx="30" cy="70" r="11"/><circle cx="90" cy="70" r="11"/>
+      <rect x="20" y="64" width="80" height="12"/>
+      <path d="M14,80 H106 C106,101 92,112 75,112 H45 C28,112 14,101 14,80 Z"/>
+      <rect x="45" y="116" width="30" height="7" rx="3.5"/>
+    </g>
+    <g fill="#F7F2E8">
+      <rect x="44" y="85" width="6" height="13" rx="3"/><rect x="70" y="85" width="6" height="13" rx="3"/>
+      <path d="M53,101 H67 A7,7 0 0 1 53,101 Z"/>
+    </g></symbol>
+    <symbol id="sparkle" viewBox="-50 -50 100 100"><path d="M0,-50 C6,-10 10,-6 50,0 C10,6 6,10 0,50 C-6,10 -10,6 -50,0 C-10,-6 -6,-10 0,-50 Z"/></symbol>
+    <symbol id="meeple" viewBox="0 0 100 100"><path d="M50,4 C62,4 70,13 70,24 C70,31 67,36 63,40 L94,52 C99,54 99,62 94,64 L72,70 L84,96 H58 L50,78 L42,96 H16 L28,70 L6,64 C1,62 1,54 6,52 L37,40 C33,36 30,31 30,24 C30,13 38,4 50,4 Z"/></symbol>
+  </defs>
+
+  <rect width="1080" height="1350" fill="#55C4BF"/><rect width="1080" height="1350" fill="url(#dots)"/>
+  <path d="M900,0 H1080 V180 Z" fill="#F8CB67"/><path d="M990.0,0 H1080 V90.0 Z" fill="#EA6077"/>
+  <circle cx="110" cy="104" r="46" fill="#F7F2E8" stroke="#28203B" stroke-width="4"/>
+  <use href="#bowl" x="81" y="73" width="58" height="60"/>
+  <text x="176" y="106" class="cond" font-size="44" fill="#28203B" letter-spacing="1">TAZÓN PARA DOS</text>
+  <text x="178" y="136" class="sans" font-weight="600" font-size="15" fill="#28203B" letter-spacing="5" opacity="0.9">ESPACIO CULTURAL · ENGATIVÁ</text>
+  <rect x="64" y="186" width="300" height="50" rx="25.0" fill="#28203B"/><text x="214.0" y="218.2" text-anchor="middle" class="sans" font-weight="700" font-size="20" fill="#F7F2E8" letter-spacing="2">AGENDA SEMANAL</text>
+  <text x="60" y="390" class="cond" font-size="146" fill="#28203B">ESTE SÁBADO</text>
+  <text x="70" y="580" class="cond" font-size="196" fill="#28203B">JUGAMOS.</text><text x="60" y="570" class="cond" font-size="196" fill="#F7F2E8">JUGAMOS.</text>
+  <g transform="translate(900,360) rotate(12)" stroke="#28203B" stroke-width="5.1" stroke-linejoin="round">
+    <path d="M0.0,-105.0 L90.8,-52.5 L90.8,52.5 L0.0,105.0 L-90.8,52.5 L-90.8,-52.5 Z" fill="#F8CB67"/>
+    <path d="M0.0,-55.1 L48.3,30.5 L-48.3,30.5 Z" fill="#FBD98A"/>
+    <path d="M0.0,-105.0 L0.0,-55.1 M0.0,-55.1 L90.8,-52.5 M0.0,-55.1 L-90.8,-52.5 M48.3,30.5 L90.8,-52.5 M48.3,30.5 L90.8,52.5 M48.3,30.5 L0.0,105.0 M-48.3,30.5 L-90.8,-52.5 M-48.3,30.5 L-90.8,52.5 M-48.3,30.5 L0.0,105.0" fill="none"/><text x="0" y="18.9" text-anchor="middle" class="cond" font-size="48.3" fill="#28203B" stroke="none">20</text>
+  </g>
+  <use href="#sparkle" x="978.0" y="498.0" width="44" height="44" fill="#F7F2E8"/>
+  <use href="#sparkle" x="800.0" y="190.0" width="40" height="40" fill="#28203B"/>
+  <path d="M0,640 L1080,580 L1080,618 L0,678 Z" fill="#F7F2E8"/>
+  <path d="M0,678 L1080,618 L1080,1350 L0,1350 Z" fill="#EA6077"/>
+  <path d="M0,678 L1080,618 L1080,1350 L0,1350 Z" fill="url(#dots)"/>
+  <rect x="74" y="740" width="952" height="344.0" rx="28" fill="#28203B"/>
+  <rect x="64" y="730" width="952" height="344.0" rx="28" fill="#F7F2E8" stroke="#28203B" stroke-width="5"/>
+  <g transform="translate(94.0,768.0) scale(0.9375)" fill="none" stroke="#28203B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="color:#28203B"><rect x="10" y="14" width="44" height="40" rx="5"/><path d="M10 26h44M22 8v12M42 8v12M20 36h6M30 36h6M40 36h6M20 45h6M30 45h6"/></g>
+  <text x="196.0" y="812.4" class="sans" font-weight="700" font-size="40" fill="#28203B">Sábados</text>
+  <line x1="94" y1="850.0" x2="986" y2="850.0" stroke="#28203B" stroke-width="2" opacity="0.2"/>
+  <g transform="translate(94.0,872.0) scale(0.9375)" fill="none" stroke="#28203B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="color:#28203B"><circle cx="32" cy="32" r="24"/><path d="M32 18v14l10 6"/></g>
+  <text x="196.0" y="916.4" class="sans" font-weight="700" font-size="40" fill="#28203B">11:00 a.m. – 9:00 p.m.</text>
+  <line x1="94" y1="954.0" x2="986" y2="954.0" stroke="#28203B" stroke-width="2" opacity="0.2"/>
+  <g transform="translate(94.0,976.0) scale(0.9375)" fill="none" stroke="#28203B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="color:#28203B"><path d="M32 58S12 38 12 26a20 20 0 0 1 40 0c0 12-20 32-20 32Z"/><circle cx="32" cy="26" r="7"/></g>
+  <text x="196.0" y="1020.4" class="sans" font-weight="700" font-size="40" fill="#28203B">Tv. 76b #81f-08 · Engativá</text>
+  <rect x="64" y="1124.0" width="103.52" height="60" rx="30.0" fill="#55C4BF" stroke="#28203B" stroke-width="4"/><text x="115.75999999999999" y="1161.92" text-anchor="middle" class="sans" font-weight="700" font-size="22" fill="#28203B" letter-spacing="2">ROL</text><rect x="183.51999999999998" y="1124.0" width="277.76" height="60" rx="30.0" fill="#F8CB67" stroke="#28203B" stroke-width="4"/><text x="322.4" y="1161.92" text-anchor="middle" class="sans" font-weight="700" font-size="22" fill="#28203B" letter-spacing="2">JUEGOS DE MESA</text><rect x="477.28" y="1124.0" width="166.88" height="60" rx="30.0" fill="#F7F2E8" stroke="#28203B" stroke-width="4"/><text x="560.72" y="1161.92" text-anchor="middle" class="sans" font-weight="700" font-size="22" fill="#28203B" letter-spacing="2">PODCAST</text>
+  <text x="64" y="1300" class="sans" font-weight="700" font-size="28" fill="#28203B">Ven a jugar. Quédate a compartir.</text>
+  <text x="1016" y="1300" text-anchor="end" class="sans" font-weight="700" font-size="28" fill="#28203B">@tazonparados</text>
+
+</svg>

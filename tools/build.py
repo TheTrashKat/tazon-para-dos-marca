@@ -292,7 +292,8 @@ ICONS = {
     "calendario": ("Fechas", '<rect x="10" y="14" width="44" height="40" rx="5"/><path d="M10 26h44M22 8v12M42 8v12M20 36h6M30 36h6M40 36h6M20 45h6M30 45h6"/>'),
     "votacion": ("Votación abierta", '<path d="M10 32h44v22H10Z"/><path d="M22 32V10h20v22"/><path d="m27 20 4 4 7-8M24 43h16"/>'),
     "destello": ("Destello", '<path d="M32 6C34 26 38 30 58 32 38 34 34 38 32 58 30 38 26 34 6 32 26 30 30 26 32 6Z"/>'),
-    "tazon": ("Tazón", '<path d="M8 32h48c0 13-10 21-24 21S8 45 8 32Z"/><path d="M24 59h16M14 30c0-8 5-13 11-13 2-4 12-4 14 0 6 0 11 5 11 13M17 6l4 6M47 6l-4 6M27 38v5M37 38v5"/>'),
+    "reloj": ("Horario", '<circle cx="32" cy="32" r="24"/><path d="M32 18v14l10 6"/>'),
+    "tazon": ("Tazón",'<path d="M8 32h48c0 13-10 21-24 21S8 45 8 32Z"/><path d="M24 59h16M14 30c0-8 5-13 11-13 2-4 12-4 14 0 6 0 11 5 11 13M17 6l4 6M47 6l-4 6M27 38v5M37 38v5"/>'),
 }
 
 
@@ -510,6 +511,239 @@ def build_stickers():
     write("aplicaciones/stickers.svg", svg(1080, 1080, "Hoja de stickers", body))
 
 
+# ------------------------------------------------------------------ kit de redes
+BRAND = json.loads((ROOT / "brand" / "brand.json").read_text(encoding="utf-8"))
+LOC = BRAND["identity"]["location"]
+SCHED = LOC["schedule"]
+
+
+def icon(name, cx, cy, size, color=INK, stroke=4):
+    """Ícono de línea del set, centrado en (cx, cy)."""
+    k = size / 64
+    return (f'<g transform="translate({cx - size/2:.1f},{cy - size/2:.1f}) scale({k:.4f})" fill="none" '
+            f'stroke="{color}" stroke-width="{stroke}" stroke-linecap="round" stroke-linejoin="round" '
+            f'style="color:{color}">{ICONS[name][1]}</g>')
+
+
+def wrap(text, maxc):
+    lines, cur = [], ""
+    for w in text.split():
+        if cur and len(cur) + 1 + len(w) > maxc:
+            lines.append(cur)
+            cur = w
+        else:
+            cur = f"{cur} {w}".strip()
+    return lines + ([cur] if cur else [])
+
+
+def background(w, h, color, light=False):
+    pat = "dotsLight" if light else "dots"
+    return f'<rect width="{w}" height="{h}" fill="{color}"/><rect width="{w}" height="{h}" fill="url(#{pat})"/>'
+
+
+def corner(w, c1, c2, s=180):
+    return f'<path d="M{w-s},0 H{w} V{s} Z" fill="{c1}"/><path d="M{w-s/2},0 H{w} V{s/2} Z" fill="{c2}"/>'
+
+
+def headline_shadow(x, y, text, size, fg, shadow=INK, off=10, anchor="start"):
+    a = f' text-anchor="{anchor}"' if anchor != "start" else ""
+    return (f'<text x="{x+off}" y="{y+off}" class="cond" font-size="{size}" fill="{shadow}"{a}>{text}</text>'
+            f'<text x="{x}" y="{y}" class="cond" font-size="{size}" fill="{fg}"{a}>{text}</text>')
+
+
+def info_card(x, y, w, rows, size):
+    """Tarjeta crema con filas ícono + texto (agenda)."""
+    rh = size * 2.6
+    h = rh * len(rows) + size * 0.8
+    out = [f'<rect x="{x+10}" y="{y+10}" width="{w}" height="{h}" rx="28" fill="{INK}"/>',
+           f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="28" fill="{CREAM}" stroke="{INK}" stroke-width="5"/>']
+    for i, (ic, label) in enumerate(rows):
+        cy = y + size * 0.4 + rh * i + rh / 2
+        if i:
+            out.append(f'<line x1="{x+30}" y1="{cy - rh/2}" x2="{x+w-30}" y2="{cy - rh/2}" stroke="{INK}" stroke-width="2" opacity="0.2"/>')
+        out.append(icon(ic, x + 30 + size * 0.75, cy, size * 1.5))
+        out.append(f'<text x="{x + 60 + size*1.8}" y="{cy + size*0.36}" class="sans" font-weight="700" font-size="{size}" fill="{INK}">{label}</text>')
+    return "\n  ".join(out), h
+
+
+def chips(x, y, items, h, size):
+    out, cx = [], x
+    for label, fill in items:
+        w = len(label) * size * 0.72 + 56
+        out.append(pill(cx, y, w, h, fill, INK, label, size, stroke=INK))
+        cx += w + 16
+    return "".join(out)
+
+
+AGENDA = [("calendario", SCHED["days"]),
+          ("reloj", "11:00 a.m. – 9:00 p.m."),
+          ("ubicacion", f'{LOC["address"]} · {LOC["locality"]}')]
+ACTIVIDADES = [("ROL", TEAL), ("JUEGOS DE MESA", SUN), ("PODCAST", CREAM)]
+
+
+def build_social():
+    # --- Evento semanal (4:5 y 9:16) ---
+    card, ch = info_card(64, 730, 952, AGENDA, 40)
+    ev_v = f'''
+  {background(1080, 1350, TEAL)}
+  {corner(1080, SUN, CORAL)}
+  {header(110, 104, 1, INK)}
+  {pill(64, 186, 300, 50, INK, CREAM, "AGENDA SEMANAL", 20)}
+  <text x="60" y="390" class="cond" font-size="146" fill="{INK}">ESTE SÁBADO</text>
+  {headline_shadow(60, 570, "JUGAMOS.", 196, CREAM)}
+  {d20(900, 360, 105, rot=12)}
+  {sparkle(1000, 520, 44, CREAM)}
+  {sparkle(820, 210, 40, INK)}
+  <path d="M0,640 L1080,580 L1080,618 L0,678 Z" fill="{CREAM}"/>
+  <path d="M0,678 L1080,618 L1080,1350 L0,1350 Z" fill="{CORAL}"/>
+  <path d="M0,678 L1080,618 L1080,1350 L0,1350 Z" fill="url(#dots)"/>
+  {card}
+  {chips(64, 730 + ch + 50, ACTIVIDADES, 60, 22)}
+  <text x="64" y="1300" class="sans" font-weight="700" font-size="28" fill="{INK}">Ven a jugar. Quédate a compartir.</text>
+  <text x="1016" y="1300" text-anchor="end" class="sans" font-weight="700" font-size="28" fill="{INK}">@tazonparados</text>
+'''
+    write("plantillas/evento_vertical.svg", svg(1080, 1350, "Evento semanal 4:5", ev_v))
+
+    card, ch = info_card(76, 1040, 928, AGENDA, 42)
+    ev_s = f'''
+  {background(1080, 1920, TEAL)}
+  {corner(1080, SUN, CORAL, 260)}
+  {header(132, 300, 1.22, INK)}
+  {pill(76, 400, 360, 60, INK, CREAM, "AGENDA SEMANAL", 24)}
+  <text x="70" y="660" class="cond" font-size="172" fill="{INK}">ESTE SÁBADO</text>
+  {headline_shadow(70, 880, "JUGAMOS.", 236, CREAM, off=12)}
+  {sparkle(990, 560, 70, SUN)}
+  <path d="M0,960 L1080,900 L1080,942 L0,1002 Z" fill="{CREAM}"/>
+  <path d="M0,1002 L1080,942 L1080,1920 L0,1920 Z" fill="{CORAL}"/>
+  <path d="M0,1002 L1080,942 L1080,1920 L0,1920 Z" fill="url(#dots)"/>
+  {d20(940, 960, 80, rot=14)}
+  {card}
+  {chips(76, 1040 + ch + 50, ACTIVIDADES, 64, 24)}
+  <text x="540" y="1640" text-anchor="middle" class="sans" font-weight="700" font-size="32" fill="{INK}">Ven a jugar. Quédate a compartir.</text>
+  {pill(340, 1672, 400, 64, INK, CREAM, "@tazonparados", 28)}
+'''
+    write("plantillas/evento_historia.svg", svg(1080, 1920, "Evento semanal historia", ev_s))
+
+    # --- Foto de perfil (recorte circular) ---
+    perfil = f'''
+  {background(1080, 1080, TEAL)}
+  <circle cx="540" cy="540" r="430" fill="{CREAM}" stroke="{INK}" stroke-width="16"/>
+  <use href="#bowl" x="270" y="250" width="540" height="558"/>
+'''
+    write("plantillas/perfil.svg", svg(1080, 1080, "Foto de perfil", perfil))
+
+    # --- Carrusel "De la idea al aire" (5 láminas 4:5) ---
+    def dots(i, n=5, color=INK):
+        return "".join(f'<circle cx="{1016 - (n-1-j)*30}" cy="1290" r="9" fill="{color}" opacity="{1 if j == i else 0.3}"/>' for j in range(n))
+
+    def footer(i, ink):
+        return (f'<text x="64" y="1300" class="sans" font-weight="700" font-size="24" fill="{ink}" letter-spacing="3">'
+                f'{"DESLIZA →" if i < 4 else "@tazonparados"}</text>{dots(i, color=ink)}')
+
+    car1 = f'''
+  {background(1080, 1350, INK, light=True)}
+  {corner(1080, SUN, CORAL)}
+  {header(110, 104, 1, CREAM)}
+  {pill(64, 186, 260, 50, TEAL, INK, "CÓMO FUNCIONA", 20)}
+  <text x="60" y="420" class="cond" font-size="176" fill="{CREAM}">DE LA IDEA</text>
+  {headline_shadow(60, 610, "AL AIRE.", 200, SUN, shadow=TEAL)}
+  <text x="64" y="690" class="sans" font-weight="600" font-size="32" fill="{CREAM}">Encuentros que luego se convierten en sonido.</text>
+  <path d="M220,940 H860" stroke="{CREAM}" stroke-width="6" stroke-dasharray="4 18" stroke-linecap="round"/>
+  {"".join(f'<circle cx="{cx}" cy="940" r="110" fill="{c}" stroke="{CREAM}" stroke-width="6"/>' + icon(ic, cx, 940, 120) for cx, c, ic in [(220, TEAL, "idea"), (540, CORAL, "dado"), (860, SUN, "microfono")])}
+  {"".join(f'<text x="{cx}" y="1110" text-anchor="middle" class="sans" font-weight="700" font-size="24" fill="{CREAM}" letter-spacing="3">{t}</text>' for cx, t in [(220, "POSTULA"), (540, "JUGAMOS"), (860, "AL AIRE")])}
+  {sparkle(960, 300, 60, SUN)}
+  {footer(0, CREAM)}
+'''
+    write("plantillas/carrusel_01.svg", svg(1080, 1350, "Carrusel 1/5 portada", car1))
+
+    for i, (st, bg, ic) in enumerate(zip(BRAND["process"], [TEAL, CORAL, SUN], ["idea", "dado", "microfono"]), start=1):
+        title = wrap(st["title"].upper(), 14)
+        body = wrap(st["text"], 34)
+        ty = 640
+        tl = "".join(f'<text x="64" y="{ty + k*118}" class="cond" font-size="124" fill="{INK}">{l}</text>' for k, l in enumerate(title))
+        by = ty + len(title) * 118 + 40
+        bl = "".join(f'<tspan x="64" y="{by + k*50}">{l}</tspan>' for k, l in enumerate(body))
+        slide = f'''
+  {background(1080, 1350, bg)}
+  {header(110, 104, 1, INK)}
+  {headline_shadow(56, 470, f"0{i}", 330, CREAM, off=14)}
+  <circle cx="830" cy="350" r="170" fill="{CREAM}" stroke="{INK}" stroke-width="8"/>
+  {icon(ic, 830, 350, 200)}
+  {sparkle(1000, 190, 50, INK)}
+  {tl}
+  <text class="sans" font-weight="600" font-size="38" fill="{INK}">{bl}</text>
+  {pill(64, 1150, 360, 60, INK, CREAM, st["short"].upper(), 22)}
+  {footer(i, INK)}
+'''
+        write(f"plantillas/carrusel_0{i+1}.svg", svg(1080, 1350, f"Carrusel {i+1}/5 {st['title']}", slide))
+
+    card, ch = info_card(64, 520, 952, AGENDA, 40)
+    car5 = f'''
+  {background(1080, 1350, INK, light=True)}
+  {corner(1080, TEAL, CORAL)}
+  {header(110, 104, 1, CREAM)}
+  <text x="60" y="330" class="cond" font-size="150" fill="{CREAM}">VEN A JUGAR.</text>
+  <text x="60" y="440" class="cond" font-size="96" fill="{SUN}">QUÉDATE A COMPARTIR.</text>
+  {card}
+  {pill(64, 520 + ch + 70, 560, 80, SUN, INK, "POSTULA TU IDEA →", 28, shadow=False)}
+  <text x="64" y="{520 + ch + 210}" class="sans" font-weight="700" font-size="30" fill="{CREAM}">tazon-para-dos.online</text>
+  {d20(900, 1040, 110, rot=12, fill=TEAL, inner=TEAL_L)}
+  {footer(4, CREAM)}
+'''
+    write("plantillas/carrusel_05.svg", svg(1080, 1350, "Carrusel 5/5 cierre", car5))
+
+    # --- Portadas de historias destacadas ---
+    for slug, label, bg, ic, ink in [("rol", "ROL", TEAL, "d20", INK), ("mesa", "MESA", CORAL, "dado", INK),
+                                     ("podcast", "PODCAST", INK, "microfono", CREAM), ("convocatoria", "CONVOCA", SUN, "idea", INK),
+                                     ("ubicacion", "LLEGAR", TEAL, "ubicacion", INK), ("horario", "HORARIO", CORAL, "reloj", INK)]:
+        hl = f'''
+  {background(1080, 1920, bg, light=(bg == INK))}
+  <circle cx="540" cy="960" r="330" fill="{CREAM}" stroke="{INK}" stroke-width="12"/>
+  {icon(ic, 540, 960, 380, INK, stroke=3.5)}
+  <text x="540" y="1420" text-anchor="middle" class="cond" font-size="90" fill="{ink}" letter-spacing="4">{label}</text>
+'''
+        write(f"plantillas/destacada_{slug}.svg", svg(1080, 1920, f"Destacada {label}", hl))
+
+    # --- Podcast: portada del show y de episodio (3000 x 3000) ---
+    pod = f'''
+  {background(1080, 1080, INK, light=True)}
+  {corner(1080, SUN, CORAL, 200)}
+  {pill(390, 70, 300, 56, TEAL, INK, "PODCAST DE ROL", 22)}
+  <circle cx="540" cy="440" r="250" fill="{TEAL}" stroke="{CREAM}" stroke-width="10"/>
+  <use href="#bowl" x="390" y="290" width="300" height="310"/>
+  {d20(800, 250, 70, rot=16, num=True)}
+  {sparkle(250, 260, 60, SUN)}
+  {sparkle(860, 600, 40, CREAM)}
+  {headline_shadow(540, 850, "TAZÓN PARA DOS", 150, CREAM, shadow=TEAL, off=10, anchor="middle")}
+  <text x="540" y="940" text-anchor="middle" class="sans" font-weight="600" font-style="italic" font-size="40" fill="{SUN}">Cada episodio es un platillo distinto.</text>
+  <text x="540" y="1020" text-anchor="middle" class="sans" font-weight="700" font-size="22" fill="{CREAM}" letter-spacing="6" opacity="0.8">ENGATIVÁ · BOGOTÁ</text>
+'''
+    write("plantillas/podcast_portada.svg",
+          svg(1080, 1080, "Portada del podcast", pod).replace('width="1080" height="1080"', 'width="3000" height="3000"', 1))
+
+    def episodio(slug, menu, title, bg, accent):
+        lines = wrap(title.upper(), 12)
+        y0 = 900 - (len(lines) - 1) * 130
+        tl = "".join(headline_shadow(540, y0 + k * 130, l, 140, INK if bg != INK else CREAM,
+                                     shadow=CREAM if bg != INK else TEAL, off=8, anchor="middle") for k, l in enumerate(lines))
+        body = f'''
+  {background(1080, 1080, bg, light=(bg == INK))}
+  {corner(1080, accent, CREAM, 160)}
+  {header(100, 96, 0.9, INK if bg != INK else CREAM, sub="PODCAST DE ROL")}
+  {pill(64, 170, len(menu) * 17 + 70, 52, INK, CREAM, menu, 22)}
+  <circle cx="540" cy="{y0 - 330}" r="210" fill="{CREAM}" stroke="{INK}" stroke-width="8"/>
+  <circle cx="540" cy="{y0 - 330}" r="160" fill="none" stroke="{INK}" stroke-width="3" opacity="0.25"/>
+  {d20(540, y0 - 340, 120, rot=-10, fill=accent if accent != CREAM else SUN)}
+  {sparkle(820, y0 - 480, 56, CREAM)}
+  {tl}
+'''
+        write(f"plantillas/podcast_episodio_{slug}.svg",
+              svg(1080, 1080, f"Portada episodio {title}", body).replace('width="1080" height="1080"', 'width="3000" height="3000"', 1))
+
+    episodio("ejemplo", "MENÚ · DESSERT", "Press Start", SUN, CORAL)
+    episodio("plantilla", "MENÚ · MESA PRINCIPAL", "[Título del episodio]", CORAL, TEAL)
+
+
 if __name__ == "__main__":
     print("Construyendo kit de marca en", ROOT)
     build_css()
@@ -519,4 +753,5 @@ if __name__ == "__main__":
     build_templates()
     normalize_static()
     build_stickers()
+    build_social()
     print("Listo. Ejecuta tools/render.ps1 para exportar PNG.")
