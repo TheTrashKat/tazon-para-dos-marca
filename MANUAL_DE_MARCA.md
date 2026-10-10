@@ -276,7 +276,68 @@ Somos un **espacio seguro LGBTI+**. Antes de publicar una foto donde se reconozc
 
 ---
 
-## 12. Productos y aplicaciones
+### Plantillas para fotos
+
+Todas están en el [editor](https://thetrashkat.github.io/tazon-para-dos-marca/editor/), en el grupo **Fotos**. Subes la foto, eliges el enfoque (centro, arriba, abajo, izquierda o derecha) y escribes el texto.
+
+| Plantilla | Para qué |
+|---|---|
+| **Foto con marco** (4:5 y 1:1) | La foto del día, con marco tinta, sombra cómic, un sticker (d20, micrófono o meeple) y un título |
+| **Foto historia** (9:16) | Foto a sangre cortada en diagonal, con el bloque de color y el título abajo |
+| **Foto con cita** (4:5) | Foto arriba y una frase en grande sobre tinta, con comillas en círculo sol |
+| **Collage** (4:5) | 3 fotos para resumir una jornada ("Crónicas de la mesa") |
+
+**Reglas:** la foto nunca lleva filtros de color de marca encima. El color va **alrededor** de la foto (marco, bloques, stickers), nunca sobre ella.
+
+---
+
+## 12. Video
+
+### Identidad en video
+
+| Pieza | Archivo | Uso |
+|---|---|---|
+| **Intro animada** (2,5 s) | `video/intro_9x16.mp4`, `video/intro_16x9.mp4` | El logo aparece con rebote sobre turquesa. Va al inicio de Reels, episodios en video y clips |
+| **Cierre animado** (4 s) | `video/cierre_9x16.mp4`, `video/cierre_16x9.mp4` | Tarjeta final con "¿Te gustó? Ven a jugar." y @tazonparados |
+| **Capa de marca** | `video/capas/marca_reel_9x16.png` | PNG transparente con el sello y el usuario. Se pone encima de todo el Reel |
+| **Rótulo de nombre** | `video/capas/rotulo_nombre_16x9.png` / `_9x16.png` | Presenta a quien habla: nombre en tinta y rol en sol |
+| **Guía de zonas seguras** | `video/capas/guia_zonas_seguras_9x16.png` | Solo para editar: muestra dónde **no** poner texto |
+| **Tarjetas finales fijas** | `video/portadas/` | Para editores que no aceptan MP4 como capa |
+
+Los videos no tienen sonido. Agrega la música en tu editor (CapCut, InShot, Premiere…).
+
+**Para cambiar textos o colores** (por ejemplo, el nombre del rótulo o la tarjeta final), usa el editor en el grupo **Video**:
+- **Plantillas transparentes:** capa de marca, rótulos de nombre, texto en pantalla y guía de zonas. Exportan PNG transparente.
+- **Plantillas con fondo:** portada de Reel, miniatura 16:9 y tarjetas finales.
+
+### Reglas de video
+
+1. **Estructura:** intro (opcional en Reels cortos), contenido, cierre. En Reels de menos de 15 s, sáltate la intro y deja solo la capa de marca y el cierre.
+2. **Zonas seguras (9:16):**
+   - Deja libres de texto los 250 px de arriba, los 420 px de abajo y la franja derecha de los botones.
+   - La portada del Reel se recorta a 4:5 en la cuadrícula del perfil, así que pon el título en el centro.
+3. **Texto en pantalla y subtítulos:**
+   - **Estilo:** Barlow Bold, en caja con esquinas redondeadas y contorno tinta. Usa **crema sobre tinta** para subtítulos y **tinta sobre sol** para remarcar.
+   - **Tamaño y posición:** máximo 2 líneas, entre 48 y 60 px en 1080 de ancho, siempre dentro de la zona segura.
+   - **Plantilla:** "Texto en pantalla" del editor.
+4. **Rótulo de nombre:**
+   - Aparece en los primeros segundos en que alguien habla y dura entre 3 y 5 s.
+   - Pide permiso antes de nombrar a alguien (ver Consentimiento).
+5. **Portadas:**
+   - Usa siempre "Portada de Reel" o "Miniatura 16:9", con un fotograma o foto real, el título en caja de color y el botón ▶.
+   - Nada de texto pequeño.
+6. **Ritmo y transiciones:**
+   - Cortes rápidos y alegres. Transiciones simples: corte, deslizamiento en diagonal o un zoom corto como el del cierre.
+   - Nada de efectos 3D ni brillos.
+7. **Formatos de exportación:**
+   - Reels y TikTok: 1080 × 1920.
+   - YouTube y Facebook: 1920 × 1080.
+   - Todos a 30 fps, en H.264.
+   - **Regenerar el kit:** `python -I tools/video.py`
+
+---
+
+## 13. Productos y aplicaciones
 
 | Aplicación | Estado | Notas |
 |---|---|---|
@@ -292,7 +353,7 @@ Somos un **espacio seguro LGBTI+**. Antes de publicar una foto donde se reconozc
 
 ---
 
-## 13. Para imprimir
+## 14. Para imprimir
 
 - **PDF listos en `impresion/`.** Tienen el tamaño físico real y las fuentes incrustadas, así que no hace falta convertir textos a trazos:
 
@@ -311,9 +372,9 @@ Somos un **espacio seguro LGBTI+**. Antes de publicar una foto donde se reconozc
 
 ---
 
-## 14. Cómo hacer una pieza nueva
+## 15. Cómo hacer una pieza nueva
 
-> 💡 **La forma más fácil es el [editor de plantillas](https://thetrashkat.github.io/tazon-para-dos-marca/editor/).** Eliges la plantilla, cambias los textos y descargas el PNG. Tiene 12 plantillas: evento semanal, posts, historias, convocatoria, podcast, portada de episodio, carrusel y destacadas. Más detalles en [`editor/README.md`](editor/README.md).
+> 💡 **La forma más fácil es el [editor de plantillas](https://thetrashkat.github.io/tazon-para-dos-marca/editor/).** Eliges la plantilla, cambias los textos y descargas el PNG. Tiene 26 plantillas: publicaciones, eventos, convocatorias, podcast, carrusel, destacadas, **fotos** y **video**. Más detalles en [`editor/README.md`](editor/README.md).
 
 Para piezas que no estén en el editor:
 

@@ -17,7 +17,7 @@
 
   const store = {
     get(k) { try { return JSON.parse(localStorage.getItem("tpd-editor:" + k)); } catch { return null; } },
-    set(k, v) { try { localStorage.setItem("tpd-editor:" + k, JSON.stringify(v)); } catch { /* sin almacenamiento */ } },
+    set(k, v) { try { localStorage.setItem("tpd-editor:" + k, JSON.stringify(v)); return true; } catch { return false; } },
     del(k) { try { localStorage.removeItem("tpd-editor:" + k); } catch { /* nada */ } },
   };
 
@@ -110,6 +110,10 @@
         let input;
         if (f.type === "textarea") input = `<textarea id="${id}" data-key="${f.key}" rows="3">${D.esc(val)}</textarea>`;
         else if (f.type === "select") input = `<select id="${id}" data-key="${f.key}">${f.options.map(([v, l]) => `<option value="${D.esc(v)}"${v === val ? " selected" : ""}>${D.esc(l)}</option>`).join("")}</select>`;
+        else if (f.type === "image") return `<label>${D.esc(f.label)}</label><div class="img-field">` +
+          (val ? `<img src="${D.esc(val)}" alt="">` : `<span class="noimg">Sin foto</span>`) +
+          `<label class="btn">Elegir foto<input type="file" accept="image/*" data-key="${f.key}" data-image="1"></label>` +
+          (val ? `<button type="button" class="btn" data-clear="${f.key}">Quitar</button>` : "") + `</div>`;
         else if (f.type === "checkbox") return `<label class="check"><input type="checkbox" id="${id}" data-key="${f.key}"${val ? " checked" : ""}> ${D.esc(f.label)}</label>`;
         else input = `<input id="${id}" data-key="${f.key}" type="${f.type === "number" ? "number" : "text"}" value="${D.esc(val)}">`;
         return `<label for="${id}">${D.esc(f.label)}</label>${input}`;
@@ -117,14 +121,41 @@
     }
 
     function renderPreview() {
+      preview.classList.toggle("transparent", !!current.transparent);
       preview.innerHTML = buildSVG(current, values);
       const o = outSize(current);
       preview.style.aspectRatio = `${o.w} / ${o.h}`;
     }
 
+    // Reduce la foto a máx. 2400 px y la guarda como JPEG (data URL) para que el PNG final la incluya
+    async function readImage(file) {
+      const url = URL.createObjectURL(file);
+      try {
+        const img = new Image(); img.src = url; await img.decode();
+        const k = Math.min(1, 2400 / Math.max(img.naturalWidth, img.naturalHeight));
+        const c = document.createElement("canvas");
+        c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+        c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+        return c.toDataURL("image/jpeg", 0.88);
+      } finally { URL.revokeObjectURL(url); }
+    }
+    form.addEventListener("change", async (e) => {
+      const el = e.target;
+      if (!el.dataset.image || !el.files[0]) return;
+      status.textContent = "Cargando foto…";
+      values[el.dataset.key] = await readImage(el.files[0]);
+      status.textContent = store.set(current.id, values) ? "✅ Foto cargada." : "✅ Foto cargada (es grande: no se guardará en el navegador al cerrar).";
+      renderForm(); renderPreview();
+    });
+    form.addEventListener("click", (e) => {
+      const k = e.target.dataset && e.target.dataset.clear;
+      if (!k) return;
+      values[k] = ""; store.set(current.id, values); renderForm(); renderPreview();
+    });
+
     form.addEventListener("input", (e) => {
       const el = e.target, key = el.dataset.key;
-      if (!key) return;
+      if (!key || el.dataset.image) return;
       values[key] = el.type === "checkbox" ? el.checked : el.type === "number" ? Number(el.value) : el.value;
       store.set(current.id, values);
       renderPreview();

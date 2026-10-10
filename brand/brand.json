@@ -1,6 +1,6 @@
 {
   "$description": "Perfil de marca legible por máquina. Úsalo junto a tokens.json para generar piezas nuevas. Textos tomados de tazon-para-dos.online (oct 2026) salvo los marcados como 'propuesta'.",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "updated": "2026-10-10",
   "identity": {
     "name": "Tazón para Dos",
@@ -576,7 +576,15 @@
       "personas identificables sin permiso",
       "pantallas o datos personales visibles",
       "filtros que cambien el tono de piel"
-    ]
+    ],
+    "templates": [
+      "foto_post",
+      "foto_cuadrado",
+      "foto_historia",
+      "foto_cita",
+      "collage"
+    ],
+    "rule_color": "Nunca poner filtros o capas de color sobre la foto: el color de marca va alrededor (marcos, bloques, stickers)."
   },
   "editor": {
     "url": "https://thetrashkat.github.io/tazon-para-dos-marca/editor/",
@@ -592,7 +600,21 @@
       "podcast_episodio",
       "carrusel_portada",
       "carrusel_paso",
-      "destacada"
+      "destacada",
+      "foto_post",
+      "foto_cuadrado",
+      "foto_historia",
+      "foto_cita",
+      "collage",
+      "video_portada",
+      "miniatura",
+      "overlay_reel",
+      "tercio_inferior_h",
+      "tercio_inferior_v",
+      "texto_pantalla",
+      "tarjeta_final_v",
+      "tarjeta_final_h",
+      "guia_zonas"
     ],
     "job_format": {
       "template": "<id>",
@@ -606,6 +628,94 @@
       "mesa",
       "convocatoria",
       "podcast"
-    ]
+    ],
+    "image_fields": "Los campos tipo 'image' aceptan una ruta local en render_editor.py (relativa al JSON) o un data URL. Campo 'enfoque': centro | arriba | abajo | izquierda | derecha."
+  },
+  "video": {
+    "files": {
+      "intro": [
+        "video/intro_9x16.mp4",
+        "video/intro_16x9.mp4"
+      ],
+      "outro": [
+        "video/cierre_9x16.mp4",
+        "video/cierre_16x9.mp4"
+      ],
+      "overlays": [
+        "video/capas/marca_reel_9x16.png",
+        "video/capas/rotulo_nombre_16x9.png",
+        "video/capas/rotulo_nombre_9x16.png",
+        "video/capas/guia_zonas_seguras_9x16.png"
+      ],
+      "end_cards": [
+        "video/portadas/tarjeta_final_9x16.png",
+        "video/portadas/tarjeta_final_16x9.png"
+      ]
+    },
+    "generator": "tools/video.py (ffmpeg + editor)",
+    "structure": "intro (2,5 s, opcional en Reels < 15 s) → contenido → cierre (4 s)",
+    "safe_zones_9x16": {
+      "top": 250,
+      "bottom": 420,
+      "right_buttons": {
+        "x": 940,
+        "y": [
+          900,
+          1500
+        ]
+      },
+      "grid_crop_4x5": {
+        "y": [
+          285,
+          1635
+        ]
+      }
+    },
+    "on_screen_text": {
+      "font": "Barlow Bold (texto) o Barlow Condensed 800 (remates)",
+      "box": "radio 0.35em, contorno tinta",
+      "styles": [
+        "crema sobre tinta (subtítulos)",
+        "tinta sobre sol (énfasis)"
+      ],
+      "size_px_at_1080": [
+        48,
+        60
+      ],
+      "max_lines": 2,
+      "template": "texto_pantalla"
+    },
+    "lower_third": {
+      "template": [
+        "tercio_inferior_h",
+        "tercio_inferior_v"
+      ],
+      "duration_s": [
+        3,
+        5
+      ],
+      "consent": "pedir permiso antes de nombrar"
+    },
+    "covers": {
+      "templates": [
+        "video_portada",
+        "miniatura"
+      ],
+      "rule": "fotograma real + título en caja de color + botón play; título centrado para el recorte 4:5"
+    },
+    "motion": "cortes rápidos; transiciones simples (corte, deslizamiento diagonal, zoom corto); sin 3D ni brillos",
+    "export": {
+      "vertical": [
+        1080,
+        1920
+      ],
+      "horizontal": [
+        1920,
+        1080
+      ],
+      "fps": 30,
+      "codec": "H.264"
+    },
+    "audio": "Los MP4 del kit no llevan audio."
   }
 }

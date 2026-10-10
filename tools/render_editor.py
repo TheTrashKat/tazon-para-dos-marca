@@ -12,6 +12,8 @@ Formato de cada objeto:
     "output":   "salida/evento-18-oct.png" }          # opcional (por defecto: salida/<template>.png)
 
 Los campos que no se indiquen usan el valor por defecto de la plantilla.
+Los campos de foto aceptan una ruta a una imagen local (jpg/png/webp), relativa a la carpeta del JSON o absoluta.
+Las plantillas transparentes (capas para video) se exportan como PNG con canal alfa.
 Requiere Edge o Chrome. Levanta un servidor local temporal para que el editor cargue sus fuentes.
 """
 import base64, functools, http.server, json, pathlib, re, shutil, socketserver, subprocess, sys, tempfile, threading, time
@@ -43,12 +45,32 @@ def serve():
     return httpd
 
 
-def render(job, port, sizes):
+IMG_EXT = {".jpg", ".jpeg", ".png", ".webp", ".gif"}
+TMP = ROOT / "editor" / "_tmp"
+
+
+def stage_images(values, base):
+    """Copia las fotos locales a editor/_tmp/ para que el editor pueda cargarlas por URL relativa."""
+    out = {}
+    for k, v in values.items():
+        if isinstance(v, str) and not v.startswith(("data:", "http")) and pathlib.Path(v).suffix.lower() in IMG_EXT:
+            src = pathlib.Path(v) if pathlib.Path(v).is_absolute() else base / v
+            if not src.exists():
+                raise SystemExit(f"No existe la imagen: {src}")
+            TMP.mkdir(exist_ok=True)
+            dst = TMP / f"{abs(hash(str(src.resolve())))}{src.suffix.lower()}"
+            shutil.copyfile(src, dst)
+            v = f"_tmp/{dst.name}"
+        out[k] = v
+    return out
+
+
+def render(job, port, sizes, base=pathlib.Path.cwd()):
     tid = job["template"]
     if tid not in sizes:
         raise SystemExit(f"Plantilla desconocida: {tid}. Usa --list.")
     w, h = sizes[tid]["w"], sizes[tid]["h"]
-    data = base64.urlsafe_b64encode(json.dumps(job.get("values", {}), ensure_ascii=False).encode("utf-8")).decode().rstrip("=")
+    data = base64.urlsafe_b64encode(json.dumps(stage_images(job.get("values", {}), base), ensure_ascii=False).encode("utf-8")).decode().rstrip("=")
     url = f"http://127.0.0.1:{port}/editor/index.html?embed=1&t={tid}&d={data}"
     out = pathlib.Path(job.get("output") or f"salida/{tid}.png")
     if not out.is_absolute():
@@ -58,7 +80,7 @@ def render(job, port, sizes):
     profile = tempfile.mkdtemp(prefix="tpd-editor-")
     for _ in range(3):
         subprocess.run([BROWSER, "--headless=new", "--disable-gpu", "--hide-scrollbars", f"--user-data-dir={profile}",
-                        "--virtual-time-budget=8000", f"--window-size={w},{h}", f"--screenshot={out}", url],
+                        "--virtual-time-budget=8000", "--default-background-color=00000000", f"--window-size={w},{h}", f"--screenshot={out}", url],
                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         for _ in range(60):
             if out.exists() and out.stat().st_size > 0:
@@ -82,14 +104,16 @@ def main():
         return
     if not BROWSER:
         raise SystemExit("No se encontró Edge ni Chrome.")
-    jobs = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8"))
+    jobs_file = pathlib.Path(sys.argv[1]).resolve()
+    jobs = json.loads(jobs_file.read_text(encoding="utf-8"))
     jobs = jobs if isinstance(jobs, list) else [jobs]
     httpd = serve()
     try:
         for job in jobs:
-            render(job, httpd.server_address[1], sizes)
+            render(job, httpd.server_address[1], sizes, jobs_file.parent)
     finally:
         httpd.shutdown()
+        shutil.rmtree(TMP, ignore_errors=True)
 
 
 if __name__ == "__main__":

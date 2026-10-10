@@ -230,5 +230,54 @@
     podcast: { label: "Podcast (tinta)", bg: INK, block: TEAL, close: INK, ink: CREAM, hl: SUN, hlShadow: TEAL, accent: CORAL, corner: [SUN, CORAL], light: true },
   };
 
-  window.TPDDraw = { C, INK, CORAL, SUN, TEAL, CREAM, SUN_L, TEAL_L, esc, measure, fit, wrap, defs, background, corner, sparkle, meeple, header, pill, pillAuto, headline, paragraph, icon, d20, d6, card, mic, waveform, bubble, steps, infoCard, chips, illustration, twoLines, RECIPES };
+  // ---- fotos ----
+  const FOCUS = { centro: "xMidYMid", arriba: "xMidYMin", abajo: "xMidYMax", izquierda: "xMinYMid", derecha: "xMaxYMid" };
+  const FOCUS_OPTS = Object.keys(FOCUS).map((k) => [k, k[0].toUpperCase() + k.slice(1)]);
+  let clipN = 0;
+  // Foto recortada en un rectángulo (rx = radio). Sin foto muestra un marcador "TU FOTO AQUÍ".
+  // opts: { rx, focus, stroke, shadow, path } — path: recorte libre (d de un <path>) en vez de rectángulo.
+  function photo(x, y, w, h, href, opts = {}) {
+    const id = "clip" + (++clipN);
+    const rx = opts.rx ?? 28;
+    const shape = opts.path ? `<path d="${opts.path}"/>` : `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}"/>`;
+    const outline = opts.path ? `<path d="${opts.path}"` : `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}"`;
+    let out = "";
+    if (opts.shadow) out += opts.path ? "" : `<rect x="${x + 12}" y="${y + 12}" width="${w}" height="${h}" rx="${rx}" fill="${INK}"/>`;
+    out += `<clipPath id="${id}">${shape}</clipPath>`;
+    if (href) {
+      out += `<image href="${esc(href)}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="${FOCUS[opts.focus] || "xMidYMid"} slice" clip-path="url(#${id})"/>`;
+    } else {
+      out += `<g clip-path="url(#${id})"><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${C.cream}"/><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#dots)"/></g>`;
+      const s = Math.min(w, h) * 0.18;
+      out += icon("camara", x + w / 2, y + h / 2 - s * 0.35, s, C.muted, 3);
+      out += `<text x="${x + w / 2}" y="${n(y + h / 2 + s * 0.75)}" text-anchor="middle" class="sans" font-weight="700" font-size="${n(Math.max(18, s * 0.28))}" fill="${C.muted}" letter-spacing="3">TU FOTO AQUÍ</text>`;
+    }
+    if (opts.stroke !== false) out += `${outline} fill="none" stroke="${INK}" stroke-width="${opts.strokeWidth || 8}" stroke-linejoin="round"/>`;
+    return out;
+  }
+
+  // Insignia de reproducción (video)
+  function playBadge(cx, cy, r, fill = SUN) {
+    return `<circle cx="${cx + r * 0.08}" cy="${cy + r * 0.08}" r="${r}" fill="${INK}"/><circle cx="${cx}" cy="${cy}" r="${r}" fill="${fill}" stroke="${INK}" stroke-width="${n(r * 0.08)}"/>
+      <path d="M${n(cx - r * 0.28)},${n(cy - r * 0.42)} L${n(cx + r * 0.46)},${cy} L${n(cx - r * 0.28)},${n(cy + r * 0.42)} Z" fill="${INK}" stroke="${INK}" stroke-width="${n(r * 0.06)}" stroke-linejoin="round"/>`;
+  }
+
+  // Caja de texto tipo "sticker" (para subtítulos y textos en pantalla)
+  function textBox(cx, y, text, size, maxW, fill, ink, opts = {}) {
+    const lines = wrap(text, size, maxW - size * 1.2, opts.kind || "sans", opts.weight || 700).slice(0, opts.maxLines || 3);
+    const lh = size * 1.22, padX = size * 0.6, padY = size * 0.42;
+    const widest = Math.max(...lines.map((l) => measure(l, opts.kind || "sans", size, opts.weight || 700)), 10);
+    const w = widest + padX * 2, h = lines.length * lh + padY * 2;
+    const x = cx - w / 2;
+    const cls = opts.kind === "cond" ? "cond" : "sans";
+    return {
+      svg: `<rect x="${n(x + 8)}" y="${n(y + 8)}" width="${n(w)}" height="${n(h)}" rx="${n(size * 0.35)}" fill="${INK}" opacity="${fill === INK ? 0 : 1}"/>
+        <rect x="${n(x)}" y="${n(y)}" width="${n(w)}" height="${n(h)}" rx="${n(size * 0.35)}" fill="${fill}" stroke="${INK}" stroke-width="${n(size * 0.08)}"/>
+        <text class="${cls}" font-weight="${opts.weight || 700}" font-size="${size}" fill="${ink}" text-anchor="middle">` +
+        lines.map((l, i) => `<tspan x="${cx}" y="${n(y + padY + size * 0.95 + i * lh)}">${esc(l)}</tspan>`).join("") + `</text>`,
+      height: h, width: w,
+    };
+  }
+
+  window.TPDDraw = { C, INK, CORAL, SUN, TEAL, CREAM, SUN_L, TEAL_L, esc, measure, fit, wrap, defs, background, corner, sparkle, meeple, header, pill, pillAuto, headline, paragraph, icon, d20, d6, card, mic, waveform, bubble, steps, infoCard, chips, illustration, twoLines, RECIPES, photo, playBadge, textBox, FOCUS_OPTS };
 })();

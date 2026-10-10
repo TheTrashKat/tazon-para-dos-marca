@@ -1,0 +1,16 @@
+[
+  { "template": "foto_post", "values": { "foto": "fotos/tablero.jpg", "titulo": "LA MESA ES UN TERRITORIO", "sticker": "d20" }, "output": "salida/foto_post.png" },
+  { "template": "foto_cuadrado", "values": { "foto": "fotos/grabacion-podcast.jpg", "receta": "podcast", "titulo": "DEL JUEGO AL AIRE", "texto": "Así grabamos nuestras series narrativas.", "sticker": "mic" }, "output": "salida/foto_cuadrado.png" },
+  { "template": "foto_historia", "values": { "foto": "fotos/tablero.jpg", "receta": "mesa", "etiqueta": "SÁBADO DE JUEGOS" }, "output": "salida/foto_historia.png" },
+  { "template": "foto_cita", "values": { "foto": "fotos/grabacion-podcast.jpg", "enfoque": "arriba" }, "output": "salida/foto_cita.png" },
+  { "template": "collage", "values": { "foto1": "fotos/grabacion-podcast.jpg", "enfoque1": "arriba", "foto2": "fotos/tablero.jpg", "foto3": "fotos/tablero.jpg", "enfoque3": "derecha" }, "output": "salida/collage.png" },
+  { "template": "video_portada", "values": { "foto": "fotos/tablero.jpg" }, "output": "salida/video_portada.png" },
+  { "template": "miniatura", "values": { "foto": "fotos/grabacion-podcast.jpg", "receta": "podcast" }, "output": "salida/miniatura.png" },
+  { "template": "overlay_reel", "values": { "etiqueta": "EN VIVO DESDE LA MESA" }, "output": "salida/overlay_reel.png" },
+  { "template": "tercio_inferior_h", "values": { "nombre": "Nombre Apellido", "rol": "Narración · Tazón para Dos" }, "output": "salida/tercio_inferior_h.png" },
+  { "template": "tercio_inferior_v", "values": {}, "output": "salida/tercio_inferior_v.png" },
+  { "template": "texto_pantalla", "values": { "caja": "sol", "fuente": "cond", "tam": 80, "pos": "centro", "texto": "Tu historia empieza aquí." }, "output": "salida/texto_pantalla.png" },
+  { "template": "tarjeta_final_v", "values": {}, "output": "salida/tarjeta_final_v.png" },
+  { "template": "tarjeta_final_h", "values": { "receta": "podcast", "linea1": "GRACIAS POR ESCUCHAR", "linea2": "DEL JUEGO AL AIRE." }, "output": "salida/tarjeta_final_h.png" },
+  { "template": "guia_zonas", "values": {}, "output": "salida/guia_zonas.png" }
+]

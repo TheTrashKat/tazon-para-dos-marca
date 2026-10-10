@@ -25,6 +25,7 @@ assets/elementos/ d20, d6, carta, meeple, micrófono, destello
 plantillas/     posts, historias, carrusel, evento, destacadas, perfil, podcast, banner, pancarta
 aplicaciones/   stickers, tarjeta, letrero, ficha de personaje, certificado, firma de correo, merch
 editor/         editor web de plantillas editables (12 plantillas, exporta PNG/SVG/JSON)
+video/          intro y cierre animados (MP4), capas transparentes y tarjetas finales
 impresion/      PDF listos para imprenta (tamaño real, fuentes incrustadas)
 referencias/    pancarta y logo originales
 tools/          build.py (genera SVG) · render.ps1 (PNG) · export.py (PDF, logos PNG, favicon) · fonts/
@@ -43,9 +44,10 @@ python -I tools/build.py                                   # SVG desde los token
 powershell -ExecutionPolicy Bypass -File tools/render.ps1  # PNG (Edge/Chrome)
 python -I tools/export.py                                  # PDF de imprenta, logos PNG, favicon
 python -I tools/render_editor.py editor/ejemplos/semana.json  # PNG desde JSON con el editor
+python -I tools/video.py                                   # kit de video (requiere ffmpeg)
 ```
 
-Requiere Python 3 con `fonttools` y `Pillow` (`pip install fonttools pillow`) para convertir a trazos los textos de los logos.
+Requiere Python 3 con `fonttools` y `Pillow` (`pip install fonttools pillow`). Para el video hace falta [ffmpeg](https://ffmpeg.org) (`winget install Gyan.FFmpeg`) para convertir a trazos los textos de los logos.
 
 ## Licencias
 

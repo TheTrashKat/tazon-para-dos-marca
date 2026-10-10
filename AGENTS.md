@@ -123,6 +123,21 @@ When writing podcast copy, use the food vocabulary in `podcast.vocabulary` ("cad
 5. **Look at the PNG** and check for overlaps, clipped text (Barlow Condensed is narrow, so fallback fonts overflow), and contrast.
 6. Add the new files to `index.html` and, if they introduce a new format, to `brand.json → formats`.
 
+## Photo & video
+
+**Photos:** use the editor templates `foto_post`, `foto_cuadrado`, `foto_historia`, `foto_cita` and `collage`. Image fields take a local path in `render_editor.py` jobs (relative to the JSON file), and `enfoque` sets the crop focus. Never tint the photo; brand color goes around it.
+
+**Video kit:** lives in `video/` and is regenerated with `python -I tools/video.py` (needs ffmpeg and the `logotipo-apilado.png` from `tools/export.py`).
+- Intro: 2.5 s. Outro: 4 s.
+- Transparent overlays: `overlay_reel`, `tercio_inferior_h/_v`, `texto_pantalla`, `guia_zonas`. They export with alpha.
+- Covers: `video_portada` and `miniatura`.
+
+Follow `brand.json → video`:
+- Safe zones in 9:16: top 250 px, bottom 420 px and the right button strip.
+- On-screen text: max 2 lines, 48–60 px at 1080 width, cream on ink or ink on sun.
+- Simple cuts.
+- The kit's MP4s have no audio.
+
 ## Photography
 
 Follow `brand.json → photography`. Photos should show real people playing, hands on the table, dice, cards and microphones, in warm natural light. Put them in rounded frames with an ink outline.

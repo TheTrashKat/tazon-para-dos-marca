@@ -39,6 +39,22 @@ Un editor web para hacer publicaciones sin saber diseño. Eliges la plantilla, c
 | `carrusel_portada` | Carrusel: portada | 1080 × 1350 |
 | `carrusel_paso` | Carrusel: lámina de contenido | 1080 × 1350 |
 | `destacada` | Portada de destacada | 1080 × 1920 |
+| `foto_post` | Foto con marco 4:5 | 1080 × 1350 |
+| `foto_cuadrado` | Foto con marco 1:1 | 1080 × 1080 |
+| `foto_historia` | Foto historia | 1080 × 1920 |
+| `foto_cita` | Foto con cita 4:5 | 1080 × 1350 |
+| `collage` | Collage de 3 fotos | 1080 × 1350 |
+| `video_portada` | Portada de Reel / video | 1080 × 1920 |
+| `miniatura` | Miniatura de video | 1280 × 720 |
+| `overlay_reel` | Capa de marca para Reel (transparente) | 1080 × 1920 |
+| `tercio_inferior_h` / `_v` | Rótulo de nombre (transparente) | 1920 × 1080 / 1080 × 1920 |
+| `texto_pantalla` | Texto en pantalla (transparente) | 1080 × 1920 |
+| `tarjeta_final_v` / `_h` | Tarjeta final de video | 1080 × 1920 / 1920 × 1080 |
+| `guia_zonas` | Guía de zonas seguras (transparente) | 1080 × 1920 |
+
+**Fotos:** pulsa *Elegir foto* y la foto se reduce sola a un máximo de 2400 px. En el JSON para `render_editor.py`, el campo de foto lleva la ruta de la imagen, relativa al archivo JSON. Hay un ejemplo en [`ejemplos/fotos_video.json`](ejemplos/fotos_video.json).
+
+**Transparentes:** las plantillas de capas para video se ven sobre un fondo de cuadros y el PNG se descarga con transparencia.
 
 Los campos de cada plantilla están en `fields`, dentro de [`templates.js`](templates.js). Para ver la lista de plantillas desde la terminal: `python -I tools/render_editor.py --list`.
 
