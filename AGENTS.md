@@ -132,6 +132,13 @@ When writing podcast copy, use the food vocabulary in `podcast.vocabulary` ("cad
 - Transparent overlays: `overlay_reel`, `tercio_inferior_h/_v`, `texto_pantalla`, `guia_zonas`. They export with alpha.
 - Covers: `video_portada` and `miniatura`.
 
+**Automatic editing:** to turn raw clips into a branded video, write a *guion* JSON (see `brand.json → video.montaje` and `video/ejemplos/`) and run `python -I tools/montaje.py guion.json`.
+- Formats: `9x16-marco` (horizontal clips framed in a Reel), `9x16` (full-screen vertical) and `16x9`.
+- Keep segments 2.5–5 s and Reels 15–30 s.
+- One short on-screen text per segment, in brand voice.
+- Inspect frames of the result (for example with `ffmpeg -ss <t> -frames:v 1`) before delivering.
+- Never put real people's names in lower thirds without the user confirming consent.
+
 Follow `brand.json → video`:
 - Safe zones in 9:16: top 250 px, bottom 420 px and the right button strip.
 - On-screen text: max 2 lines, 48–60 px at 1080 width, cream on ink or ink on sun.

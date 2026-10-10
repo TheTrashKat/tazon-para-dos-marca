@@ -45,6 +45,7 @@ powershell -ExecutionPolicy Bypass -File tools/render.ps1  # PNG (Edge/Chrome)
 python -I tools/export.py                                  # PDF de imprenta, logos PNG, favicon
 python -I tools/render_editor.py editor/ejemplos/semana.json  # PNG desde JSON con el editor
 python -I tools/video.py                                   # kit de video (requiere ffmpeg)
+python -I tools/montaje.py video/ejemplos/guion_reel_marco.json  # monta un video con tus clips
 ```
 
 Requiere Python 3 con `fonttools` y `Pillow` (`pip install fonttools pillow`). Para el video hace falta [ffmpeg](https://ffmpeg.org) (`winget install Gyan.FFmpeg`) para convertir a trazos los textos de los logos.

@@ -92,6 +92,8 @@ def main():
         {"template": "tercio_inferior_h", "output": str(OUT / "capas/rotulo_nombre_16x9.png")},
         {"template": "tercio_inferior_v", "output": str(OUT / "capas/rotulo_nombre_9x16.png")},
         {"template": "guia_zonas", "output": str(OUT / "capas/guia_zonas_seguras_9x16.png")},
+        {"template": "marco_video", "output": str(OUT / "capas/marco_video_9x16.png")},
+        {"template": "overlay_video_h", "output": str(OUT / "capas/marca_video_16x9.png")},
     ]
     print("Renderizando tarjetas y capas…")
     render_editor(jobs, work)

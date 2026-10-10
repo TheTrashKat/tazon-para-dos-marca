@@ -37,6 +37,20 @@
     return lines;
   }
 
+  // Como wrap(), pero si salen 2 líneas las equilibra (evita una palabra sola en la segunda línea)
+  function wrapBalanced(text, size, maxW, kind = "cond", weight = 800) {
+    const lines = wrap(text, size, maxW, kind, weight);
+    if (lines.length !== 2) return lines;
+    const words = String(text).trim().split(/\s+/);
+    let best = null, bestW = Infinity;
+    for (let i = 1; i < words.length; i++) {
+      const l1 = words.slice(0, i).join(" "), l2 = words.slice(i).join(" ");
+      const w = Math.max(measure(l1, kind, size, weight), measure(l2, kind, size, weight));
+      if (w <= maxW && w < bestW) { bestW = w; best = [l1, l2]; }
+    }
+    return best || lines;
+  }
+
   // ---- definiciones compartidas ----
   function defs(fontCSS = "") {
     return `<defs><style>${fontCSS}
@@ -279,5 +293,5 @@
     };
   }
 
-  window.TPDDraw = { C, INK, CORAL, SUN, TEAL, CREAM, SUN_L, TEAL_L, esc, measure, fit, wrap, defs, background, corner, sparkle, meeple, header, pill, pillAuto, headline, paragraph, icon, d20, d6, card, mic, waveform, bubble, steps, infoCard, chips, illustration, twoLines, RECIPES, photo, playBadge, textBox, FOCUS_OPTS };
+  window.TPDDraw = { C, INK, CORAL, SUN, TEAL, CREAM, SUN_L, TEAL_L, esc, measure, fit, wrap, defs, background, corner, sparkle, meeple, header, pill, pillAuto, headline, paragraph, icon, d20, d6, card, mic, waveform, bubble, steps, infoCard, chips, illustration, twoLines, wrapBalanced, RECIPES, photo, playBadge, textBox, FOCUS_OPTS };
 })();

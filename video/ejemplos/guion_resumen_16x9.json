@@ -1,0 +1,12 @@
+{
+  "formato": "16x9",
+  "salida": "salida/resumen_16x9.mp4",
+  "intro": true,
+  "cierre": true,
+  "capa": { "etiqueta": "SÁBADOS EN TAZÓN PARA DOS", "usuario": "@tazonparados" },
+  "segmentos": [
+    { "clip": "RUTA/A/clip_1.mp4", "inicio": 1, "duracion": 4, "texto": "Ven a jugar.", "estilo_texto": "sol" },
+    { "clip": "RUTA/A/clip_2.mp4", "inicio": 0.5, "duracion": 5, "rotulo": { "nombre": "Mesa de rol", "rol": "Narración en vivo · Tazón para Dos" } },
+    { "clip": "RUTA/A/clip_3.mp4", "inicio": 3, "duracion": 4, "texto": "Quédate a compartir." }
+  ]
+}

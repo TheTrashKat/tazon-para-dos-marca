@@ -310,6 +310,24 @@ Los videos no tienen sonido. Agrega la música en tu editor (CapCut, InShot, Pre
 - **Plantillas transparentes:** capa de marca, rótulos de nombre, texto en pantalla y guía de zonas. Exportan PNG transparente.
 - **Plantillas con fondo:** portada de Reel, miniatura 16:9 y tarjetas finales.
 
+### Montaje automático de videos
+
+`tools/montaje.py` arma un video completo con la marca a partir de tus clips. Solo escribes un **guion** en JSON con los clips, los segundos que quieres de cada uno y el texto de cada parte:
+
+| Formato | Resultado |
+|---|---|
+| `9x16-marco` | Reel con los clips horizontales dentro del **marco de marca** (título arriba, texto debajo) |
+| `9x16` | Reel con clips verticales a pantalla completa, más capa de marca y textos |
+| `16x9` | Video para YouTube o Facebook, con capa de marca, textos y **rótulo de nombre** |
+
+```bash
+python -I tools/montaje.py video/ejemplos/guion_reel_marco.json
+```
+
+El script agrega solo la intro, el cierre, la capa de marca y los textos, y conserva el audio original de los clips. Hay ejemplos de guion en `video/ejemplos/`.
+
+> 🛡️ Si en los clips aparecen personas, y sobre todo **menores de edad**, confirma el permiso antes de publicar.
+
 ### Reglas de video
 
 1. **Estructura:** intro (opcional en Reels cortos), contenido, cierre. En Reels de menos de 15 s, sáltate la intro y deja solo la capa de marca y el cierre.
@@ -374,7 +392,7 @@ Los videos no tienen sonido. Agrega la música en tu editor (CapCut, InShot, Pre
 
 ## 15. Cómo hacer una pieza nueva
 
-> 💡 **La forma más fácil es el [editor de plantillas](https://thetrashkat.github.io/tazon-para-dos-marca/editor/).** Eliges la plantilla, cambias los textos y descargas el PNG. Tiene 26 plantillas: publicaciones, eventos, convocatorias, podcast, carrusel, destacadas, **fotos** y **video**. Más detalles en [`editor/README.md`](editor/README.md).
+> 💡 **La forma más fácil es el [editor de plantillas](https://thetrashkat.github.io/tazon-para-dos-marca/editor/).** Eliges la plantilla, cambias los textos y descargas el PNG. Tiene 29 plantillas: publicaciones, eventos, convocatorias, podcast, carrusel, destacadas, **fotos** y **video**. Más detalles en [`editor/README.md`](editor/README.md).
 
 Para piezas que no estén en el editor:
 

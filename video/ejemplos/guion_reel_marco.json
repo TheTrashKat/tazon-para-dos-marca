@@ -1,0 +1,19 @@
+{
+  "formato": "9x16-marco",
+  "salida": "salida/reel_marco_9x16.mp4",
+  "intro": true,
+  "cierre": true,
+  "audio": "original",
+  "marco": {
+    "receta": "general",
+    "titulo": "ASÍ SE VIVE TAZÓN PARA DOS",
+    "etiqueta": "SÁBADOS · 11 A.M. – 9 P.M.",
+    "usuario": "@tazonparados"
+  },
+  "segmentos": [
+    { "clip": "RUTA/A/clip_ludoteca.mp4", "inicio": 0.5, "duracion": 4, "texto": "Una ludoteca llena de mundos." },
+    { "clip": "RUTA/A/clip_cartas.mp4", "inicio": 0.5, "duracion": 3.5, "texto": "Jugamos en comunidad." },
+    { "clip": "RUTA/A/clip_narracion.mp4", "inicio": 2, "duracion": 4, "texto": "Contamos historias en voz alta." },
+    { "clip": "RUTA/A/clip_rol.mp4", "inicio": 5, "duracion": 4.5, "texto": "Construimos personajes, mundos y decisiones." }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "$description": "Perfil de marca legible por máquina. Úsalo junto a tokens.json para generar piezas nuevas. Textos tomados de tazon-para-dos.online (oct 2026) salvo los marcados como 'propuesta'.",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "updated": "2026-10-10",
   "identity": {
     "name": "Tazón para Dos",
@@ -614,7 +614,10 @@
       "texto_pantalla",
       "tarjeta_final_v",
       "tarjeta_final_h",
-      "guia_zonas"
+      "guia_zonas",
+      "marco_video",
+      "texto_pantalla_h",
+      "overlay_video_h"
     ],
     "job_format": {
       "template": "<id>",
@@ -716,6 +719,49 @@
       "fps": 30,
       "codec": "H.264"
     },
-    "audio": "Los MP4 del kit no llevan audio."
+    "audio": "Los MP4 del kit no llevan audio.",
+    "montaje": {
+      "tool": "tools/montaje.py <guion.json>",
+      "formats": {
+        "9x16-marco": "clips horizontales en ventana 16:9 (x60 y650 960x540) dentro de la plantilla marco_video",
+        "9x16": "clips a pantalla completa + overlay_reel + texto_pantalla",
+        "16x9": "clips a pantalla completa + overlay_video_h + texto_pantalla_h + tercio_inferior_h"
+      },
+      "guion_fields": {
+        "formato": "9x16-marco | 9x16 | 16x9",
+        "salida": "ruta mp4",
+        "intro": "bool",
+        "cierre": "bool",
+        "audio": "original | silencio",
+        "marco": "valores de marco_video",
+        "capa": "valores de overlay_reel / overlay_video_h",
+        "segmentos": [
+          {
+            "clip": "ruta",
+            "inicio": "s",
+            "duracion": "s",
+            "texto": "opcional",
+            "estilo_texto": "tinta|sol|crema|turquesa|coral",
+            "rotulo": {
+              "nombre": "",
+              "rol": ""
+            }
+          }
+        ]
+      },
+      "examples": [
+        "video/ejemplos/guion_reel_marco.json",
+        "video/ejemplos/guion_resumen_16x9.json"
+      ],
+      "segment_length_s": [
+        2.5,
+        5
+      ],
+      "reel_total_s": [
+        15,
+        30
+      ],
+      "consent": "Confirmar permiso de las personas (especialmente menores) antes de publicar."
+    }
   }
 }

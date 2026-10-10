@@ -1,0 +1,145 @@
+"""Monta videos con la identidad de Tazón para Dos a partir de un guion en JSON.
+
+Uso:  python -I tools/montaje.py guion.json
+
+Formato del guion:
+{
+  "formato": "9x16-marco",          # 9x16-marco (clips horizontales dentro del marco de marca en un Reel)
+                                     # 9x16       (clips a pantalla completa vertical)
+                                     # 16x9       (YouTube / Facebook)
+  "salida": "reel.mp4",              # relativo a la carpeta del guion
+  "intro": true, "cierre": true,     # intro y cierre animados del kit (video/)
+  "audio": "original",               # original | silencio
+  "marco": { "receta": "general", "titulo": "...", "etiqueta": "...", "usuario": "@tazonparados" },   # solo 9x16-marco
+  "capa":  { "etiqueta": "...", "usuario": "@tazonparados" },                                         # 9x16 y 16x9
+  "segmentos": [
+    { "clip": "ruta/al/video.mp4", "inicio": 2.0, "duracion": 4.0,
+      "texto": "Jugamos en comunidad.",          # opcional
+      "estilo_texto": "tinta",                   # tinta | sol | crema | turquesa | coral
+      "rotulo": { "nombre": "...", "rol": "..." } }   # opcional: rótulo de nombre (pedir permiso antes)
+  ]
+}
+Requiere ffmpeg, Edge/Chrome y el kit de video generado (python -I tools/video.py).
+"""
+import json, pathlib, shutil, subprocess, sys, tempfile
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+try:
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+except Exception:
+    pass
+sys.path.insert(0, str(ROOT / "tools"))
+from video import FFMPEG  # noqa: E402  (reutiliza la búsqueda de ffmpeg)
+
+FFPROBE = str(pathlib.Path(FFMPEG).with_name("ffprobe" + pathlib.Path(FFMPEG).suffix))
+SIZE = {"9x16-marco": (1080, 1920), "9x16": (1080, 1920), "16x9": (1920, 1080)}
+ENC = ["-r", "30", "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-pix_fmt", "yuv420p",
+       "-c:a", "aac", "-b:a", "160k", "-ar", "48000", "-ac", "2", "-movflags", "+faststart"]
+
+
+def ff(*args):
+    subprocess.run([FFMPEG, "-y", "-loglevel", "error", *args], check=True)
+
+
+def has_audio(path):
+    out = subprocess.run([FFPROBE, "-v", "error", "-select_streams", "a", "-show_entries", "stream=index", "-of", "csv=p=0", str(path)],
+                         capture_output=True, text=True).stdout.strip()
+    return bool(out)
+
+
+def render_overlays(jobs, work):
+    if not jobs:
+        return
+    jf = work / "overlays.json"
+    jf.write_text(json.dumps(jobs, ensure_ascii=False), encoding="utf-8")
+    subprocess.run([sys.executable, "-I", str(ROOT / "tools/render_editor.py"), str(jf)], cwd=work, check=True, stdout=subprocess.DEVNULL)
+
+
+def main():
+    if len(sys.argv) < 2:
+        print(__doc__)
+        return
+    gfile = pathlib.Path(sys.argv[1]).resolve()
+    g = json.loads(gfile.read_text(encoding="utf-8"))
+    fmt = g.get("formato", "9x16-marco")
+    W, H = SIZE[fmt]
+    base = gfile.parent
+    out = (base / g.get("salida", "montaje.mp4")).resolve()
+    work = pathlib.Path(tempfile.mkdtemp(prefix="tpd-montaje-"))
+    segs = g["segmentos"]
+
+    # 1) Capas PNG con el editor
+    jobs = []
+    vertical = fmt.startswith("9x16")
+    for i, s in enumerate(segs):
+        if fmt == "9x16-marco":
+            jobs.append({"template": "marco_video", "values": {**g.get("marco", {}), "texto": s.get("texto", "")}, "output": str(work / f"capa_{i}.png")})
+        elif s.get("texto"):
+            jobs.append({"template": "texto_pantalla" if vertical else "texto_pantalla_h",
+                         "values": {"texto": s["texto"], "caja": s.get("estilo_texto", "tinta"), "pos": "abajo"}, "output": str(work / f"texto_{i}.png")})
+        if s.get("rotulo"):
+            jobs.append({"template": "tercio_inferior_v" if vertical else "tercio_inferior_h", "values": s["rotulo"], "output": str(work / f"rotulo_{i}.png")})
+    if fmt != "9x16-marco":
+        jobs.append({"template": "overlay_reel" if vertical else "overlay_video_h", "values": g.get("capa", {}), "output": str(work / "marca.png")})
+    print(f"Renderizando {len(jobs)} capas…")
+    render_overlays(jobs, work)
+
+    # 2) Segmentos
+    parts = []
+    if g.get("intro", True):
+        parts.append(("intro", ROOT / ("video/intro_9x16.mp4" if vertical else "video/intro_16x9.mp4")))
+    for i, s in enumerate(segs):
+        clip = pathlib.Path(s["clip"])
+        clip = clip if clip.is_absolute() else base / clip
+        dur = float(s.get("duracion", 4))
+        inputs = ["-ss", str(s.get("inicio", 0)), "-t", str(dur), "-i", str(clip)]
+        if fmt == "9x16-marco":
+            chain = "[0:v]scale=960:540:force_original_aspect_ratio=increase,crop=960:540,setsar=1,pad=1080:1920:60:650:black[b0]"
+            layers = [work / f"capa_{i}.png"]
+        else:
+            chain = f"[0:v]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},setsar=1[b0]"
+            layers = [p for p in (work / "marca.png", work / f"texto_{i}.png") if p.exists()]
+        rot = work / f"rotulo_{i}.png"
+        idx = 1
+        for layer in layers:
+            inputs += ["-loop", "1", "-t", str(dur), "-i", str(layer)]
+            chain += f";[b{idx - 1}][{idx}:v]overlay=0:0[b{idx}]"
+            idx += 1
+        if rot.exists():
+            inputs += ["-loop", "1", "-t", str(dur), "-i", str(rot)]
+            chain += f";[{idx}:v]format=rgba,fade=t=in:st=0.4:d=0.3:alpha=1,fade=t=out:st={max(0.8, min(dur, 5) - 0.4)}:d=0.3:alpha=1[r];[b{idx - 1}][r]overlay=0:0[b{idx}]"
+            idx += 1
+        chain += f";[b{idx - 1}]fps=30,format=yuv420p[v]"
+        if g.get("audio", "original") == "original" and has_audio(clip):
+            chain += f";[0:a]afade=t=in:d=0.15,afade=t=out:st={max(0, dur - 0.25)}:d=0.25,aresample=48000,aformat=channel_layouts=stereo[a]"
+            amap = ["-map", "[a]"]
+        else:
+            inputs += ["-f", "lavfi", "-t", str(dur), "-i", "anullsrc=r=48000:cl=stereo"]
+            amap = ["-map", f"{idx}:a"]
+        seg = work / f"seg_{i:02d}.mp4"
+        ff(*inputs, "-filter_complex", chain, "-map", "[v]", *amap, "-t", str(dur), *ENC, str(seg))
+        parts.append((f"segmento {i + 1}", seg))
+        print(f"  segmento {i + 1}/{len(segs)} listo")
+    if g.get("cierre", True):
+        parts.append(("cierre", ROOT / ("video/cierre_9x16.mp4" if vertical else "video/cierre_16x9.mp4")))
+
+    # 3) Normalizar intro/cierre (agregar audio en silencio) y unir
+    final = []
+    for name, p in parts:
+        if name in ("intro", "cierre"):
+            q = work / f"{name}.mp4"
+            ff("-i", str(p), "-f", "lavfi", "-i", "anullsrc=r=48000:cl=stereo", "-vf", f"scale={W}:{H},fps=30,format=yuv420p",
+               "-map", "0:v", "-map", "1:a", "-shortest", *ENC, str(q))
+            p = q
+        final.append(p)
+    lst = work / "lista.txt"
+    lst.write_text("".join(f"file '{p.as_posix()}'\n" for p in final), encoding="utf-8")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    ff("-f", "concat", "-safe", "0", "-i", str(lst), "-c", "copy", "-movflags", "+faststart", str(out))
+    dur = subprocess.run([FFPROBE, "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(out)], capture_output=True, text=True).stdout.strip()
+    print(f"Listo: {out}  ({W}x{H}, {float(dur):.1f} s, {out.stat().st_size // 1024} KB)")
+    shutil.rmtree(work, ignore_errors=True)
+
+
+if __name__ == "__main__":
+    main()

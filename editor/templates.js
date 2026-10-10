@@ -228,7 +228,7 @@
       const bg = COLOR[sec.color] || CORAL;
       const accent = bg === TEAL ? SUN : bg === SUN ? CORAL : TEAL;
       let size = 140, lines;
-      for (;;) { lines = D.wrap(String(v.titulo).toUpperCase(), size, 960, "cond", 800); if (lines.length <= 2 || size <= 80) break; size -= 10; }
+      for (;;) { lines = D.wrapBalanced(String(v.titulo).toUpperCase(), size, 960, "cond", 800); if (lines.length <= 2 || size <= 80) break; size -= 10; }
       const lh = size * 0.93, y0 = 900 - (lines.length - 1) * lh;
       const title = lines.map((l, k) => D.headline(540, n(y0 + k * lh), l, size, INK, CREAM, 8, "middle")).join("");
       const menu = ["MENÚ", String(v.seccion).toUpperCase(), v.numero && String(v.numero).toUpperCase()].filter(Boolean).join(" · ");
@@ -284,7 +284,7 @@
     render(v) {
       const bg = COLOR[v.color] || TEAL;
       let size = 124, tl;
-      for (;;) { tl = D.wrap(String(v.titulo).toUpperCase(), size, 950, "cond", 800); if (tl.length <= 3 || size <= 70) break; size -= 8; }
+      for (;;) { tl = D.wrapBalanced(String(v.titulo).toUpperCase(), size, 950, "cond", 800); if (tl.length <= 3 || size <= 70) break; size -= 8; }
       const lh = size * 0.95;
       const titleSvg = tl.map((l, k) => `<text x="64" y="${n(640 + k * lh)}" class="cond" font-size="${size}" fill="${INK}">${D.esc(l)}</text>`).join("");
       const p = D.paragraph(64, 640 + tl.length * lh + 40, v.texto, 38, 900, INK, { maxLines: 5, lineHeight: 50 });
@@ -448,7 +448,7 @@
     render(v) {
       const r = RECIPES[v.receta];
       let size = 110, lines;
-      for (;;) { lines = D.wrap(String(v.titulo).toUpperCase(), size, 500, "cond", 800); if (lines.length <= 3 || size <= 56) break; size -= 6; }
+      for (;;) { lines = D.wrapBalanced(String(v.titulo).toUpperCase(), size, 500, "cond", 800); if (lines.length <= 3 || size <= 56) break; size -= 6; }
       lines = lines.slice(0, 3);
       const lh = size * 0.95, y0 = 250 + size * 0.8;
       const title = lines.map((l, i) => D.headline(56, Math.round(y0 + i * lh), l, size, i === lines.length - 1 ? r.hl : r.ink, i === lines.length - 1 ? r.hlShadow : null, 6)).join("");
@@ -502,7 +502,7 @@
       const kind = v.fuente === "cond" ? "cond" : "sans";
       const txt = kind === "cond" ? String(v.texto).toUpperCase() : v.texto;
       const tb = D.textBox(540, 0, txt, Math.max(24, Math.min(120, Number(v.tam) || 54)), 900, fill, ink, { kind, weight: kind === "cond" ? 800 : 700, maxLines: 4 });
-      const y = v.pos === "arriba" ? 330 : v.pos === "centro" ? 960 - tb.height / 2 : 1440 - tb.height;
+      const y = v.pos === "arriba" ? 330 : v.pos === "centro" ? 960 - tb.height / 2 : 1376 - tb.height;   // termina sobre el usuario de la capa de marca
       return `<g transform="translate(0,${Math.round(y)})">${tb.svg}</g>`;
     },
   });
@@ -543,6 +543,61 @@
         <rect x="940" y="900" width="140" height="600" fill="${CORAL}" opacity="0.45"/>${lab(1010, 880, "BOTONES", "middle")}
         <rect x="64" y="285" width="952" height="1350" fill="none" stroke="${TEAL}" stroke-width="6" stroke-dasharray="18 12"/>${lab(80, 325, "RECORTE 4:5 EN LA CUADRÍCULA")}
         <rect x="64" y="250" width="876" height="1250" fill="none" stroke="${INK}" stroke-width="4"/>${lab(80, 1480, "ZONA SEGURA PARA TEXTO")}`;
+    },
+  });
+
+  // ---- Marco de video: deja una ventana transparente 16:9 para poner clips horizontales en un Reel 9:16
+  const roundRect = (x, y, w, h, r) => `M${x + r},${y} H${x + w - r} A${r},${r} 0 0 1 ${x + w},${y + r} V${y + h - r} A${r},${r} 0 0 1 ${x + w - r},${y + h} H${x + r} A${r},${r} 0 0 1 ${x},${y + h - r} V${y + r} A${r},${r} 0 0 1 ${x + r},${y} Z`;
+  add({
+    id: "marco_video", name: "Marco para video horizontal en Reel (transparente)", group: "Video", w: 1080, h: 1920, transparent: true,
+    fields: [f.receta, f.etiqueta("SÁBADOS · 11 A.M. – 9 P.M."), { key: "titulo", label: "Título (arriba)", type: "text", default: "ASÍ SE VIVE TAZÓN PARA DOS" },
+      { key: "texto", label: "Texto (debajo del video)", type: "textarea", default: "Jugamos en comunidad." }, f.usuario],
+    render(v) {
+      const r = RECIPES[v.receta];
+      const W = { x: 60, y: 650, w: 960, h: 540, r: 26 };
+      const win = roundRect(W.x, W.y, W.w, W.h, W.r);
+      const full = "M0,0 H1080 V1920 H0 Z";
+      let size = 100, lines;
+      for (;;) { lines = D.wrapBalanced(String(v.titulo).toUpperCase(), size, 960, "cond", 800); if (lines.length <= 2 || size <= 60) break; size -= 6; }
+      lines = lines.slice(0, 2);
+      const top = v.etiqueta ? 446 : 390;                       // debajo de la cabecera (y la etiqueta)
+      const ty = Math.max(top + size * 0.72, W.y - 30 - (lines.length - 1) * size * 0.95);
+      const title = lines.map((l, i) => D.headline(60, Math.round(ty + i * size * 0.95), l, size, i === lines.length - 1 ? r.hl : r.ink, i === lines.length - 1 ? r.hlShadow : null, 8)).join("");
+      const tb = v.texto ? D.textBox(540, 1240, v.texto, 46, 960, r.bg === INK ? SUN : INK, r.bg === INK ? INK : CREAM, { maxLines: 2 }) : { svg: "" };
+      return `<path fill-rule="evenodd" d="${full} ${win}" fill="${r.bg}"/><path fill-rule="evenodd" d="${full} ${win}" fill="url(#${r.light ? "dotsLight" : "dots"})"/>
+        <path fill-rule="evenodd" d="${roundRect(W.x + 14, W.y + 14, W.w, W.h, W.r)} ${win}" fill="${INK}"/>
+        <path d="${win}" fill="none" stroke="${INK}" stroke-width="10"/>
+        ${D.corner(1080, ...r.corner, 260)}${headerChip(64, 250)}
+        ${v.etiqueta ? D.pillAuto(64, 378, 50, r.ink === CREAM ? TEAL : INK, r.ink === CREAM ? INK : CREAM, v.etiqueta, 20) : ""}
+        ${title}${tb.svg}
+        ${D.pillAuto(540, 1424, 60, CREAM, INK, v.usuario, 26, { anchor: "middle", stroke: INK })}
+        ${D.sparkle(1012, 1212, 56, r.accent)}`;
+    },
+  });
+
+  add({
+    id: "texto_pantalla_h", name: "Texto en pantalla 16:9 (transparente)", group: "Video", w: 1920, h: 1080, transparent: true,
+    fields: [{ key: "texto", label: "Texto", type: "textarea", default: "Ven a jugar. Quédate a compartir." },
+      { key: "caja", label: "Estilo", type: "select", options: BOX_OPTS, default: "tinta" },
+      { key: "fuente", label: "Tipografía", type: "select", options: [["sans", "Texto (Barlow)"], ["cond", "Titular (Barlow Condensed)"]], default: "sans" },
+      { key: "tam", label: "Tamaño", type: "number", default: 56 },
+      { key: "pos", label: "Posición", type: "select", options: [["arriba", "Arriba"], ["centro", "Centro"], ["abajo", "Abajo (subtítulos)"]], default: "abajo" }],
+    render(v) {
+      const [fill, ink] = BOX[v.caja] || BOX.tinta;
+      const kind = v.fuente === "cond" ? "cond" : "sans";
+      const txt = kind === "cond" ? String(v.texto).toUpperCase() : v.texto;
+      const tb = D.textBox(960, 0, txt, Math.max(24, Math.min(140, Number(v.tam) || 56)), 1500, fill, ink, { kind, weight: kind === "cond" ? 800 : 700, maxLines: 3 });
+      const y = v.pos === "arriba" ? 90 : v.pos === "centro" ? 540 - tb.height / 2 : 990 - tb.height;
+      return `<g transform="translate(0,${Math.round(y)})">${tb.svg}</g>`;
+    },
+  });
+
+  add({
+    id: "overlay_video_h", name: "Capa de marca 16:9 (transparente)", group: "Video", w: 1920, h: 1080, transparent: true,
+    fields: [f.etiqueta(""), f.usuario, { key: "sello", label: "Mostrar sello", type: "checkbox", default: true }],
+    render(v) {
+      const seal = v.sello ? `<circle cx="1800" cy="120" r="66" fill="${CREAM}" stroke="${INK}" stroke-width="5"/><use href="#bowl" x="1757" y="75" width="86" height="89"/>` : "";
+      return `${seal}${v.etiqueta ? D.pillAuto(64, 80, 60, INK, CREAM, v.etiqueta, 24) : ""}${D.pillAuto(1856, 960, 60, CREAM, INK, v.usuario, 26, { anchor: "end", stroke: INK })}`;
     },
   });
 
