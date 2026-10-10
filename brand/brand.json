@@ -31,7 +31,7 @@
       "city": "Bogotá",
       "country": "Colombia",
       "display": "Engativá · Bogotá",
-      "schedule_note": "El sitio menciona 'Sábados'. Confirmar horario antes de publicarlo."
+      "schedule": { "days": "Sábados", "open": "11:00", "close": "21:00", "display": "Sábados · 11:00 a.m. – 9:00 p.m." }
     },
     "links": {
       "web": "https://tazon-para-dos.online/",

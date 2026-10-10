@@ -18,6 +18,7 @@ Tazón para Dos es una **agrupación cultural LGBTI+** que crea espacios seguros
 | **Qué hacemos** | Juegos de rol · Juegos de mesa · Podcast narrativo |
 | **Pilares** | Comunidad · Oralidad · Memoria local · Podcast |
 | **Dónde** | Tv. 76b #81f-08, Engativá, Bogotá |
+| **Horario** | Sábados · 11:00 a.m. – 9:00 p.m. |
 | **Web** | [tazon-para-dos.online](https://tazon-para-dos.online/) |
 | **Redes** | [@tazonparados](https://www.instagram.com/tazonparados/) · [Facebook](https://www.facebook.com/61577811222885/) · [Spotify](https://open.spotify.com/show/2o68dbyhq4YvyRE3lmVXWY) |
 
