@@ -1,6 +1,6 @@
 {
   "$description": "Perfil de marca legible por máquina. Úsalo junto a tokens.json para generar piezas nuevas. Textos tomados de tazon-para-dos.online (oct 2026) salvo los marcados como 'propuesta'.",
-  "version": "1.9.0",
+  "version": "2.0.0",
   "updated": "2026-10-10",
   "identity": {
     "name": "Tazón para Dos",
@@ -651,7 +651,19 @@
       "zine_reel",
       "bloques_post",
       "bloques_historia",
-      "bloques_reel"
+      "bloques_reel",
+      "editorial_anuncio",
+      "editorial_carrusel_portada",
+      "editorial_carrusel_lamina",
+      "editorial_podcast",
+      "editorial_cita",
+      "editorial_collage",
+      "zine_anuncio",
+      "zine_carrusel_portada",
+      "zine_carrusel_lamina",
+      "zine_podcast",
+      "zine_cita",
+      "zine_collage"
     ],
     "job_format": {
       "template": "<id>",
@@ -671,7 +683,7 @@
       "tool": "python -I tools/validar.py [--hojas]",
       "page": "editor/validar.html",
       "passes": [
-        "automática: cada plantilla con valores normales y con textos largos; errores = render falla, texto fuera del lienzo, textos encimados o pegados, píldora que tapa texto, undefined/NaN; avisos = zona de interfaz de Instagram, bajo los botones del Reel, texto < 18 px, pegado al borde",
+        "automática: cada plantilla con valores normales y con textos largos; errores = render falla, texto fuera del lienzo, textos encimados o pegados, píldora que tapa texto, undefined/NaN; avisos = zona de interfaz de Instagram, bajo los botones del Reel, texto < 18 px, pegado al borde; formas dibujadas encima que tapan texto",
         "visual: hojas de contacto en salida/validacion/ (normal | estrés) revisadas a ojo"
       ],
       "rule": "Toda plantilla nueva o modificada debe quedar con 0 errores y revisada en las hojas antes de guardarse.",

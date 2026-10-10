@@ -128,7 +128,7 @@
       const tag = v.etiqueta ? D.pillAuto(76, 400, 60, r.ink === CREAM ? TEAL : INK, r.ink === CREAM ? INK : CREAM, v.etiqueta, 24) : "";
       return `${D.background(1080, 1920, r.bg, r.light)}${D.corner(1080, ...r.corner, 260)}${D.header(132, 300, 1.22, r.ink)}${tag}
         ${D.headline(70, 660, v.linea1, D.fit(v.linea1, 172, 930), r.ink)}
-        ${D.headline(70, 880, v.linea2, D.fit(v.linea2, 236, 900), r.hl, r.hlShadow, 12)}
+        ${D.headline(70, 880, v.linea2, D.fit(v.linea2, 236, v.dado ? 760 : 900), r.hl, r.hlShadow, 12)}
         ${D.sparkle(990, 560, 70, r.accent)}
         <path d="M0,960 L1080,900 L1080,942 L0,1002 Z" fill="${CREAM}"/>
         <path d="M0,1002 L1080,942 L1080,1920 L0,1920 Z" fill="${r.block}"/><path d="M0,1002 L1080,942 L1080,1920 L0,1920 Z" fill="url(#dots)"/>
@@ -172,7 +172,7 @@
     id: "convocatoria_historia", name: "Convocatoria historia", group: "Convocatorias", w: 1080, h: 1920,
     fields: [...convFields.slice(0, 4), { key: "texto", label: "Texto", type: "textarea", default: "Estamos buscando voces, recuerdos y mundos para convertirlos en una nueva serie de podcast narrativo." }, ...convFields.slice(4)],
     render(v) {
-      const p = D.paragraph(76, 1060, v.texto, 34, 900, INK, { maxLines: 3, lineHeight: 42 });
+      const p = D.paragraph(76, 1060, v.texto, 34, 900, INK, { maxLines: 2, lineHeight: 42 });
       return `${D.background(1080, 1920, SUN)}${D.corner(1080, TEAL, CORAL, 260)}${D.header(132, 300, 1.22, INK)}
         ${D.pillAuto(76, 400, 60, INK, CREAM, v.etiqueta, 24)}
         ${D.headline(70, 640, v.linea1, D.fit(v.linea1, 160, 900), INK)}${D.headline(70, 790, v.linea2, D.fit(v.linea2, 160, 920), INK)}
@@ -903,8 +903,8 @@
     render(v) {
       const seal = `<g transform="translate(182,384) rotate(-8)"><circle cx="10" cy="10" r="104" fill="${INK}"/><circle r="104" fill="${CREAM}" stroke="${INK}" stroke-width="8"/>
         <use href="#bowl" x="-64" y="-66" width="128" height="132"/></g>`;
-      return `${tag(262, 344, -4, "TAZÓN PARA DOS", 66, SUN, INK, "cond")}
-        ${tag(290, 442, 2, "ESPACIO CULTURAL · ENGATIVÁ", 24, CREAM, INK)}
+      return `${tag(290, 344, -4, "TAZÓN PARA DOS", 66, SUN, INK, "cond")}
+        ${tag(308, 442, 2, "ESPACIO CULTURAL · ENGATIVÁ", 24, CREAM, INK)}
         ${seal}
         ${tag(110, 538, -3, v.etiqueta, D.fit(v.etiqueta, 30, 760, "sans", 700, 2), CORAL, INK)}
         ${sticker(v.sticker, 935, 350, 0.95)}
@@ -1119,7 +1119,7 @@
       const s1 = cutoutSize(v.titulo1, 104, 690), s2 = cutoutSize(v.titulo2, 118, 690);
       return `${D.background(1080, 1350, TEAL)}${motif(930, 1190, 330, 14)}
         ${D.header(104, 72, 1.0, INK)}
-        ${zineCard(540, 520, -3, 860, 760, v)}
+        ${zineCard(540, 548, -3, 860, 720, v)}
         ${D.sparkle(1010, 160, 64, SUN)}${D.sparkle(1040, 250, 28, CREAM)}${D.d6(110, 880, 0.9, -16)}
         ${cutout(56, 1000, -2, v.titulo1, s1, SUN, INK)}
         ${cutout(70, 1146, 1.5, v.titulo2, s2, INK, CREAM)}
@@ -1224,6 +1224,261 @@
         <text x="54" y="${Math.round(1170 + t.size * 0.74)}" class="cond" font-size="${t.size}" fill="${INK}">${D.esc(t.a)}</text>
         ${D.headline(54, Math.round(1170 + t.size * 1.68), t.b, t.size, CREAM, INK, 10)}
         ${firma(60, 1478, 1.05, INK)}`;
+    },
+  });
+
+  // ============================================================ LÍNEA EDITORIAL: más formatos
+  const edLabel = (x, y, text, maxW, color = CORAL, size = 26) => {
+    const s = String(text || "").toUpperCase();
+    return s ? `<text x="${x}" y="${y}" class="sans" font-weight="700" font-size="${D.fit(s, size, maxW, "sans", 700, 5)}" fill="${color}" letter-spacing="5">${D.esc(s)}</text>` : "";
+  };
+  // Titular de varias líneas: la última en el color de acento
+  function edTitle(x, top, text, max, maxW, maxLines, ink, accent, min = 60, lhK = 0.94) {
+    const t = fitLines(text, max, maxW, maxLines, min);
+    const lh = t.size * lhK;
+    const svg = t.lines.map((l, i) => `<text x="${x}" y="${Math.round(top + t.size * 0.74 + i * lh)}" class="cond" font-size="${t.size}" fill="${i === t.lines.length - 1 && t.lines.length > 1 ? accent : ink}">${D.esc(l)}</text>`).join("");
+    return { svg, bottom: top + t.size * 0.74 + (t.lines.length - 1) * lh, size: t.size };
+  }
+  const edFooter = (y, ink, right, rightColor = MUTED) => `<rect x="54" y="${y - 68}" width="${1080 - 108}" height="4" fill="${ink}"/>${firma(54, y, 1, ink)}
+    ${right ? `<text x="1026" y="${y - 3}" text-anchor="end" class="sans" font-weight="700" font-size="${D.fit(right, 26, 520, "sans", 700, 2)}" fill="${rightColor}" letter-spacing="2">${D.esc(right)}</text>` : ""}`;
+
+  add({
+    id: "editorial_anuncio", name: "Editorial: anuncio 1:1", group: "Editorial", w: 1080, h: 1080,
+    fields: [f.etiqueta("CONVOCATORIA ABIERTA"), { key: "titulo", label: "Titular (la última línea va en coral)", type: "textarea", default: "¿Qué mundo quieres traer a la mesa?" },
+      { key: "texto", label: "Texto (hasta 2 líneas)", type: "textarea", default: "Cuéntanos tu historia: elegimos dos por votación abierta y las convertimos en podcast." },
+      { key: "pie", label: "Texto a la derecha del pie", type: "text", default: "tazon-para-dos.online" }],
+    render(v) {
+      const t = edTitle(50, 170, v.titulo, 150, 960, 3, INK, CORAL, 70, 1.04);
+      const p = D.paragraph(54, Math.round(t.bottom + 84), v.texto, 36, 960, INK, { maxLines: 2, lineHeight: 48 });
+      return `<rect width="1080" height="1080" fill="${CREAM}"/>
+        ${edLabel(54, 130, v.etiqueta, 800)}${D.sparkle(1000, 112, 64, SUN)}${D.sparkle(940, 160, 26, CORAL)}
+        ${t.svg}${p.svg}
+        ${edFooter(1010, INK, v.pie)}`;
+    },
+  });
+
+  add({
+    id: "editorial_carrusel_portada", name: "Editorial: carrusel portada 4:5", group: "Editorial", w: 1080, h: 1350,
+    fields: [foto(), enfoque(), f.etiqueta("CÓMO FUNCIONA"), pf.titulo1, pf.titulo2, { key: "total", label: "Total de láminas", type: "number", default: 5 }],
+    render(v) {
+      const t = twoTitle(v.titulo1, v.titulo2, 128, 968);
+      const y1 = 800 + t.size * 0.74, y2 = y1 + t.size * 0.94;
+      return `<rect width="1080" height="1350" fill="${CREAM}"/>
+        ${D.photo(48, 48, 984, 652, v.foto, { focus: v.enfoque, stroke: false, rx: 6 })}
+        ${edLabel(54, 770, v.etiqueta, 700)}
+        <text x="1026" y="770" text-anchor="end" class="cond" font-size="40" fill="${INK}">1/${Number(v.total) || 5}</text>
+        <text x="50" y="${Math.round(y1)}" class="cond" font-size="${t.size}" fill="${INK}">${D.esc(t.a)}</text>
+        <text x="50" y="${Math.round(y2)}" class="cond" font-size="${t.size}" fill="${CORAL}">${D.esc(t.b)}</text>
+        ${edFooter(1296, INK, "DESLIZA →", CORAL)}`;
+    },
+  });
+  // Tabla de valores en la lámina (paso del proceso)
+  const P0 = T.process[0] || { title: "Postula tu idea", text: "" };
+  add({
+    id: "editorial_carrusel_lamina", name: "Editorial: carrusel lámina 4:5", group: "Editorial", w: 1080, h: 1350,
+    fields: [{ key: "numero", label: "Número grande", type: "text", default: "01" }, { key: "icono", label: "Ícono", type: "select", options: ICON_OPTS, default: "idea" },
+      { key: "titulo", label: "Título", type: "text", default: P0.title },
+      { key: "texto", label: "Texto", type: "textarea", default: P0.text },
+      { key: "posicion", label: "Posición de la lámina", type: "number", default: 2 }, { key: "total", label: "Total de láminas", type: "number", default: 5 }],
+    render(v) {
+      const ns = D.fit(v.numero, 250, 560);
+      // Bloque de texto anclado abajo (estilo póster): primero se mide, luego se ubica
+      const lines = D.wrap(v.texto, 44, 960, "sans", 500).slice(0, 7);
+      const pH = (lines.length - 1) * 60;
+      const tt = fitLines(v.titulo, 104, 968, 2, 64);
+      const tH = tt.size * 0.74 + (tt.lines.length - 1) * tt.size * 0.98;
+      const top = Math.max(420, 1150 - pH - 84 - tH);
+      const t = edTitle(50, top, v.titulo, 104, 968, 2, INK, INK, 64, 0.98);
+      const p = D.paragraph(54, Math.round(top + tH + 84), v.texto, 44, 960, INK, { maxLines: 7, lineHeight: 60, weight: 500 });
+      return `<rect width="1080" height="1350" fill="${CREAM}"/>
+        <text x="44" y="300" class="cond" font-size="${ns}" fill="${CORAL}">${D.esc(v.numero)}</text>
+        <circle cx="${872 + 12}" cy="${206 + 12}" r="134" fill="${INK}"/><circle cx="872" cy="206" r="134" fill="${SUN}" stroke="${INK}" stroke-width="7"/>${D.icon(v.icono, 872, 206, 160)}
+        <rect x="54" y="${Math.round(top - 56)}" width="120" height="8" fill="${CORAL}"/>
+        ${t.svg}${p.svg}
+        ${edFooter(1296, INK, `${Number(v.posicion) || 2}/${Number(v.total) || 5} · DESLIZA →`, CORAL)}`;
+    },
+  });
+
+  add({
+    id: "editorial_podcast", name: "Editorial: podcast 1:1", group: "Editorial", w: 1080, h: 1080,
+    fields: [foto("foto", "Foto o portada"), enfoque(), f.etiqueta("PODCAST · EP. 07"), { key: "titulo1", label: "Titular línea 1", type: "text", default: "LA TABERNA" },
+      { key: "titulo2", label: "Titular línea 2 (destacada)", type: "text", default: "DEL DRAGÓN." }, { key: "pie", label: "Texto a la derecha del pie", type: "text", default: "ESCÚCHALO EN SPOTIFY" }],
+    render(v) {
+      const t = twoTitle(v.titulo1, v.titulo2, 104, 968);
+      const y1 = 700 + t.size * 0.74, y2 = y1 + t.size * 0.94;
+      return `<rect width="1080" height="1080" fill="${INK}"/><rect width="1080" height="1080" fill="url(#dotsLight)"/>
+        ${D.photo(48, 48, 984, 560, v.foto, { focus: v.enfoque, stroke: false, rx: 6 })}
+        ${edLabel(54, 672, v.etiqueta, 700, SUN)}
+        ${D.waveform(760, 1026, 660, 40, TEAL)}
+        <text x="50" y="${Math.round(y1)}" class="cond" font-size="${t.size}" fill="${CREAM}">${D.esc(t.a)}</text>
+        <text x="50" y="${Math.round(y2)}" class="cond" font-size="${t.size}" fill="${SUN}">${D.esc(t.b)}</text>
+        ${edFooter(1030, CREAM, v.pie, SUN)}`;
+    },
+  });
+
+  add({
+    id: "editorial_cita", name: "Editorial: foto con frase 4:5", group: "Editorial", w: 1080, h: 1350,
+    fields: [foto(), enfoque(), { key: "cita", label: "Frase", type: "textarea", default: "Nos reunimos para inventar mundos y terminamos encontrando nuevas formas de habitar el nuestro." },
+      { key: "autor", label: "Autor/a (opcional)", type: "text", default: "Comunidad Tazón para Dos" }],
+    render(v) {
+      let size = 66, lines;
+      for (;;) { lines = D.wrap(String(v.cita).toUpperCase(), size, 860, "cond", 800); if (lines.length <= 4 || size <= 40) break; size -= 3; }
+      lines = lines.slice(0, 4);
+      const y0 = 830 + size * 0.74, lh = size * 1.08;
+      const q = lines.map((l, i) => `<text x="160" y="${Math.round(y0 + i * lh)}" class="cond" font-size="${size}" fill="${INK}">${D.esc(l)}</text>`).join("");
+      const ay = Math.round(y0 + (lines.length - 1) * lh + 56);
+      return `<rect width="1080" height="1350" fill="${CREAM}"/>
+        ${D.photo(48, 48, 984, 710, v.foto, { focus: v.enfoque, stroke: false, rx: 6 })}
+        <text x="44" y="${Math.round(830 + 170)}" class="cond" font-size="230" fill="${CORAL}">“</text>
+        ${q}
+        ${v.autor ? `<text x="162" y="${ay}" class="sans" font-weight="700" font-size="${D.fit("— " + v.autor, 28, 860, "sans", 700)}" fill="${CORAL}">— ${D.esc(v.autor)}</text>` : ""}
+        ${edFooter(1296, INK, "")}`;
+    },
+  });
+
+  add({
+    id: "editorial_collage", name: "Editorial: crónica con 3 fotos 4:5", group: "Editorial", w: 1080, h: 1350,
+    fields: [foto("foto1", "Foto grande"), enfoque("enfoque1"), foto("foto2", "Foto 2"), enfoque("enfoque2"), foto("foto3", "Foto 3"), enfoque("enfoque3"),
+      f.etiqueta("CRÓNICA · SÁBADO 11 OCT"), { key: "titulo", label: "Titular", type: "text", default: "ASÍ SE VIVIÓ LA MESA." }],
+    render(v) {
+      const ts = D.fit(String(v.titulo).toUpperCase(), 112, 968);
+      return `<rect width="1080" height="1350" fill="${CREAM}"/>
+        ${D.photo(48, 48, 984, 560, v.foto1, { focus: v.enfoque1, stroke: false, rx: 6 })}
+        ${D.photo(48, 632, 480, 300, v.foto2, { focus: v.enfoque2, stroke: false, rx: 6 })}
+        ${D.photo(552, 632, 480, 300, v.foto3, { focus: v.enfoque3, stroke: false, rx: 6 })}
+        ${edLabel(54, 1002, v.etiqueta, 968)}
+        <text x="50" y="${Math.round(1030 + ts * 0.74)}" class="cond" font-size="${ts}" fill="${INK}">${D.esc(String(v.titulo).toUpperCase())}</text>
+        ${edFooter(1296, INK, PLACE)}`;
+    },
+  });
+
+  // ============================================================ LÍNEA MESA / ZINE: más formatos
+  const ZINE_BG = [["teal", "Turquesa"], ["coral", "Coral"], ["sun", "Sol"], ["ink", "Tinta"]];
+  const zineBg = { key: "fondo", label: "Color de fondo", type: "select", options: ZINE_BG, default: "teal" };
+  const zInk = (bg) => (bg === INK ? CREAM : INK);
+  // Recortes alternos: en fondo tinta, la línea oscura pasa a turquesa
+  const zAlt = (bg) => (bg === INK ? [TEAL, INK] : [INK, CREAM]);
+  function zineNote(x, y, w, h, rot, inner) {
+    return `<g transform="rotate(${rot} ${x + w / 2} ${y + h / 2})">
+      <rect x="${x + 14}" y="${y + 14}" width="${w}" height="${h}" rx="10" fill="${INK}"/>
+      <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="${CREAM}" stroke="${INK}" stroke-width="7"/>${inner}
+      ${tape(x + w / 2, y, 200, 3)}</g>`;
+  }
+
+  add({
+    id: "zine_anuncio", name: "Mesa/Zine: anuncio 1:1", group: "Mesa / Zine", w: 1080, h: 1080,
+    fields: [zineBg, { key: "linea1", label: "Recorte 1", type: "text", default: "¿QUÉ MUNDO" }, { key: "linea2", label: "Recorte 2", type: "text", default: "QUIERES TRAER" },
+      { key: "linea3", label: "Recorte 3", type: "text", default: "A LA MESA?" }, { key: "burbuja", label: "Burbuja", type: "text", default: "Mi historia trata sobre..." }, f.usuario],
+    render(v) {
+      const bg = COLOR[v.fondo] || TEAL, ink = zInk(bg), [alt, altInk] = zAlt(bg);
+      const s = Math.min(cutoutSize(v.linea1, 112, 720), cutoutSize(v.linea2, 112, 720), cutoutSize(v.linea3, 124, 720));
+      return `${D.background(1080, 1080, bg, bg === INK)}${motif(930, 900, 300, 12, bg === INK ? 0.08 : 0.1)}
+        ${D.header(104, 80, 1, ink)}
+        ${cutout(54, 290, -2, v.linea1, s, SUN, INK)}
+        ${cutout(70, 440, 1.5, v.linea2, s, alt, altInk)}
+        ${cutout(58, 594, -1, v.linea3, Math.min(124, s * 1.1), bg === CORAL ? SUN : CORAL, INK)}
+        ${v.burbuja ? D.bubble(64, 740, 600, 104, v.burbuja, 34) : ""}
+        ${D.d20(880, 700, 120, 14)}${D.d6(740, 870, 1.1, -12)}${D.sparkle(980, 300, 70, SUN)}${D.sparkle(1010, 400, 30, CREAM)}
+        <text x="1016" y="1030" text-anchor="end" class="sans" font-weight="700" font-size="${D.fit(v.usuario, 30, 420, "sans", 700)}" fill="${ink}">${D.esc(v.usuario)}</text>`;
+    },
+  });
+
+  add({
+    id: "zine_carrusel_portada", name: "Mesa/Zine: carrusel portada 4:5", group: "Mesa / Zine", w: 1080, h: 1350,
+    fields: [foto(), enfoque(), pf.pie, zineBg, pf.titulo1, pf.titulo2, f.usuario],
+    render(v) {
+      const bg = COLOR[v.fondo] || TEAL, ink = zInk(bg), [alt, altInk] = zAlt(bg);
+      const s1 = cutoutSize(v.titulo1, 108, 760), s2 = cutoutSize(v.titulo2, 120, 760);
+      return `${D.background(1080, 1350, bg, bg === INK)}${motif(940, 1180, 320, 10, bg === INK ? 0.08 : 0.1)}
+        ${D.header(104, 72, 1, ink)}
+        ${zineCard(540, 500, -3, 840, 640, v)}
+        ${D.sparkle(1010, 170, 64, SUN)}${D.d6(110, 820, 0.9, -16)}
+        ${cutout(54, 940, -2, v.titulo1, s1, SUN, INK)}
+        ${cutout(70, 1088, 1.5, v.titulo2, s2, alt, altInk)}
+        ${tag(1016, 1262, -3, "DESLIZA →", 30, CREAM, INK, "sans", "end")}
+        <text x="64" y="1290" class="sans" font-weight="700" font-size="${D.fit(v.usuario, 28, 420, "sans", 700)}" fill="${ink}">${D.esc(v.usuario)}</text>`;
+    },
+  });
+
+  add({
+    id: "zine_carrusel_lamina", name: "Mesa/Zine: carrusel lámina 4:5", group: "Mesa / Zine", w: 1080, h: 1350,
+    fields: [zineBg, { key: "numero", label: "Número", type: "text", default: "01" }, { key: "icono", label: "Ícono", type: "select", options: ICON_OPTS, default: "idea" },
+      { key: "titulo", label: "Título", type: "text", default: P0.title },
+      { key: "texto", label: "Texto", type: "textarea", default: P0.text },
+      { key: "posicion", label: "Posición de la lámina", type: "number", default: 2 }, { key: "total", label: "Total de láminas", type: "number", default: 5 }],
+    render(v) {
+      const bg = COLOR[v.fondo] || TEAL, ink = zInk(bg);
+      const ts = cutoutSize(v.titulo, 92, 800);
+      const p = D.paragraph(116, 650, v.texto, 44, 800, INK, { maxLines: 8, lineHeight: 60, weight: 500 });
+      const ruled = Array.from({ length: 9 }, (_, i) => `<line x1="96" y1="${666 + i * 60}" x2="984" y2="${666 + i * 60}" stroke="${TEAL}" stroke-width="3" opacity="0.45"/>`).join("") +
+        `<line x1="100" y1="580" x2="100" y2="1150" stroke="${CORAL}" stroke-width="3" opacity="0.6"/>`;
+      const iconSticker = `<g transform="translate(940,1150) rotate(10)"><circle cx="10" cy="10" r="96" fill="${INK}"/><circle r="96" fill="${CORAL}" stroke="${INK}" stroke-width="7"/>${D.icon(v.icono, 0, 0, 110)}</g>`;
+      const num = `<g transform="translate(176,250) rotate(-8)"><circle cx="12" cy="12" r="118" fill="${INK}"/><circle r="118" fill="${SUN}" stroke="${INK}" stroke-width="8"/>
+        <text x="0" y="${D.fit(v.numero, 130, 180) * 0.36}" text-anchor="middle" class="cond" font-size="${D.fit(v.numero, 130, 180)}" fill="${INK}">${D.esc(v.numero)}</text></g>`;
+      return `${D.background(1080, 1350, bg, bg === INK)}${D.corner(1080, SUN, CORAL, 160)}
+        ${num}${D.sparkle(380, 150, 56, SUN)}${D.sparkle(420, 230, 24, CREAM)}
+        ${cutout(54, 450, -2, v.titulo, ts, bg === SUN ? CREAM : SUN, INK)}
+        ${zineNote(64, 560, 952, 600, 1, ruled + p.svg)}${iconSticker}
+        ${tag(1016, 1262, -3, "DESLIZA →", 30, CREAM, INK, "sans", "end")}
+        <text x="64" y="1290" class="cond" font-size="44" fill="${ink}">${Number(v.posicion) || 2}/${Number(v.total) || 5}</text>`;
+    },
+  });
+
+  add({
+    id: "zine_podcast", name: "Mesa/Zine: podcast 1:1", group: "Mesa / Zine", w: 1080, h: 1080,
+    fields: [foto("foto", "Foto o portada"), enfoque(), { key: "pie", label: "Pie de foto", type: "text", default: "grabando en la mesa" },
+      f.etiqueta("EP. 07 · MESA PRINCIPAL"), { key: "titulo1", label: "Recorte 1", type: "text", default: "LA TABERNA" }, { key: "titulo2", label: "Recorte 2", type: "text", default: "DEL DRAGÓN." },
+      { key: "cta", label: "Llamado", type: "text", default: "▶ ESCÚCHALO EN SPOTIFY" }, f.usuario],
+    render(v) {
+      const s1 = cutoutSize(v.titulo1, 96, 860), s2 = cutoutSize(v.titulo2, 104, 860);
+      return `${D.background(1080, 1080, INK, true)}${motif(940, 930, 280, 12, 0.1)}
+        ${D.header(104, 72, 1, CREAM)}
+        ${zineCard(400, 402, -3, 640, 450, v, 30)}
+        <g transform="translate(860,380) rotate(8)">${D.mic(0, 0, 0.62, CREAM)}</g>
+        ${D.sparkle(1010, 170, 60, SUN)}
+        ${tag(64, 690, -3, v.etiqueta, D.fit(v.etiqueta, 28, 700, "sans", 700, 2), CORAL, INK)}
+        ${cutout(54, 790, -2, v.titulo1, s1, SUN, INK)}
+        ${cutout(70, 912, 1.5, v.titulo2, s2, TEAL, INK)}
+        <text x="64" y="1036" class="sans" font-weight="700" font-size="${D.fit(v.cta, 28, 560, "sans", 700, 2)}" fill="${CREAM}" letter-spacing="2">${D.esc(v.cta)}</text>
+        <text x="1016" y="1036" text-anchor="end" class="sans" font-weight="700" font-size="${D.fit(v.usuario, 28, 360, "sans", 700)}" fill="${SUN}">${D.esc(v.usuario)}</text>`;
+    },
+  });
+
+  add({
+    id: "zine_cita", name: "Mesa/Zine: foto con frase 4:5", group: "Mesa / Zine", w: 1080, h: 1350,
+    fields: [foto(), enfoque(), pf.pie, zineBg, { key: "cita", label: "Frase", type: "textarea", default: "Aquí aprendí que cada voz cuenta una parte de la historia." },
+      { key: "autor", label: "Autor/a (opcional)", type: "text", default: "Jugadora de los sábados" }, f.usuario],
+    render(v) {
+      const bg = COLOR[v.fondo] || CORAL, ink = zInk(bg);
+      let size = 64, lines;
+      for (;;) { lines = D.wrap(String(v.cita).toUpperCase(), size, 820, "cond", 800); if (lines.length <= 3 || size <= 40) break; size -= 3; }
+      lines = lines.slice(0, 3);
+      const q = lines.map((l, i) => `<text x="112" y="${Math.round(886 + size * 0.74 + i * size * 1.1)}" class="cond" font-size="${size}" fill="${INK}">${D.esc(l)}</text>`).join("");
+      return `${D.background(1080, 1350, bg, bg === INK)}${motif(150, 1220, 260, -12, bg === INK ? 0.08 : 0.1)}
+        ${zineCard(560, 410, 2, 820, 640, v)}
+        ${D.sparkle(110, 150, 60, SUN)}${D.sparkle(80, 240, 26, CREAM)}
+        ${zineNote(64, 830, 952, 300, -1.5, q)}
+        <g transform="translate(968,846) rotate(10)"><circle cx="10" cy="10" r="66" fill="${INK}"/><circle r="66" fill="${SUN}" stroke="${INK}" stroke-width="7"/>
+          <text x="0" y="78" text-anchor="middle" class="cond" font-size="170" fill="${INK}">“</text></g>
+        ${v.autor ? tag(96, 1196, -2, "— " + v.autor, D.fit("— " + v.autor, 28, 700, "sans", 700, 2), SUN, INK) : ""}
+        <text x="1016" y="1300" text-anchor="end" class="sans" font-weight="700" font-size="${D.fit(v.usuario, 28, 420, "sans", 700)}" fill="${ink}">${D.esc(v.usuario)}</text>`;
+    },
+  });
+
+  add({
+    id: "zine_collage", name: "Mesa/Zine: crónica con 3 fotos 4:5", group: "Mesa / Zine", w: 1080, h: 1350,
+    fields: [foto("foto1", "Foto grande"), enfoque("enfoque1"), foto("foto2", "Foto 2"), enfoque("enfoque2"), foto("foto3", "Foto 3"), enfoque("enfoque3"),
+      zineBg, { key: "titulo", label: "Recorte del titular", type: "text", default: "ASÍ SE VIVIÓ LA MESA." }, f.usuario],
+    render(v) {
+      const bg = COLOR[v.fondo] || TEAL, ink = zInk(bg);
+      const ts = cutoutSize(v.titulo, 100, 940);
+      return `${D.background(1080, 1350, bg, bg === INK)}${D.header(104, 72, 1, ink)}
+        ${zineCard(520, 452, -3, 780, 570, { foto: v.foto1, enfoque: v.enfoque1, pie: "" })}
+        ${zineCard(300, 880, 4, 480, 400, { foto: v.foto2, enfoque: v.enfoque2, pie: "" })}
+        ${zineCard(790, 900, -5, 460, 380, { foto: v.foto3, enfoque: v.enfoque3, pie: "" })}
+        ${D.sparkle(1010, 170, 64, SUN)}${D.sparkle(1040, 260, 26, CREAM)}${D.d20(980, 640, 70, 14)}
+        ${cutout(54, 1170, -2, v.titulo, ts, SUN, INK)}
+        <text x="1016" y="1296" text-anchor="end" class="sans" font-weight="700" font-size="${D.fit(v.usuario, 28, 420, "sans", 700)}" fill="${ink}">${D.esc(v.usuario)}</text>`;
     },
   });
 

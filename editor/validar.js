@@ -56,7 +56,12 @@
     const mm = ctx.measureText(txt);
     const fA = mm.fontBoundingBoxAscent, aA = mm.actualBoundingBoxAscent, aD = mm.actualBoundingBoxDescent, fD = mm.fontBoundingBoxDescent;
     const top = (b.top - R.top) * k, bottom = (b.bottom - R.top) * k;
+    // Caja en el sistema propio del texto, desplazada a un marco común sin rotación (para comparar textos con el mismo giro)
+    const bb = el.getBBox(), det = m.a * m.d - m.b * m.c;
+    const tx = (m.d * m.e - m.c * m.f) / det, ty = (-m.b * m.e + m.a * m.f) / det;
     return {
+      m: { a: m.a, b: m.b },
+      lx0: bb.x + tx, lx1: bb.x + bb.width + tx, ly0: bb.y + ty + Math.max(0, fA - aA), ly1: bb.y + ty + bb.height - Math.max(0, fD - aD),
       x0: (b.left - R.left) * k, x1: (b.right - R.left) * k,
       y0: top + Math.max(0, fA - aA) * s, y1: bottom - Math.max(0, fD - aD) * s,
       size: size * s, txt: txt.trim(), rotated: Math.abs(m.b) > 0.01,
@@ -74,9 +79,18 @@
     stage.innerHTML = svgText;
     const svg = stage.querySelector("svg");
     const R = svg.getBoundingClientRect(), k = t.w / R.width;
-    const boxes = [...svg.querySelectorAll("text")]
-      .filter((el) => el.textContent.trim() && !el.closest("defs, clipPath, [data-guia]") && el.getAttribute("opacity") !== "0")
-      .map((el) => glyphBox(el, svg, R, k)).filter(Boolean);
+    const textEls = [...svg.querySelectorAll("text")]
+      .filter((el) => el.textContent.trim() && !el.closest("defs, clipPath, [data-guia]") && el.getAttribute("opacity") !== "0");
+    const boxes = textEls.map((el) => { const g = glyphBox(el, svg, R, k); if (g) g.el = el; return g; }).filter(Boolean);
+    // Formas con relleno dibujadas DESPUÉS de un texto que lo tapan (cintas, stickers, tarjetas…)
+    const order = [...svg.querySelectorAll("*")];
+    const pos = new Map(order.map((el, i) => [el, i]));
+    const shapes = order.filter((el) => /^(rect|path|circle|ellipse|polygon|use|image)$/.test(el.tagName) && !el.closest("defs, clipPath, pattern, symbol, [data-guia], text"))
+      .filter((el) => {
+        const fill = el.getAttribute("fill") || (el.tagName === "use" || el.tagName === "image" ? "x" : "");
+        return fill && fill !== "none" && !/^url\(#dots/.test(fill) && el.getAttribute("opacity") === null && el.getAttribute("fill-opacity") === null;
+      })
+      .map((el) => { const b = el.getBoundingClientRect(); return { el, i: pos.get(el), x0: (b.left - R.left) * k, x1: (b.right - R.left) * k, y0: (b.top - R.top) * k, y1: (b.bottom - R.top) * k }; });
     const short = (s) => (s.length > 28 ? s.slice(0, 26) + "…" : s);
     // Píldoras (rect con extremos redondos): no deben tapar textos que no son su etiqueta
     const pills = [...svg.querySelectorAll("rect")].filter((el) => !el.closest("defs, clipPath, [data-guia]")).map((el) => {
@@ -101,6 +115,14 @@
         if (t.cover && (b.y0 < 420 - 4 || b.y1 > 1500 + 4)) warnings.push(`Fuera del recorte de la cuadrícula: «${short(b.txt)}»`);
       }
     }
+    for (const b of boxes) {
+      const ti = pos.get(b.el);
+      for (const s of shapes) {
+        if (s.i <= ti) continue;
+        const ix = Math.min(b.x1, s.x1) - Math.max(b.x0, s.x0), iy = Math.min(b.y1, s.y1) - Math.max(b.y0, s.y0);
+        if (ix > 4 && iy > 4 && (ix * iy) / ((b.x1 - b.x0) * (b.y1 - b.y0)) > 0.03) { errors.push(`Una forma tapa el texto «${short(b.txt)}»`); break; }
+      }
+    }
     for (const pl of pills) {
       for (const b of boxes) {
         const cx = (b.x0 + b.x1) / 2, cy = (b.y0 + b.y1) / 2;
@@ -111,8 +133,13 @@
     }
     for (let i = 0; i < boxes.length; i++) {
       for (let j = i + 1; j < boxes.length; j++) {
-        const a = boxes[i], c = boxes[j];
+        let a = boxes[i], c = boxes[j];
         if (a.txt === c.txt) continue;                  // sombra del mismo titular
+        // Textos con la misma rotación: se comparan en su propio sistema (evita falsos positivos por la inclinación)
+        if ((a.rotated || c.rotated) && Math.abs(a.m.a - c.m.a) < 1e-3 && Math.abs(a.m.b - c.m.b) < 1e-3) {
+          a = { ...a, x0: a.lx0, x1: a.lx1, y0: a.ly0, y1: a.ly1 };
+          c = { ...c, x0: c.lx0, x1: c.lx1, y0: c.ly0, y1: c.ly1 };
+        }
         const ix = Math.min(a.x1, c.x1) - Math.max(a.x0, c.x0), iy = Math.min(a.y1, c.y1) - Math.max(a.y0, c.y0);
         if (iy > 0.3 * Math.min(a.y1 - a.y0, c.y1 - c.y0) && ix <= 0 && ix > -10) {
           errors.push(`Textos pegados: «${short(a.txt)}» y «${short(c.txt)}»`);

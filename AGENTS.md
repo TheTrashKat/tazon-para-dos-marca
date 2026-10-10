@@ -55,7 +55,7 @@ Instructions for AI agents (Claude, Codex, Cursor, etc.) that create or edit vis
 
 ## Editable template editor (preferred for routine posts)
 
-`editor/` is a web editor with 56 editable templates. **For routine content, prefer it over writing new SVG:**
+`editor/` is a web editor with 68 editable templates. **For routine content, prefer it over writing new SVG:**
 - weekly event
 - general post or story
 - call for stories
