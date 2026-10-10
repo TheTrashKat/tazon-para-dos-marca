@@ -1,0 +1,71 @@
+# AGENTS.md: Tazón para Dos brand kit
+
+Instructions for AI agents (Claude, Codex, Cursor, etc.) that create or edit visual or written material for **Tazón para Dos**. Read this file first, then load the machine-readable sources below. The human-facing manual is `MANUAL_DE_MARCA.md` (Spanish). All copy you produce for the brand must be in **Spanish (Colombia)**.
+
+## Sources of truth (load these, don't guess)
+
+| File | What it holds |
+|---|---|
+| `brand/tokens.json` | Colors (hex + role), contrast ratios, typography, radii, strokes, shadows, dot pattern, icon spec |
+| `brand/tokens.css` | Same tokens as CSS custom properties (`--ink`, `--teal`, `--coral`, `--sun`, `--cream`, `--paper`, `--muted`) |
+| `brand/brand.json` | Identity, about text, taglines, manifesto, location, links, offerings, 3-step process, voice do/don't, CTAs, composition rules, color recipes per line, illustration objects, publication formats, merch |
+| `tools/build.py` | Generator: SVG primitives (`header`, `pill`, `d20`, `d6`, `card`, `mic`, `waveform`, `bubble`, `steps`, `sparkle`, `text_path`) and all generated templates |
+| `plantillas/*.svg` | Finished reference compositions. Copy the closest one instead of starting from scratch |
+
+`brand.json` text marked "propuesta" is a suggestion, not a fact. Never invent schedules, prices, dates, episode names or partners. Ask the user, or leave a clearly marked placeholder such as `[FECHA]`.
+
+## Hard rules
+
+1. **Palette only:** ink `#28203B`, teal `#55C4BF`, coral `#EA6077`, sun `#F8CB67`, cream `#F7F2E8`. You may also use paper `#FFFDF8`, muted `#665F68` and the tints in `tokens.json`. No other hues, no gradients.
+2. **Contrast:**
+   - Body text, labels and buttons use ink on any brand color, or cream/sun/teal on ink.
+   - Cream text on teal or coral is allowed **only** for display headlines (≥ 100 px at 1080 width), and only with an ink offset shadow. Draw the same text in ink at +8 to +12 px x/y behind it.
+3. **Typography:**
+   - Campaign pieces use Barlow Condensed 800 for headlines, UPPERCASE, and Barlow 500/600/700 for text.
+   - Web UI uses Space Grotesk, DM Sans and DM Mono.
+   - Labels are uppercase with letter-spacing of about 0.12em.
+4. **Logo:** use the files in `assets/logo/`. Their text is already outlined. Brand name is always `TAZÓN PARA DOS`, with the accent. Do not recolor the mascot beyond ink/cream swaps, and do not stretch or rotate it.
+5. **Illustration style:**
+   - Flat fills, ink outline 6–7 px (scale proportionally), rounded joins.
+   - Shadows are hard offsets only, with no blur.
+   - Every illustration group has one hero object, 2–4 secondary objects, 2–4 four-point sparkles and an ink ellipse shadow at 22 % opacity.
+6. **Layout:**
+   - Split the piece into 2–3 color blocks with diagonals rising left to right (3–5°), and put a cream or sun stripe between blocks.
+   - Put the dot pattern (22 px, r 1.6, ink at 10 %) on color blocks.
+   - Put a sun + coral triangle in the top-right corner.
+   - Put the header (seal + name + `ESPACIO CULTURAL · ENGATIVÁ`) at the top left.
+7. **Icons:** 64×64 viewBox, `stroke-width="4"`, round caps/joins, `fill="none"`, `stroke="currentColor"`. Reuse `assets/iconos/` or the sprite (`#i-<name>`). New icons must follow the same spec. Add them to `ICONS` in `tools/build.py`.
+8. **Safe areas:**
+   - Stories (1080×1920): keep key text out of the top 250 px and bottom 250 px.
+   - Posts: 64 px margin.
+9. **Voice:**
+   - Plural first person ("construimos") and informal "tú" toward the reader.
+   - Warm, playful, community-minded. Inclusive language, and never assume the reader's gender.
+   - Short headlines ending with a period.
+   - No corporate or sales tone, no aggressive gamer slang, no exclamation-mark spam.
+
+## Color recipe by content line
+
+| Line | Background | Illustration block | Closing | Hero object |
+|---|---|---|---|---|
+| General / rol | teal | coral | ink | d20 (sun) |
+| Podcast | ink | teal | (none) | microphone with sun/coral/teal waves |
+| Convocatoria | sun | coral | ink | speech bubble "Mi historia trata sobre..." + teal d20 |
+| Juegos de mesa | coral | teal | ink | d6 / meeple / card |
+
+## Workflow for a new piece
+
+1. Pick a format from `brand.json → formats`, then copy the closest template from `plantillas/`. Alternatively, add a new function in `tools/build.py` that reuses the primitives.
+2. Write copy from `brand.json` (taglines, offerings, process, ctas). Only write new copy if it follows `voice`.
+3. Build: `python -I tools/build.py`
+4. Render PNGs (Windows): `powershell -ExecutionPolicy Bypass -File tools/render.ps1 [-Only <name>]`. The script uses Edge or Chrome headless.
+5. **Look at the PNG** and check for overlaps, clipped text (Barlow Condensed is narrow, so fallback fonts overflow), and contrast.
+6. Add the new files to `index.html` and, if they introduce a new format, to `brand.json → formats`.
+
+## Gotchas
+
+- **Fonts in standalone SVGs:** templates load Barlow through a CSS `@import`. That works when the SVG is opened directly or rendered headless, but **not** when the SVG is used as `<img src>`, where fonts fall back and text overflows. For logos or anything embedded as an image, outline text with `text_path()` in `build.py` (fonts are in `tools/fonts/`).
+- **Static templates:** `banner_web`, `pancarta_80x180`, `post_cuadrado` and `historia` were hand-drawn. `build.py` only normalizes their colors (the `LEGACY` map), so edit those SVGs directly.
+- **Generated templates:** `podcast_*` and `convocatoria_*` are generated. Edit `build.py`, not the SVG, or your changes will be overwritten.
+- **Encoding:** when editing SVGs from PowerShell, write UTF-8 without BOM or the accents (Á, É, Í, Ó, Ú, Ñ, ¿) break.
+- **Spotify:** the pieces mention Spotify in text only. Use the official Spotify badge only if the user asks, following Spotify's brand guidelines.

@@ -1,0 +1,27 @@
+/* Tazón para Dos · tokens de marca (generado por tools/build.py) */
+:root {
+  --ink: #28203B;
+  --coral: #EA6077;
+  --sun: #F8CB67;
+  --teal: #55C4BF;
+  --cream: #F7F2E8;
+  --paper: #FFFDF8;
+  --muted: #665F68;
+  --sun-light: #FBD98A;
+  --teal-light: #8FD0CE;
+  --teal-dark: #46B5B1;
+  --green-ok: #7EE5A8;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+  --shadow-comic: 8px 8px 0 rgba(40, 32, 59, 0.18);
+  --shadow-card: 0 8px 0 rgba(40, 32, 59, 0.18);
+  --font-display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --font-text: 'Barlow', 'Segoe UI', sans-serif;
+  --font-web-display: 'Space Grotesk', sans-serif;
+  --font-web-text: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+  --dots: radial-gradient(rgba(40, 32, 59, 0.10) 1.6px, transparent 1.7px) 0 0 / 22px 22px;
+}

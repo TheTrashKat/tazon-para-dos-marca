@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tazón para Dos · Kit de marca</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@500;600;700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="brand/tokens.css">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-web-text); line-height: 1.5; }
+  header.hero { background: var(--teal); background-image: var(--dots); padding: 56px 24px 72px; position: relative; overflow: hidden; }
+  header.hero::after { content: ""; position: absolute; left: -5%; right: -5%; bottom: -30px; height: 60px; background: var(--cream); transform: rotate(-2.5deg); }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+  .hero img { height: 96px; }
+  h1 { font-family: var(--font-display); font-weight: 800; text-transform: uppercase; font-size: clamp(56px, 10vw, 120px); line-height: .92; margin: 24px 0 8px; }
+  h1 span { color: var(--cream); text-shadow: 6px 6px 0 var(--ink); }
+  .eyebrow { font-family: var(--font-mono); font-size: 13px; letter-spacing: .14em; text-transform: uppercase; }
+  section { padding: 56px 0 8px; }
+  h2 { font-family: var(--font-display); font-weight: 800; font-size: 44px; text-transform: uppercase; margin: 0 0 6px; }
+  .lead { color: var(--muted); max-width: 680px; margin: 0 0 24px; }
+  .grid { display: grid; gap: 16px; }
+  .swatches { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .sw { border-radius: var(--radius-lg); border: 3px solid var(--ink); overflow: hidden; background: #fff; box-shadow: var(--shadow-card); }
+  .sw div { height: 96px; }
+  .sw p { margin: 0; padding: 10px 12px; font-size: 14px; }
+  .sw code { font-family: var(--font-mono); font-size: 12px; color: var(--muted); display: block; }
+  .logos { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+  .tile { border: 3px solid var(--ink); border-radius: var(--radius-lg); padding: 20px; background: var(--cream); display: grid; place-items: center; min-height: 170px; }
+  .tile.dark { background: var(--ink); }
+  .tile img { max-width: 100%; max-height: 130px; }
+  .cap { font-family: var(--font-mono); font-size: 12px; margin-top: 6px; color: var(--muted); }
+  .icons { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); }
+  .icon { text-align: center; border: 2px solid var(--ink); border-radius: var(--radius-md); padding: 14px 6px 10px; background: #fff; }
+  .icon img { width: 48px; height: 48px; }
+  .icon span { display: block; font-family: var(--font-mono); font-size: 11px; margin-top: 6px; }
+  .type { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+  .type .tile { place-items: start; }
+  .t-display { font-family: var(--font-display); font-weight: 800; font-size: 64px; line-height: .9; text-transform: uppercase; }
+  .t-web { font-family: var(--font-web-display); font-weight: 700; font-size: 40px; line-height: 1; }
+  .gallery { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); align-items: start; }
+  .gallery a { display: block; border: 3px solid var(--ink); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-comic); background: #fff; }
+  .gallery img { width: 100%; display: block; }
+  .gallery .wide { grid-column: 1 / -1; }
+  footer { margin-top: 64px; padding: 32px 24px; background: var(--ink); color: var(--cream); font-family: var(--font-mono); font-size: 13px; }
+  footer a { color: var(--sun); }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <img src="assets/logo/logotipo-horizontal.svg" alt="Tazón para Dos">
+    <h1>Kit de <span>marca.</span></h1>
+    <p class="eyebrow">Espacio cultural · Engativá, Bogotá · Juego, oralidad y sonido</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <section>
+    <h2>Paleta</h2>
+    <p class="lead">Cinco colores de las variables del sitio web. El texto va en tinta sobre color, o en color claro sobre tinta. Crema sobre turquesa o coral solo se usa en titulares grandes con sombra tinta.</p>
+    <div class="grid swatches">
+      <div class="sw"><div style="background:var(--ink)"></div><p><b>Tinta</b><code>#28203B · --ink</code></p></div>
+      <div class="sw"><div style="background:var(--teal)"></div><p><b>Turquesa</b><code>#55C4BF · --teal</code></p></div>
+      <div class="sw"><div style="background:var(--coral)"></div><p><b>Coral</b><code>#EA6077 · --coral</code></p></div>
+      <div class="sw"><div style="background:var(--sun)"></div><p><b>Sol</b><code>#F8CB67 · --sun</code></p></div>
+      <div class="sw"><div style="background:var(--cream)"></div><p><b>Crema</b><code>#F7F2E8 · --cream</code></p></div>
+      <div class="sw"><div style="background:var(--paper)"></div><p><b>Papel</b><code>#FFFDF8 · --paper</code></p></div>
+      <div class="sw"><div style="background:var(--muted)"></div><p><b>Gris cálido</b><code>#665F68 · --muted</code></p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Logotipo</h2>
+    <p class="lead">La mascota del tazón sonriente es el corazón de la marca. Va siempre dentro del sello circular cuando se acompaña del nombre.</p>
+    <div class="grid logos">
+      <div><div class="tile"><img src="assets/logo/logotipo-horizontal.svg" alt=""></div><p class="cap">logotipo-horizontal.svg</p></div>
+      <div><div class="tile dark"><img src="assets/logo/logotipo-horizontal-inverso.svg" alt=""></div><p class="cap">logotipo-horizontal-inverso.svg</p></div>
+      <div><div class="tile"><img src="assets/logo/logotipo-apilado.svg" alt=""></div><p class="cap">logotipo-apilado.svg</p></div>
+      <div><div class="tile"><img src="assets/logo/sello.svg" alt=""></div><p class="cap">sello.svg</p></div>
+      <div><div class="tile dark"><img src="assets/logo/sello-inverso.svg" alt=""></div><p class="cap">sello-inverso.svg</p></div>
+      <div><div class="tile"><img src="assets/logo/mascota.svg" alt=""></div><p class="cap">mascota.svg</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Tipografía</h2>
+    <p class="lead">Dos familias según el medio: Barlow para campañas impresas y redes, y Space Grotesk, DM Sans y DM Mono para el sitio web.</p>
+    <div class="grid type">
+      <div class="tile"><div class="t-display">Jugar también es escuchar.</div><p class="cap">Barlow Condensed 800 · titulares de campaña</p></div>
+      <div class="tile"><div class="t-web">Un espacio seguro para crear en comunidad.</div><p class="cap">Space Grotesk · titulares web · DM Sans · texto · <span style="font-family:var(--font-mono)">DM MONO · ETIQUETAS</span></p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Iconografía</h2>
+    <p class="lead">Íconos de línea sobre una grilla de 64 px, con trazo de 4 px y puntas redondeadas, en el mismo estilo que los del sitio. Usan <code>currentColor</code>, así que toman el color del texto.</p>
+    <div class="grid icons">
+      <div class="icon"><img src="assets/iconos/dado.svg" alt=""><span>dado</span></div>
+      <div class="icon"><img src="assets/iconos/d20.svg" alt=""><span>d20</span></div>
+      <div class="icon"><img src="assets/iconos/meeple.svg" alt=""><span>meeple</span></div>
+      <div class="icon"><img src="assets/iconos/carta.svg" alt=""><span>carta</span></div>
+      <div class="icon"><img src="assets/iconos/idea.svg" alt=""><span>idea</span></div>
+      <div class="icon"><img src="assets/iconos/microfono.svg" alt=""><span>microfono</span></div>
+      <div class="icon"><img src="assets/iconos/audifonos.svg" alt=""><span>audifonos</span></div>
+      <div class="icon"><img src="assets/iconos/onda.svg" alt=""><span>onda</span></div>
+      <div class="icon"><img src="assets/iconos/play.svg" alt=""><span>play</span></div>
+      <div class="icon"><img src="assets/iconos/historia.svg" alt=""><span>historia</span></div>
+      <div class="icon"><img src="assets/iconos/libro.svg" alt=""><span>libro</span></div>
+      <div class="icon"><img src="assets/iconos/comunidad.svg" alt=""><span>comunidad</span></div>
+      <div class="icon"><img src="assets/iconos/corazon.svg" alt=""><span>corazon</span></div>
+      <div class="icon"><img src="assets/iconos/ubicacion.svg" alt=""><span>ubicacion</span></div>
+      <div class="icon"><img src="assets/iconos/calendario.svg" alt=""><span>calendario</span></div>
+      <div class="icon"><img src="assets/iconos/votacion.svg" alt=""><span>votacion</span></div>
+      <div class="icon"><img src="assets/iconos/destello.svg" alt=""><span>destello</span></div>
+      <div class="icon"><img src="assets/iconos/tazon.svg" alt=""><span>tazon</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Elementos gráficos</h2>
+    <p class="lead">Ilustraciones planas con contorno tinta de 6–7 px. Se combinan en grupos de 3 a 5 objetos con una sombra elíptica debajo.</p>
+    <div class="grid logos">
+      <div class="tile" style="background:var(--coral)"><img src="assets/elementos/d20.svg" alt=""></div>
+      <div class="tile" style="background:var(--sun)"><img src="assets/elementos/d20-turquesa.svg" alt=""></div>
+      <div class="tile" style="background:var(--teal)"><img src="assets/elementos/carta.svg" alt=""></div>
+      <div class="tile"><img src="assets/elementos/microfono.svg" alt=""></div>
+      <div class="tile" style="background:var(--coral)"><img src="assets/elementos/meeple.svg" alt=""></div>
+      <div class="tile" style="background:var(--teal)"><img src="assets/elementos/d6.svg" alt=""></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Publicaciones</h2>
+    <p class="lead">Plantillas listas en SVG editable y PNG. Haz clic para abrir en tamaño completo.</p>
+    <div class="grid gallery">
+      <a class="wide" href="plantillas/png/banner_web.png"><img src="plantillas/png/banner_web.png" alt="Banner web"></a>
+      <a href="plantillas/png/post_cuadrado.png"><img src="plantillas/png/post_cuadrado.png" alt="Post"></a>
+      <a href="plantillas/png/podcast_cuadrado.png"><img src="plantillas/png/podcast_cuadrado.png" alt="Post podcast"></a>
+      <a href="plantillas/png/convocatoria_cuadrado.png"><img src="plantillas/png/convocatoria_cuadrado.png" alt="Post convocatoria"></a>
+      <a href="aplicaciones/png/stickers.png"><img src="aplicaciones/png/stickers.png" alt="Stickers"></a>
+      <a href="plantillas/png/historia.png"><img src="plantillas/png/historia.png" alt="Historia"></a>
+      <a href="plantillas/png/podcast_historia.png"><img src="plantillas/png/podcast_historia.png" alt="Historia podcast"></a>
+      <a href="plantillas/png/convocatoria_historia.png"><img src="plantillas/png/convocatoria_historia.png" alt="Historia convocatoria"></a>
+      <a href="plantillas/png/pancarta_80x180.png"><img src="plantillas/png/pancarta_80x180.png" alt="Pancarta 80x180"></a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">Tazón para Dos · <a href="https://tazon-para-dos.online/">tazon-para-dos.online</a> · <a href="https://www.instagram.com/tazonparados/">@tazonparados</a> · Manual completo en MANUAL_DE_MARCA.md</div>
+</footer>
+</body>
+</html>

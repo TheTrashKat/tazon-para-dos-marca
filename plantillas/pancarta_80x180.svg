@@ -1,0 +1,166 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1800" width="800" height="1800">
+  <!-- Pancarta 80 x 180 cm · Tazón para dos · estilo Pop y Cómic (versión mejorada) -->
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&amp;family=Barlow:wght@500;600;700&amp;display=swap');
+      .cond { font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif; font-weight: 800; }
+      .sans { font-family: 'Barlow', 'Segoe UI', sans-serif; }
+    </style>
+
+    <!-- Paleta extraída de la pancarta original -->
+    <!-- teal #55C4BF · rosa #EA6077 · amarillo #F8CB67 · morado oscuro #28203B · crema #F7F2E8 -->
+
+    <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="11" cy="11" r="1.6" fill="#28203B" opacity="0.10"/>
+    </pattern>
+    <pattern id="dotsLight" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="11" cy="11" r="1.6" fill="#F7F2E8" opacity="0.06"/>
+    </pattern>
+
+    <!-- Mascota del logotipo (tazón de arroz) -->
+    <symbol id="bowl" viewBox="0 0 120 124">
+      <g stroke="#28203B" stroke-width="7" stroke-linecap="round">
+        <line x1="16" y1="20" x2="29" y2="38"/>
+        <line x1="35" y1="12" x2="43" y2="31"/>
+        <line x1="85" y1="12" x2="77" y2="31"/>
+        <line x1="104" y1="20" x2="91" y2="38"/>
+      </g>
+      <g fill="#28203B">
+        <circle cx="60" cy="54" r="20"/>
+        <circle cx="42" cy="61" r="16"/>
+        <circle cx="78" cy="61" r="16"/>
+        <circle cx="30" cy="70" r="11"/>
+        <circle cx="90" cy="70" r="11"/>
+        <rect x="20" y="64" width="80" height="12"/>
+        <path d="M14,80 H106 C106,101 92,112 75,112 H45 C28,112 14,101 14,80 Z"/>
+        <rect x="45" y="116" width="30" height="7" rx="3.5"/>
+      </g>
+      <g fill="#F7F2E8">
+        <rect x="44" y="85" width="6" height="13" rx="3"/>
+        <rect x="70" y="85" width="6" height="13" rx="3"/>
+        <path d="M53,101 H67 A7,7 0 0 1 53,101 Z"/>
+      </g>
+    </symbol>
+
+    <symbol id="sparkle" viewBox="-50 -50 100 100">
+      <path d="M0,-50 C6,-10 10,-6 50,0 C10,6 6,10 0,50 C-6,10 -10,6 -50,0 C-10,-6 -6,-10 0,-50 Z"/>
+    </symbol>
+
+    <symbol id="meeple" viewBox="0 0 100 100">
+      <path d="M50,4 C62,4 70,13 70,24 C70,31 67,36 63,40 L94,52 C99,54 99,62 94,64 L72,70 L84,96 H58 L50,78 L42,96 H16 L28,70 L6,64 C1,62 1,54 6,52 L37,40 C33,36 30,31 30,24 C30,13 38,4 50,4 Z"/>
+    </symbol>
+  </defs>
+
+  <!-- ========== FONDO ========== -->
+  <rect width="800" height="1800" fill="#55C4BF"/>
+  <rect width="800" height="780" fill="url(#dots)"/>
+
+  <!-- Esquina amarilla -->
+  <path d="M600,0 H800 V200 Z" fill="#F8CB67"/>
+  <path d="M680,0 H800 V120 Z" fill="#EA6077"/>
+
+  <!-- Franja crema + bloque rosa diagonal -->
+  <path d="M0,770 L800,680 L800,722 L0,812 Z" fill="#F7F2E8"/>
+  <path d="M0,812 L800,722 L800,1290 L0,1350 Z" fill="#EA6077"/>
+  <path d="M0,812 L800,722 L800,1290 L0,1350 Z" fill="url(#dots)"/>
+
+  <!-- Bloque oscuro inferior -->
+  <path d="M0,1350 L800,1290 L800,1800 L0,1800 Z" fill="#28203B"/>
+  <path d="M0,1350 L800,1290 L800,1800 L0,1800 Z" fill="url(#dotsLight)"/>
+  <path d="M0,1350 L800,1290 L800,1302 L0,1362 Z" fill="#F8CB67"/>
+
+  <!-- ========== CABECERA ========== -->
+  <circle cx="112" cy="118" r="54" fill="#F7F2E8" stroke="#28203B" stroke-width="5"/>
+  <use href="#bowl" x="78" y="82" width="68" height="70"/>
+  <text x="188" y="118" class="cond" font-size="50" fill="#28203B" letter-spacing="1">TAZÓN PARA DOS</text>
+  <text x="190" y="152" class="sans" font-weight="600" font-size="17" fill="#28203B" letter-spacing="6">ESPACIO CULTURAL</text>
+  <line x1="58" y1="200" x2="742" y2="200" stroke="#28203B" stroke-width="2" opacity="0.35"/>
+
+  <!-- ========== TITULAR ========== -->
+  <g class="cond">
+    <text x="58" y="335" font-size="126" fill="#28203B">TU HISTORIA</text>
+    <text x="58" y="458" font-size="136" fill="#28203B">EMPIEZA</text>
+    <!-- sombra cómic -->
+    <text x="66" y="608" font-size="170" fill="#28203B">AQUÍ.</text>
+    <text x="58" y="600" font-size="170" fill="#F7F2E8">AQUÍ.</text>
+  </g>
+  <use href="#sparkle" x="540" y="430" width="90" height="90" fill="#F8CB67"/>
+  <use href="#sparkle" x="640" y="530" width="40" height="40" fill="#F7F2E8"/>
+  <use href="#sparkle" x="700" y="300" width="30" height="30" fill="#28203B"/>
+
+  <!-- Etiqueta -->
+  <rect x="58" y="636" width="300" height="58" rx="29" fill="#28203B"/>
+  <text x="208" y="675" text-anchor="middle" class="sans" font-weight="700" font-size="24" fill="#F7F2E8" letter-spacing="2">JUEGOS DE ROL</text>
+
+  <!-- ========== ILUSTRACIÓN ========== -->
+  <!-- Sombra -->
+  <ellipse cx="400" cy="1212" rx="210" ry="24" fill="#28203B" opacity="0.22"/>
+
+  <!-- Carta -->
+  <g transform="translate(125,960) rotate(-16)">
+    <rect x="-68" y="-95" width="136" height="190" rx="14" fill="#F7F2E8" stroke="#28203B" stroke-width="6"/>
+    <path d="M0,-42 L30,0 L0,42 L-30,0 Z" fill="#EA6077" stroke="#28203B" stroke-width="4"/>
+    <circle cx="-44" cy="-70" r="7" fill="#EA6077"/>
+    <circle cx="44" cy="70" r="7" fill="#EA6077"/>
+  </g>
+
+  <!-- Meeple -->
+  <use href="#meeple" x="595" y="880" width="150" height="150" fill="#28203B"/>
+
+  <!-- D20 -->
+  <g transform="translate(400,990) rotate(-8)" stroke="#28203B" stroke-width="7" stroke-linejoin="round">
+    <path d="M0,-205 L178,-102 L178,102 L0,205 L-178,102 L-178,-102 Z" fill="#F8CB67"/>
+    <path d="M0,-108 L95,60 L-95,60 Z" fill="#FBD98A"/>
+    <path d="M0,-205 L0,-108 M0,-108 L178,-102 M0,-108 L-178,-102 M95,60 L178,-102 M95,60 L178,102 M95,60 L0,205 M-95,60 L-178,-102 M-95,60 L-178,102 M-95,60 L0,205" fill="none"/>
+    <text x="0" y="38" text-anchor="middle" class="cond" font-size="96" fill="#28203B" stroke="none">20</text>
+  </g>
+
+  <!-- Dado de seis -->
+  <g transform="translate(686,1060) rotate(14) scale(0.85)">
+    <rect x="-46" y="-46" width="92" height="92" rx="16" fill="#F7F2E8" stroke="#28203B" stroke-width="6"/>
+    <g fill="#28203B">
+      <circle cx="-22" cy="-22" r="8"/><circle cx="22" cy="-22" r="8"/>
+      <circle cx="-22" cy="22" r="8"/><circle cx="22" cy="22" r="8"/>
+      <circle cx="0" cy="0" r="8"/>
+    </g>
+  </g>
+
+  <!-- Manos: dos jugadores -->
+  <g stroke="#28203B" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+    <g transform="translate(170,1175) rotate(-22)">
+      <path d="M-260,48 L-10,48 C30,48 52,30 52,8 C52,-12 36,-24 16,-24 L-40,-24 C-30,-46 -6,-64 18,-58 C28,-55 28,-44 18,-38 L-70,-40 L-260,-40 Z" fill="#F7F2E8"/>
+      <path d="M-20,-4 H30 M-20,22 H34" fill="none"/>
+    </g>
+    <g transform="translate(630,1175) rotate(22) scale(-1,1)">
+      <path d="M-260,48 L-10,48 C30,48 52,30 52,8 C52,-12 36,-24 16,-24 L-40,-24 C-30,-46 -6,-64 18,-58 C28,-55 28,-44 18,-38 L-70,-40 L-260,-40 Z" fill="#F8CB67"/>
+      <path d="M-20,-4 H30 M-20,22 H34" fill="none"/>
+    </g>
+  </g>
+
+  <use href="#sparkle" x="80" y="820" width="46" height="46" fill="#28203B"/>
+  <use href="#sparkle" x="560" y="820" width="34" height="34" fill="#F7F2E8"/>
+  <use href="#sparkle" x="210" y="1060" width="28" height="28" fill="#F8CB67"/>
+
+  <text x="400" y="1290" text-anchor="middle" class="sans" font-weight="600" font-size="27" fill="#28203B">Imagina un personaje. Vive su aventura.</text>
+
+  <!-- ========== CIERRE ========== -->
+  <text x="400" y="1462" text-anchor="middle" class="cond" font-size="96" fill="#F7F2E8">VEN A JUGAR.</text>
+  <text x="400" y="1538" text-anchor="middle" class="cond" font-size="62" fill="#F8CB67">QUÉDATE A COMPARTIR.</text>
+
+  <!-- Iconos: Rol · Juegos de mesa · Cultura -->
+  <g>
+    <circle cx="210" cy="1630" r="42" fill="#55C4BF"/>
+    <path d="M210,1600 L236,1615 L236,1645 L210,1660 L184,1645 L184,1615 Z M210,1614 L224,1638 L196,1638 Z" fill="none" stroke="#28203B" stroke-width="4" stroke-linejoin="round"/>
+    <text x="210" y="1708" text-anchor="middle" class="sans" font-weight="700" font-size="20" fill="#F7F2E8" letter-spacing="2">ROL</text>
+
+    <circle cx="400" cy="1630" r="42" fill="#EA6077"/>
+    <use href="#meeple" x="372" y="1602" width="56" height="56" fill="#28203B"/>
+    <text x="400" y="1708" text-anchor="middle" class="sans" font-weight="700" font-size="20" fill="#F7F2E8" letter-spacing="2">JUEGOS DE MESA</text>
+
+    <circle cx="590" cy="1630" r="42" fill="#F8CB67"/>
+    <g stroke="#28203B" stroke-width="4" stroke-linecap="round" fill="none"><rect x="579" y="1602" width="22" height="36" rx="11" fill="#F7F2E8"/><path d="M570,1628 A20,20 0 0 0 610,1628"/><line x1="590" y1="1648" x2="590" y2="1658"/><line x1="579" y1="1658" x2="601" y2="1658"/></g>
+    <text x="590" y="1708" text-anchor="middle" class="sans" font-weight="700" font-size="20" fill="#F7F2E8" letter-spacing="2">PODCAST</text>
+  </g>
+
+  <text x="400" y="1764" text-anchor="middle" class="sans" font-weight="700" font-size="26" fill="#F8CB67" letter-spacing="1">@tazonparados</text>
+</svg>

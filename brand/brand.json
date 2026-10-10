@@ -1,0 +1,149 @@
+{
+  "$description": "Perfil de marca legible por máquina. Úsalo junto a tokens.json para generar piezas nuevas. Textos tomados de tazon-para-dos.online (oct 2026) salvo los marcados como 'propuesta'.",
+  "version": "1.0.0",
+  "updated": "2026-10-10",
+
+  "identity": {
+    "name": "Tazón para Dos",
+    "name_display": "TAZÓN PARA DOS",
+    "descriptor": "Espacio cultural",
+    "type": "Agrupación cultural LGBTI+",
+    "about": "Tazón para Dos es una agrupación cultural LGBTI+ que crea espacios seguros para imaginar en colectivo. Usamos el juego de rol, la narración oral y la producción sonora para transformar recuerdos, preguntas y realidades en relatos compartidos.",
+    "meta_description": "Juego, oralidad y sonido para contar las historias de Engativá.",
+    "tagline": "Jugar también es escuchar",
+    "secondary_taglines": [
+      "Un espacio seguro para crear en comunidad.",
+      "Un proyecto para jugar, narrar y escucharnos.",
+      "Un lugar para jugar, imaginar y convertir nuestras voces en historias que se escuchan.",
+      "La mesa es un territorio.",
+      "Del juego al aire.",
+      "Tu historia empieza aquí."
+    ],
+    "manifesto": [
+      "El juego es el puente. Juntamos escritura, interpretación, escucha y tecnología para que las ideas de la comunidad encuentren su propia voz.",
+      "Nos reunimos para inventar mundos y terminamos encontrando nuevas formas de habitar el nuestro.",
+      "Desde Engativá, hacemos de cada mesa un pequeño mundo posible: uno donde escuchar también es una forma de crear."
+    ],
+    "pillars": ["COMUNIDAD", "ORALIDAD", "MEMORIA LOCAL", "PODCAST"],
+    "location": {
+      "address": "Tv. 76b #81f-08",
+      "locality": "Engativá",
+      "city": "Bogotá",
+      "country": "Colombia",
+      "display": "Engativá · Bogotá",
+      "schedule_note": "El sitio menciona 'Sábados'. Confirmar horario antes de publicarlo."
+    },
+    "links": {
+      "web": "https://tazon-para-dos.online/",
+      "instagram": "https://www.instagram.com/tazonparados/",
+      "instagram_handle": "@tazonparados",
+      "facebook": "https://www.facebook.com/61577811222885/",
+      "spotify_show": "https://open.spotify.com/show/2o68dbyhq4YvyRE3lmVXWY",
+      "whatsapp_community": "https://chat.whatsapp.com/Gf85g13vkeuBiRvgvgYj1q"
+    }
+  },
+
+  "offerings": [
+    { "id": "rol", "name": "Juegos de rol", "icon": "d20", "color": "teal",
+      "description": "Construimos personajes, mundos y decisiones en talleres y partidas de rol.",
+      "copy": ["Tu historia empieza aquí.", "Imagina un personaje. Vive su aventura."] },
+    { "id": "mesa", "name": "Juegos de mesa", "icon": "dado", "color": "coral",
+      "description": "Encuentros para jugar en comunidad. Personas que se reúnen para imaginar juntas.",
+      "copy": ["Ven a jugar. Quédate a compartir.", "La mesa es un territorio."] },
+    { "id": "podcast", "name": "Podcast narrativo", "icon": "microfono", "color": "sun",
+      "description": "Grabamos, editamos y publicamos series de podcast narrativo para compartirlas.",
+      "copy": ["Del juego al aire.", "Reproduce nuestras series narrativas y acompáñanos a imaginar nuevos mundos.", "Encuentros que luego se convierten en sonido."] },
+    { "id": "convocatoria", "name": "Convocatoria de historias", "icon": "idea", "color": "sun",
+      "description": "Convocamos historias e ideas de la comunidad y elegimos dos por votación abierta.",
+      "copy": ["¿Qué mundo quieres traer a la mesa?", "Estamos buscando voces, recuerdos y mundos para convertirlos en una nueva serie de podcast narrativo.", "Mi historia trata sobre..."] }
+  ],
+
+  "process": [
+    { "step": 1, "title": "El punto de partida", "short": "Postula tu idea", "text": "Convocamos historias e ideas de la comunidad y elegimos dos por votación abierta.", "icon": "idea" },
+    { "step": 2, "title": "La mesa es un territorio", "short": "La jugamos en mesa", "text": "Construimos personajes, mundos y decisiones en talleres y partidas de rol.", "icon": "dado" },
+    { "step": 3, "title": "Del juego al aire", "short": "La llevamos al aire", "text": "Grabamos, editamos y publicamos series de podcast narrativo para compartirlas.", "icon": "microfono" }
+  ],
+
+  "voice": {
+    "person": "Primera persona plural ('construimos', 'nos reunimos') y tuteo hacia quien lee ('ven', 'postula', 'tu historia').",
+    "tone": ["cálido", "lúdico", "comunitario", "poético sin ser solemne", "inclusivo"],
+    "do": [
+      "Frases cortas, con punto final en titulares ('Ven a jugar.').",
+      "Verbos de acción: jugar, imaginar, escuchar, narrar, compartir, crear.",
+      "Hablar de la mesa, los mundos, las voces y las historias como metáforas.",
+      "Nombrar el territorio: Engativá, Bogotá.",
+      "Lenguaje inclusivo y no binario cuando se habla de personas ('personas que se reúnen', 'quienes juegan')."
+    ],
+    "dont": [
+      "Jerga gamer agresiva o competitiva ('dominar', 'aplastar', 'noob').",
+      "Tono corporativo o de venta ('adquiere', 'oferta imperdible').",
+      "Mayúsculas y signos de exclamación en exceso.",
+      "Prometer horarios, precios o fechas que no estén confirmados."
+    ],
+    "ctas": ["Quiero participar", "Postula tu idea", "Escúchalo en Spotify", "Enviar historia", "Descubre el proceso", "Cómo llegar", "Ven a jugar"]
+  },
+
+  "visual_style": {
+    "name": "Pop y cómic",
+    "keywords": ["ilustración plana", "contorno tinta grueso", "bloques diagonales", "patrón de puntos", "sombra desplazada sin desenfoque", "destellos de 4 puntas", "titulares condensados en mayúscula"],
+    "composition_rules": [
+      "Dividir la pieza en 2–3 bloques de color separados por diagonales que suben de izquierda a derecha, con una franja crema o sol entre bloques.",
+      "Cubrir los bloques de color con el patrón de puntos (22 px, tinta al 10 %).",
+      "Esquina superior derecha: triángulo de sol con triángulo menor coral (o turquesa + coral sobre fondo sol).",
+      "Cabecera: sello del tazón + 'TAZÓN PARA DOS' + 'ESPACIO CULTURAL · ENGATIVÁ' arriba a la izquierda.",
+      "Titular en 2–3 líneas; la última línea en crema (o sol sobre tinta) con sombra tinta desplazada 8–12 px.",
+      "Ilustración: un objeto héroe (d20 o micrófono) rodeado de 2–4 objetos secundarios (carta, d6, meeple) y 2–4 destellos, con sombra elíptica tinta al 22 %.",
+      "Cierre en bloque tinta: CTA en píldora + @tazonparados o la URL."
+    ],
+    "color_recipes": {
+      "general": { "background": "teal", "illustration_block": "coral", "closing_block": "ink", "accent": "sun" },
+      "podcast": { "background": "ink", "headline": ["cream", "sun"], "illustration_block": "teal", "accent": "coral" },
+      "convocatoria": { "background": "sun", "headline": ["ink", "cream"], "illustration_block": "coral", "closing_block": "ink" },
+      "rol": { "background": "teal", "hero_object": "d20 sol" },
+      "mesa": { "background": "coral", "hero_object": "d6 / meeple / carta" }
+    },
+    "illustration_objects": {
+      "d20": "Dado de 20 caras amarillo (sol) con cara central más clara y el número 20. Objeto héroe para rol.",
+      "d6": "Dado de 6 caras crema con puntos tinta, ligeramente rotado.",
+      "carta": "Naipe crema con rombo coral y dos puntos coral en esquinas, rotado -14°.",
+      "meeple": "Ficha de juego de mesa en silueta (tinta, sol o crema).",
+      "microfono": "Micrófono de cápsula crema con rejilla, soporte en U y ondas de sonido en sol/coral/turquesa. Objeto héroe para podcast.",
+      "manos": "Dos manos de distinto color (crema y sol) acercándose al centro: 'para dos'.",
+      "globo": "Globo de diálogo crema con texto en itálica: 'Mi historia trata sobre...'.",
+      "onda": "Barra de forma de onda en tinta, para piezas de audio."
+    }
+  },
+
+  "formats": [
+    { "id": "post-cuadrado", "size": [1080, 1080], "use": "Instagram/Facebook feed", "safe_margin": 64, "templates": ["plantillas/post_cuadrado.svg", "plantillas/podcast_cuadrado.svg", "plantillas/convocatoria_cuadrado.svg"] },
+    { "id": "post-vertical", "size": [1080, 1350], "use": "Instagram feed 4:5 (recomendado)", "safe_margin": 64, "templates": [], "note": "Sin plantilla todavía: adaptar el cuadrado añadiendo 270 px al bloque de ilustración." },
+    { "id": "historia", "size": [1080, 1920], "use": "Historias de Instagram, estados de WhatsApp, Reels (portada)", "safe_top": 250, "safe_bottom": 250, "safe_margin": 72, "templates": ["plantillas/historia.svg", "plantillas/podcast_historia.svg", "plantillas/convocatoria_historia.svg"] },
+    { "id": "banner-web", "size": [1920, 720], "use": "Hero del sitio web, portada de Facebook (recortar)", "safe_margin": 86, "templates": ["plantillas/banner_web.svg"] },
+    { "id": "pancarta", "size": [800, 1800], "physical": "80 × 180 cm (roll-up)", "use": "Pancarta impresa", "templates": ["plantillas/pancarta_80x180.svg"], "note": "Exportar a PDF vectorial con textos convertidos a contornos." },
+    { "id": "portada-podcast", "size": [3000, 3000], "use": "Portada de Spotify", "templates": [], "note": "Pendiente." },
+    { "id": "stickers", "size": [1080, 1080], "use": "Hoja de stickers troquelados", "templates": ["aplicaciones/stickers.svg"] }
+  ],
+
+  "products_merch": {
+    "$description": "Aplicaciones de marca propuestas (no confirmadas como productos existentes).",
+    "items": [
+      { "name": "Stickers troquelados", "status": "plantilla lista", "file": "aplicaciones/stickers.svg" },
+      { "name": "Tazón de cerámica con la mascota", "status": "propuesta", "notes": "Mascota en tinta sobre cerámica crema; frase 'Jugar también es escuchar.' al reverso." },
+      { "name": "Bolsa de tela", "status": "propuesta", "notes": "Logotipo apilado en tinta sobre lona cruda." },
+      { "name": "Set de dados", "status": "propuesta", "notes": "d20 sol y turquesa con el tazón en la cara del 20." },
+      { "name": "Fichas de personaje", "status": "propuesta", "notes": "Hoja A4 con cabecera de marca, papel crema, tipografía Barlow." }
+    ]
+  },
+
+  "files": {
+    "tokens": "brand/tokens.json",
+    "css": "brand/tokens.css",
+    "logos": "assets/logo/",
+    "icons": "assets/iconos/ (sprite: assets/iconos/sprite.svg, ids 'i-<nombre>')",
+    "elements": "assets/elementos/",
+    "templates": "plantillas/",
+    "generator": "tools/build.py",
+    "renderer": "tools/render.ps1",
+    "fonts": "tools/fonts/ (Barlow, licencia OFL)"
+  }
+}

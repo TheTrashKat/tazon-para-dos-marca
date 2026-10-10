@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
+  <title>Post podcast · Tazón para Dos</title>
+  <!-- Generado por tools/build.py · Paleta: ink #28203B · coral #EA6077 · sun #F8CB67 · teal #55C4BF · cream #F7F2E8 · paper #FFFDF8 · muted #665F68 -->
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&amp;family=Barlow:wght@500;600;700&amp;display=swap');
+      .cond { font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif; font-weight: 800; }
+      .sans { font-family: 'Barlow', 'Segoe UI', sans-serif; }
+    </style>
+    <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="11" cy="11" r="1.6" fill="#28203B" opacity="0.10"/></pattern>
+    <pattern id="dotsLight" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="11" cy="11" r="1.6" fill="#F7F2E8" opacity="0.07"/></pattern>
+    <symbol id="bowl" viewBox="0 0 120 124"><g stroke="#28203B" stroke-width="7" stroke-linecap="round">
+      <line x1="16" y1="20" x2="29" y2="38"/><line x1="35" y1="12" x2="43" y2="31"/>
+      <line x1="85" y1="12" x2="77" y2="31"/><line x1="104" y1="20" x2="91" y2="38"/>
+    </g>
+    <g fill="#28203B">
+      <circle cx="60" cy="54" r="20"/><circle cx="42" cy="61" r="16"/><circle cx="78" cy="61" r="16"/>
+      <circle cx="30" cy="70" r="11"/><circle cx="90" cy="70" r="11"/>
+      <rect x="20" y="64" width="80" height="12"/>
+      <path d="M14,80 H106 C106,101 92,112 75,112 H45 C28,112 14,101 14,80 Z"/>
+      <rect x="45" y="116" width="30" height="7" rx="3.5"/>
+    </g>
+    <g fill="#F7F2E8">
+      <rect x="44" y="85" width="6" height="13" rx="3"/><rect x="70" y="85" width="6" height="13" rx="3"/>
+      <path d="M53,101 H67 A7,7 0 0 1 53,101 Z"/>
+    </g></symbol>
+    <symbol id="sparkle" viewBox="-50 -50 100 100"><path d="M0,-50 C6,-10 10,-6 50,0 C10,6 6,10 0,50 C-6,10 -10,6 -50,0 C-10,-6 -6,-10 0,-50 Z"/></symbol>
+    <symbol id="meeple" viewBox="0 0 100 100"><path d="M50,4 C62,4 70,13 70,24 C70,31 67,36 63,40 L94,52 C99,54 99,62 94,64 L72,70 L84,96 H58 L50,78 L42,96 H16 L28,70 L6,64 C1,62 1,54 6,52 L37,40 C33,36 30,31 30,24 C30,13 38,4 50,4 Z"/></symbol>
+  </defs>
+
+  <rect width="1080" height="1080" fill="#28203B"/>
+  <rect width="1080" height="1080" fill="url(#dotsLight)"/>
+  <path d="M900,0 H1080 V180 Z" fill="#F8CB67"/><path d="M990,0 H1080 V90 Z" fill="#EA6077"/>
+  <circle cx="110" cy="104" r="46" fill="#F7F2E8" stroke="#28203B" stroke-width="4"/>
+  <use href="#bowl" x="81" y="73" width="58" height="60"/>
+  <text x="176" y="106" class="cond" font-size="44" fill="#F7F2E8" letter-spacing="1">TAZÓN PARA DOS</text>
+  <text x="178" y="136" class="sans" font-weight="600" font-size="15" fill="#F7F2E8" letter-spacing="5" opacity="0.9">ESPACIO CULTURAL · ENGATIVÁ</text>
+  <rect x="64" y="186" width="290" height="50" rx="25.0" fill="#55C4BF"/><text x="209.0" y="218.2" text-anchor="middle" class="sans" font-weight="700" font-size="20" fill="#28203B" letter-spacing="2">PODCAST NARRATIVO</text>
+  <g class="cond">
+    <text x="60" y="390" font-size="156" fill="#F7F2E8">DEL JUEGO</text>
+    <text x="70" y="560" font-size="178" fill="#55C4BF">AL AIRE.</text>
+    <text x="60" y="550" font-size="178" fill="#F8CB67">AL AIRE.</text>
+  </g>
+  <path d="M0,690 L1080,628 L1080,668 L0,730 Z" fill="#F7F2E8"/>
+  <path d="M0,730 L1080,668 L1080,1080 L0,1080 Z" fill="#55C4BF"/>
+  <path d="M0,730 L1080,668 L1080,1080 L0,1080 Z" fill="url(#dots)"/>
+  <g transform="translate(870,430) scale(1.0)" stroke="#28203B" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-80,10 A80,80 0 0 0 80,10" fill="none" stroke="#F7F2E8"/>
+    <line x1="0" y1="90" x2="0" y2="200" stroke="#F7F2E8"/>
+    <rect x="-60" y="196" width="120" height="22" rx="11" fill="#F7F2E8" stroke="#F7F2E8"/>
+    <rect x="-52" y="-150" width="104" height="200" rx="52" fill="#F7F2E8"/>
+    <path d="M-52,-60 H52 M-52,-20 H52" fill="none"/>
+    <g fill="#28203B" stroke="none"><circle cx="-20" cy="-110" r="6"/><circle cx="0" cy="-118" r="6"/><circle cx="20" cy="-110" r="6"/><circle cx="-10" cy="-90" r="6"/><circle cx="10" cy="-90" r="6"/></g>
+    <path d="M100,-110 A90,90 0 0 1 100,10" fill="none" stroke="#F8CB67" stroke-width="12"/>
+    <path d="M136,-140 A130,130 0 0 1 136,40" fill="none" stroke="#EA6077" stroke-width="12"/>
+    <path d="M-100,-110 A90,90 0 0 0 -100,10" fill="none" stroke="#F8CB67" stroke-width="12"/>
+    <path d="M-136,-140 A130,130 0 0 0 -136,40" fill="none" stroke="#55C4BF" stroke-width="12"/>
+  </g>
+  <g transform="translate(640,640) rotate(12)" stroke="#28203B" stroke-width="3.0" stroke-linejoin="round">
+    <path d="M0.0,-62.0 L53.6,-31.0 L53.6,31.0 L0.0,62.0 L-53.6,31.0 L-53.6,-31.0 Z" fill="#F8CB67"/>
+    <path d="M0.0,-32.5 L28.5,18.0 L-28.5,18.0 Z" fill="#FBD98A"/>
+    <path d="M0.0,-62.0 L0.0,-32.5 M0.0,-32.5 L53.6,-31.0 M0.0,-32.5 L-53.6,-31.0 M28.5,18.0 L53.6,-31.0 M28.5,18.0 L53.6,31.0 M28.5,18.0 L0.0,62.0 M-28.5,18.0 L-53.6,-31.0 M-28.5,18.0 L-53.6,31.0 M-28.5,18.0 L0.0,62.0" fill="none"/>
+  </g>
+  <use href="#sparkle" x="960.0" y="230.0" width="40" height="40" fill="#F7F2E8"/>
+  <use href="#sparkle" x="673.0" y="183.0" width="54" height="54" fill="#F8CB67"/>
+  <text class="sans" font-weight="600" font-size="30" fill="#28203B">
+    <tspan x="64" y="800">Reproduce nuestras series narrativas y</tspan>
+    <tspan x="64" y="840">acompáñanos a imaginar nuevos mundos.</tspan>
+  </text>
+  <rect x="64" y="903.0" width="10" height="14.0" rx="5" fill="#28203B"/>
+  <rect x="82" y="892.3" width="10" height="35.5" rx="5" fill="#28203B"/>
+  <rect x="100" y="885.9" width="10" height="48.2" rx="5" fill="#28203B"/>
+  <rect x="118" y="886.1" width="10" height="47.8" rx="5" fill="#28203B"/>
+  <rect x="136" y="891.7" width="10" height="36.7" rx="5" fill="#28203B"/>
+  <rect x="154" y="899.0" width="10" height="22.0" rx="5" fill="#28203B"/>
+  <rect x="172" y="902.0" width="10" height="16.0" rx="5" fill="#28203B"/>
+  <rect x="190" y="901.6" width="10" height="16.7" rx="5" fill="#28203B"/>
+  <rect x="208" y="900.8" width="10" height="18.4" rx="5" fill="#28203B"/>
+  <rect x="226" y="896.6" width="10" height="26.8" rx="5" fill="#28203B"/>
+  <rect x="244" y="895.5" width="10" height="29.0" rx="5" fill="#28203B"/>
+  <rect x="262" y="899.7" width="10" height="20.5" rx="5" fill="#28203B"/>
+  <rect x="280" y="897.7" width="10" height="24.6" rx="5" fill="#28203B"/>
+  <rect x="298" y="888.3" width="10" height="43.3" rx="5" fill="#28203B"/>
+  <rect x="316" y="882.7" width="10" height="54.7" rx="5" fill="#28203B"/>
+  <rect x="334" y="883.6" width="10" height="52.7" rx="5" fill="#28203B"/>
+  <rect x="352" y="891.0" width="10" height="38.0" rx="5" fill="#28203B"/>
+  <rect x="370" y="901.6" width="10" height="16.9" rx="5" fill="#28203B"/>
+  <rect x="388" y="895.3" width="10" height="29.4" rx="5" fill="#28203B"/>
+  <rect x="406" y="891.1" width="10" height="37.7" rx="5" fill="#28203B"/>
+  <rect x="424" y="892.7" width="10" height="34.6" rx="5" fill="#28203B"/>
+  <rect x="442" y="897.7" width="10" height="24.6" rx="5" fill="#28203B"/>
+  <rect x="460" y="902.1" width="10" height="15.7" rx="5" fill="#28203B"/>
+  <rect x="478" y="902.8" width="10" height="14.4" rx="5" fill="#28203B"/>
+  <rect x="496" y="899.0" width="10" height="22.0" rx="5" fill="#28203B"/>
+  <rect x="514" y="893.0" width="10" height="33.9" rx="5" fill="#28203B"/>
+  <rect x="532" y="888.9" width="10" height="42.2" rx="5" fill="#28203B"/>
+  <rect x="550" y="890.0" width="10" height="40.0" rx="5" fill="#28203B"/>
+  <rect x="568" y="897.1" width="10" height="25.7" rx="5" fill="#28203B"/>
+  <rect x="586" y="898.1" width="10" height="23.9" rx="5" fill="#28203B"/>
+  <rect x="604" y="888.1" width="10" height="43.9" rx="5" fill="#28203B"/>
+  <rect x="622" y="883.1" width="10" height="53.9" rx="5" fill="#28203B"/>
+  <rect x="640" y="884.9" width="10" height="50.1" rx="5" fill="#28203B"/>
+  <rect x="658" y="892.2" width="10" height="35.6" rx="5" fill="#28203B"/>
+  <rect x="676" y="901.0" width="10" height="18.1" rx="5" fill="#28203B"/>
+  <rect x="694" y="899.0" width="10" height="21.9" rx="5" fill="#28203B"/>
+  <rect x="712" y="898.0" width="10" height="23.9" rx="5" fill="#28203B"/>
+  <rect x="730" y="901.2" width="10" height="17.5" rx="5" fill="#28203B"/>
+  <rect x="748" y="900.7" width="10" height="18.7" rx="5" fill="#28203B"/>
+  <rect x="766" y="899.4" width="10" height="21.1" rx="5" fill="#28203B"/>
+  <rect x="784" y="902.9" width="10" height="14.2" rx="5" fill="#28203B"/>
+  <rect x="802" y="895.4" width="10" height="29.3" rx="5" fill="#28203B"/>
+  <rect x="820" y="887.5" width="10" height="44.9" rx="5" fill="#28203B"/>
+  <rect x="838" y="883.7" width="10" height="52.6" rx="5" fill="#28203B"/>
+  <rect x="856" y="886.4" width="10" height="47.2" rx="5" fill="#28203B"/>
+  <rect x="874" y="895.2" width="10" height="29.7" rx="5" fill="#28203B"/>
+  <rect x="892" y="899.6" width="10" height="20.8" rx="5" fill="#28203B"/>
+  <rect x="910" y="890.5" width="10" height="38.9" rx="5" fill="#28203B"/>
+  <rect x="928" y="887.1" width="10" height="45.8" rx="5" fill="#28203B"/>
+  <rect x="946" y="889.8" width="10" height="40.4" rx="5" fill="#28203B"/>
+  <rect x="964" y="896.0" width="10" height="28.0" rx="5" fill="#28203B"/>
+  <rect x="982" y="901.7" width="10" height="16.6" rx="5" fill="#28203B"/>
+  <rect x="1000" y="902.5" width="10" height="15.0" rx="5" fill="#28203B"/>
+  <rect x="64" y="970" width="470" height="70" rx="35.0" fill="#28203B"/><text x="299.0" y="1013.64" text-anchor="middle" class="sans" font-weight="700" font-size="24" fill="#F7F2E8" letter-spacing="2">▶  ESCÚCHALO EN SPOTIFY</text>
+  <text x="1016" y="1016" text-anchor="end" class="sans" font-weight="700" font-size="28" fill="#28203B">@tazonparados</text>
+
+</svg>
