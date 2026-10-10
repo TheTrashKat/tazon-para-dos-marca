@@ -313,6 +313,10 @@ Somos un **espacio seguro LGBTI+**. Antes de publicar una foto donde se reconozc
 
 ## 14. Cómo hacer una pieza nueva
 
+> 💡 **La forma más fácil es el [editor de plantillas](https://thetrashkat.github.io/tazon-para-dos-marca/editor/).** Eliges la plantilla, cambias los textos y descargas el PNG. Tiene 12 plantillas: evento semanal, posts, historias, convocatoria, podcast, portada de episodio, carrusel y destacadas. Más detalles en [`editor/README.md`](editor/README.md).
+
+Para piezas que no estén en el editor:
+
 1. Copia la plantilla más parecida de `plantillas/`.
 2. Cambia los textos y respeta la estructura del punto 9.
 3. Usa solo los colores de la paleta y los elementos de `assets/`.

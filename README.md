@@ -11,6 +11,7 @@ Este repositorio reúne la identidad visual de [Tazón para Dos](https://tazon-p
 | Si eres… | Abre |
 |---|---|
 | Una persona que quiere ver todo de un vistazo | [`index.html`](index.html) en el navegador |
+| Una persona que quiere hacer una publicación | El [editor de plantillas](https://thetrashkat.github.io/tazon-para-dos-marca/editor/): cambias los textos y descargas el PNG |
 | Una persona que va a diseñar algo | [`MANUAL_DE_MARCA.md`](MANUAL_DE_MARCA.md) |
 | Una IA o alguien programando | [`AGENTS.md`](AGENTS.md), [`brand/tokens.json`](brand/tokens.json) y [`brand/brand.json`](brand/brand.json) |
 
@@ -23,6 +24,7 @@ assets/iconos/  21 íconos de línea 64 px + sprite.svg
 assets/elementos/ d20, d6, carta, meeple, micrófono, destello
 plantillas/     posts, historias, carrusel, evento, destacadas, perfil, podcast, banner, pancarta
 aplicaciones/   stickers, tarjeta, letrero, ficha de personaje, certificado, firma de correo, merch
+editor/         editor web de plantillas editables (12 plantillas, exporta PNG/SVG/JSON)
 impresion/      PDF listos para imprenta (tamaño real, fuentes incrustadas)
 referencias/    pancarta y logo originales
 tools/          build.py (genera SVG) · render.ps1 (PNG) · export.py (PDF, logos PNG, favicon) · fonts/
@@ -40,6 +42,7 @@ tools/          build.py (genera SVG) · render.ps1 (PNG) · export.py (PDF, log
 python -I tools/build.py                                   # SVG desde los tokens
 powershell -ExecutionPolicy Bypass -File tools/render.ps1  # PNG (Edge/Chrome)
 python -I tools/export.py                                  # PDF de imprenta, logos PNG, favicon
+python -I tools/render_editor.py editor/ejemplos/semana.json  # PNG desde JSON con el editor
 ```
 
 Requiere Python 3 con `fonttools` y `Pillow` (`pip install fonttools pillow`) para convertir a trazos los textos de los logos.

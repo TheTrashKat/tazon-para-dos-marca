@@ -905,6 +905,23 @@ def build_print():
           f'<circle cx="32" cy="32" r="31" fill="{TEAL}"/><g transform="translate(9,9) scale(0.383)">{bowl_shapes()}</g></svg>\n')
 
 
+# ------------------------------------------------------------------ datos para el editor web
+def build_editor_data():
+    data = {
+        "colors": C,
+        "tints": {k: v["value"] for k, v in T["color"]["tint"].items()},
+        "icons": {k: {"label": v[0], "body": v[1]} for k, v in ICONS.items()},
+        "location": LOC,
+        "links": BRAND["identity"]["links"],
+        "process": BRAND["process"],
+        "podcastMenu": BRAND["podcast"]["menu_sections"],
+        "bowl": bowl_shapes(),
+    }
+    write("editor/brand-data.js",
+          "// Generado por tools/build.py a partir de brand/*.json. No editar a mano.\n"
+          "window.TPD = " + json.dumps(data, ensure_ascii=False, indent=1) + ";\n")
+
+
 if __name__ == "__main__":
     print("Construyendo kit de marca en", ROOT)
     build_css()
@@ -916,4 +933,5 @@ if __name__ == "__main__":
     build_stickers()
     build_social()
     build_print()
+    build_editor_data()
     print("Listo. Ejecuta tools/render.ps1 para exportar PNG.")

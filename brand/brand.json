@@ -1,6 +1,6 @@
 {
   "$description": "Perfil de marca legible por máquina. Úsalo junto a tokens.json para generar piezas nuevas. Textos tomados de tazon-para-dos.online (oct 2026) salvo los marcados como 'propuesta'.",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "updated": "2026-10-10",
   "identity": {
     "name": "Tazón para Dos",
@@ -509,7 +509,9 @@
     "renderer": "tools/render.ps1",
     "fonts": "tools/fonts/ (Barlow, licencia OFL)",
     "exporter": "tools/export.py (logos PNG transparentes, favicon.ico, PDF de imprenta al tamaño real con fuentes incrustadas)",
-    "print": "impresion/*.pdf"
+    "print": "impresion/*.pdf",
+    "editor": "editor/ (editor web de plantillas; abrir por servidor: /editor/)",
+    "editor_renderer": "tools/render_editor.py (JSON → PNG sin interfaz)"
   },
   "podcast": {
     "$description": "Identidad del podcast (fuente: página del show en Spotify, oct 2026).",
@@ -574,6 +576,36 @@
       "personas identificables sin permiso",
       "pantallas o datos personales visibles",
       "filtros que cambien el tono de piel"
+    ]
+  },
+  "editor": {
+    "url": "https://thetrashkat.github.io/tazon-para-dos-marca/editor/",
+    "templates": [
+      "post_general",
+      "historia_general",
+      "evento_vertical",
+      "evento_historia",
+      "convocatoria_cuadrado",
+      "convocatoria_historia",
+      "podcast_cuadrado",
+      "podcast_historia",
+      "podcast_episodio",
+      "carrusel_portada",
+      "carrusel_paso",
+      "destacada"
+    ],
+    "job_format": {
+      "template": "<id>",
+      "values": {
+        "<campo>": "<valor>"
+      },
+      "output": "salida/<archivo>.png"
+    },
+    "color_recipes": [
+      "general",
+      "mesa",
+      "convocatoria",
+      "podcast"
     ]
   }
 }

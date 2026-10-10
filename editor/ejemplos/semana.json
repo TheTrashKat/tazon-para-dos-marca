@@ -1,0 +1,37 @@
+[
+  {
+    "template": "evento_vertical",
+    "values": {
+      "receta": "general",
+      "linea1": "ESTE SÁBADO",
+      "linea2": "JUGAMOS.",
+      "dia": "Sábado",
+      "actividades": "ROL, JUEGOS DE MESA, PODCAST"
+    },
+    "output": "salida/evento-semana.png"
+  },
+  {
+    "template": "evento_historia",
+    "values": { "receta": "mesa", "linea2": "JUGAMOS." },
+    "output": "salida/evento-semana-historia.png"
+  },
+  {
+    "template": "podcast_episodio",
+    "values": { "seccion": "Dessert", "titulo": "Press Start" },
+    "output": "salida/episodio-press-start.png"
+  },
+  {
+    "template": "carrusel_paso",
+    "values": {
+      "color": "coral",
+      "numero": "02",
+      "icono": "dado",
+      "titulo": "La mesa es un territorio",
+      "texto": "Construimos personajes, mundos y decisiones en talleres y partidas de rol.",
+      "boton": "LA JUGAMOS EN MESA",
+      "posicion": 3,
+      "total": 5
+    },
+    "output": "salida/carrusel-03.png"
+  }
+]
