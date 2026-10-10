@@ -643,15 +643,15 @@
       "overlay_video_h_banda",
       "video_portada_banda",
       "aviso_nuevo_reel",
-      "prop_editorial_post",
-      "prop_editorial_historia",
-      "prop_editorial_reel",
-      "prop_zine_post",
-      "prop_zine_historia",
-      "prop_zine_reel",
-      "prop_bloques_post",
-      "prop_bloques_historia",
-      "prop_bloques_reel"
+      "editorial_post",
+      "editorial_historia",
+      "editorial_reel",
+      "zine_post",
+      "zine_historia",
+      "zine_reel",
+      "bloques_post",
+      "bloques_historia",
+      "bloques_reel"
     ],
     "job_format": {
       "template": "<id>",
@@ -853,6 +853,6 @@
     "A_editorial": "papel crema, foto grande con margen de revista, titular enorme tinta + coral, firma pequeña; sobria",
     "B_zine": "foto como tarjeta con cinta, titular en recortes (sol / tinta), calendario sticker, dados; juguetona",
     "C_bloques": "fecha gigante, foto en arco o círculo con órbita, diagonales y bloques de color; gráfica",
-    "estado": "propuestas para elegir; la elegida se extiende al resto de plantillas"
+    "estado": "Editorial (A) y Mesa / Zine (B) son las líneas oficiales: Editorial para información, agenda, carruseles, podcast y frases; Zine para crónicas con fotos, eventos, Reels y convocatorias. Bloques (C) queda como alternativa."
   }
 }

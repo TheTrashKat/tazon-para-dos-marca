@@ -118,15 +118,15 @@ También puedes ver una pieza directamente por URL (modo *embed*):
 4. Usa `D.fit()` en todo texto editable para que nunca se desborde.
 5. Revisa con `render_editor.py` y mira el PNG.
 
-## Propuestas de dirección visual
+## Líneas de diseño
 
-El grupo **Propuestas** tiene tres estilos para elegir, cada uno con post 4:5, historia y portada de Reel:
+**Editorial** y **Mesa / Zine** son las dos líneas oficiales (elegidas el 10 de octubre de 2026). **Bloques** queda como alternativa. Cada una tiene su grupo en el editor:
 
 | Dirección | Plantillas | Cómo se ve |
 |---|---|---|
-| A · Editorial | `prop_editorial_post`, `_historia`, `_reel` | Papel crema, foto grande con margen de revista, titular enorme |
-| B · Mesa / Zine | `prop_zine_post`, `_historia`, `_reel` | Foto como tarjeta con cinta, titular en recortes, calendario sticker y dados |
-| C · Bloques | `prop_bloques_post`, `_historia`, `_reel` | Fecha gigante, foto en arco o círculo, diagonales de color |
+| A · Editorial | `editorial_post`, `_historia`, `_reel` | Papel crema, foto grande con margen de revista, titular enorme |
+| B · Mesa / Zine | `zine_post`, `_historia`, `_reel` | Foto como tarjeta con cinta, titular en recortes, calendario sticker y dados |
+| C · Bloques | `bloques_post`, `_historia`, `_reel` | Fecha gigante, foto en arco o círculo, diagonales de color |
 
 ## Validación (dos pasadas)
 

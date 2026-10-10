@@ -1054,7 +1054,7 @@
 
   // ---------- A · EDITORIAL
   add({
-    id: "prop_editorial_post", name: "Propuesta A · Editorial: post 4:5", group: "Propuestas", w: 1080, h: 1350,
+    id: "editorial_post", name: "Editorial: post 4:5", group: "Editorial", w: 1080, h: 1350,
     fields: [foto(), enfoque(), f.etiqueta("AGENDA · SÁBADO 18 OCT"), pf.titulo1, pf.titulo2, pf.lugar],
     render(v) {
       const t = twoTitle(v.titulo1, v.titulo2, 132, 968);
@@ -1070,7 +1070,7 @@
     },
   });
   add({
-    id: "prop_editorial_historia", name: "Propuesta A · Editorial: historia 9:16", group: "Propuestas", w: 1080, h: 1920, safe: "story",
+    id: "editorial_historia", name: "Editorial: historia 9:16", group: "Editorial", w: 1080, h: 1920, safe: "story",
     fields: [foto(), enfoque(), f.etiqueta("AGENDA · SÁBADO 18 OCT"), pf.titulo1, pf.titulo2,
       { key: "texto", label: "Texto (1 línea)", type: "text", default: "Trae a tu grupo o ven a conocer uno nuevo." }],
     render(v) {
@@ -1086,7 +1086,7 @@
     },
   });
   add({
-    id: "prop_editorial_reel", cover: true, name: "Propuesta A · Editorial: portada de Reel", group: "Propuestas", w: 1080, h: 1920,
+    id: "editorial_reel", cover: true, name: "Editorial: portada de Reel", group: "Editorial", w: 1080, h: 1920,
     fields: [foto("foto", "Foto o fotograma"), enfoque(), f.etiqueta("REEL · SÁBADO DE JUEGOS"), pf.titulo1, pf.titulo2, f.usuario],
     render(v) {
       const t = twoTitle(v.titulo1, v.titulo2, 124, 880);
@@ -1113,7 +1113,7 @@
       ${tape(0, -h / 2, 200, -rot * 1.5 + 2)}</g>`;
   }
   add({
-    id: "prop_zine_post", name: "Propuesta B · Mesa/Zine: post 4:5", group: "Propuestas", w: 1080, h: 1350,
+    id: "zine_post", name: "Mesa/Zine: post 4:5", group: "Mesa / Zine", w: 1080, h: 1350,
     fields: [foto(), enfoque(), pf.pie, pf.titulo1, pf.titulo2, pf.dia, pf.mes, pf.lugar, f.usuario],
     render(v) {
       const s1 = cutoutSize(v.titulo1, 104, 690), s2 = cutoutSize(v.titulo2, 118, 690);
@@ -1129,7 +1129,7 @@
     },
   });
   add({
-    id: "prop_zine_historia", name: "Propuesta B · Mesa/Zine: historia 9:16", group: "Propuestas", w: 1080, h: 1920, safe: "story",
+    id: "zine_historia", name: "Mesa/Zine: historia 9:16", group: "Mesa / Zine", w: 1080, h: 1920, safe: "story",
     fields: [foto(), enfoque(), pf.pie, pf.titulo1, pf.titulo2, pf.dia, pf.mes, pf.lugar, f.usuario],
     render(v) {
       const s1 = cutoutSize(v.titulo1, 112, 680), s2 = cutoutSize(v.titulo2, 126, 680);
@@ -1145,7 +1145,7 @@
     },
   });
   add({
-    id: "prop_zine_reel", cover: true, name: "Propuesta B · Mesa/Zine: portada de Reel", group: "Propuestas", w: 1080, h: 1920,
+    id: "zine_reel", cover: true, name: "Mesa/Zine: portada de Reel", group: "Mesa / Zine", w: 1080, h: 1920,
     fields: [foto("foto", "Foto o fotograma"), enfoque(), f.etiqueta("SÁBADO DE JUEGOS"), pf.titulo1, pf.titulo2, f.usuario],
     render(v) {
       const s1 = cutoutSize(v.titulo1, 120, 820), s2 = cutoutSize(v.titulo2, 136, 820);
@@ -1163,7 +1163,7 @@
 
   // ---------- C · BLOQUES
   add({
-    id: "prop_bloques_post", name: "Propuesta C · Bloques: post 4:5", group: "Propuestas", w: 1080, h: 1350,
+    id: "bloques_post", name: "Bloques: post 4:5", group: "Bloques", w: 1080, h: 1350,
     fields: [foto(), enfoque(), pf.dia, pf.mes, { key: "semana", label: "Día de la semana", type: "text", default: "SÁBADO" },
       pf.titulo1, pf.titulo2, { key: "info", label: "Información", type: "text", default: SCHEDULE ? `${SCHEDULE.toUpperCase()} · ENGATIVÁ` : "" }, f.usuario],
     render(v) {
@@ -1187,7 +1187,7 @@
     },
   });
   add({
-    id: "prop_bloques_historia", name: "Propuesta C · Bloques: historia 9:16", group: "Propuestas", w: 1080, h: 1920, safe: "story",
+    id: "bloques_historia", name: "Bloques: historia 9:16", group: "Bloques", w: 1080, h: 1920, safe: "story",
     fields: [foto(), enfoque(), pf.titulo1, pf.titulo2, { key: "info", label: "Información", type: "text", default: SCHEDULE ? `SÁBADOS · ${SCHEDULE.toUpperCase()}` : "" }, f.usuario],
     render(v) {
       const t = twoTitle(v.titulo1, v.titulo2, 124, 960, 60);
@@ -1210,7 +1210,7 @@
     },
   });
   add({
-    id: "prop_bloques_reel", cover: true, name: "Propuesta C · Bloques: portada de Reel", group: "Propuestas", w: 1080, h: 1920,
+    id: "bloques_reel", cover: true, name: "Bloques: portada de Reel", group: "Bloques", w: 1080, h: 1920,
     fields: [foto("foto", "Foto o fotograma"), enfoque(), f.etiqueta("SÁBADO DE JUEGOS"), pf.titulo1, pf.titulo2],
     render(v) {
       const t = twoTitle(v.titulo1, v.titulo2, 150, 940, 70);
