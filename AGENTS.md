@@ -63,6 +63,8 @@ Instructions for AI agents (Claude, Codex, Cursor, etc.) that create or edit vis
 - episode cover
 - carousel slide
 - highlight cover
+- photo posts and stories (single photo, collages, comparisons, event, poll, countdown)
+- video covers, thumbnails, overlays, chapter cards and podcast clip stills
 
 To produce images headlessly:
 1. Write a JSON job list: `[{ "template": "<id>", "values": {...}, "output": "salida/x.png" }]`.
@@ -157,6 +159,12 @@ Follow `brand.json → video`:
 Follow `brand.json → photography`. Photos should show real people playing, hands on the table, dice, cards and microphones, in warm natural light. Put them in rounded frames with an ink outline.
 
 **Consent is mandatory.** This is an LGBTI+ safe space, so never publish identifiable faces or names without explicit permission. Offer a hands-only option.
+
+## Repository workflow
+
+- **Commits:** the user wants every change committed and pushed. `tools/autocommit.py` does it (commit message built from the changed folders, skips files over 90 MB) and is meant to run from a Claude Code `Stop` hook. If the hook is not active, commit and push yourself when a piece of work is done.
+- **Never commit the user's raw photos or clips** (they contain identifiable people). Use paths outside the repo in jobs and guiones. Generated output goes to `salida/`, which is git-ignored. Only the neutral example photos in `editor/ejemplos/fotos/` belong in the repo.
+- **Before committing generated media,** check that it opens (for example `ffprobe` on MP4s). An interrupted `tools/video.py` run once left broken intro/outro files.
 
 ## Gotchas
 
