@@ -1,6 +1,6 @@
 {
   "$description": "Perfil de marca legible por máquina. Úsalo junto a tokens.json para generar piezas nuevas. Textos tomados de tazon-para-dos.online (oct 2026) salvo los marcados como 'propuesta'.",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "updated": "2026-10-10",
   "identity": {
     "name": "Tazón para Dos",
@@ -667,7 +667,10 @@
       "editorial_marco_v",
       "zine_marco_v",
       "editorial_cierre_v",
-      "zine_cierre_v"
+      "zine_cierre_v",
+      "subtitulo_tiktok",
+      "gancho_tiktok",
+      "overlay_tiktok"
     ],
     "job_format": {
       "template": "<id>",
@@ -817,7 +820,8 @@
             "rotulo": {
               "nombre": "",
               "rol": ""
-            }
+            },
+            "encuadre": "izquierda | centro | derecha | 0–1 (qué parte del clip se ve al recortar)"
           },
           {
             "foto": "ruta a jpg/png",
@@ -835,7 +839,12 @@
             "duracion": "s",
             "nota": "tarjeta de capítulo (separador_v / separador_h)"
           }
-        ]
+        ],
+        "gancho": {
+          "linea1": "",
+          "linea2": "",
+          "nota": "solo estilo tiktok: texto grande en el primer 1,8 s"
+        }
       },
       "examples": [
         "video/ejemplos/guion_reel_marco.json",
@@ -857,7 +866,8 @@
           "stickers": "overlay_reel_stickers",
           "marco": "marco_vertical (clip en ventana 960x1000 en x60 y400)",
           "editorial": "editorial_marco_v (clip en ventana 984x860 en x48 y250; el texto de cada segmento es el titular coral; intro crema y cierre editorial)",
-          "zine": "zine_marco_v (clip en ventana 880x780 en x100 y280 dentro de una tarjeta con cinta; el texto de cada segmento es el recorte 2; cierre zine)"
+          "zine": "zine_marco_v (clip en ventana 880x780 en x100 y280 dentro de una tarjeta con cinta; el texto de cada segmento es el recorte 2; cierre zine)",
+          "tiktok": "overlay_tiktok + subtitulo_tiktok (1-3 palabras, palabra activa en sol) + gancho_tiktok opcional; video a pantalla completa con acercamiento; cierre según capa.linea"
         },
         "16x9": {
           "clasico": "overlay_video_h",

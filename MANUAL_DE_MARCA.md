@@ -335,9 +335,14 @@ La marca encima del video tiene **cuatro estilos**. Se eligen en el guion con `"
 | `stickers` | Sello, nombre y datos como etiquetas inclinadas pegadas sobre el video, más un dado |
 | `marco` | El video va dentro de una ventana con borde tinta sobre fondo de color, con etiquetas en el borde |
 | `editorial` | Línea Editorial: intro crema, el video con margen de revista y el texto de cada parte como titular coral, tarjeta final editorial |
+| `tiktok` | Video a pantalla completa, cortes rápidos, gancho al inicio, subtítulos grandes de 1 a 3 palabras con la palabra activa en amarillo, y la marca discreta arriba |
 | `zine` | Línea Mesa / Zine: el video como tarjeta con cinta, sello y dado, el texto de cada parte en recortes, tarjeta final zine |
 
 En videos horizontales (16:9) hay `clasico` y `banda`.
+
+En el estilo `tiktok` también puedes poner un **gancho** (`"gancho": { "linea1": "¿PLAN PARA", "linea2": "EL SÁBADO?" }`), que aparece grande en el primer segundo y medio. Usa clips de 2 a 3 segundos.
+
+Si al recortar un clip horizontal la persona queda fuera, agrega `"encuadre": "izquierda"` (o `"derecha"`, o un número de 0 a 1) a ese segmento.
 
 Además de clips, un guion puede llevar:
 - **Fotos:** `{ "foto": "foto.jpg", "duracion": 3.5, "texto": "..." }`. La foto se mueve despacio de izquierda a derecha. Sirve para hacer un video solo con fotos de la jornada.
@@ -409,7 +414,7 @@ Además de clips, un guion puede llevar:
 
 ## 15. Cómo hacer una pieza nueva
 
-> 💡 **La forma más fácil es el [editor de plantillas](https://thetrashkat.github.io/tazon-para-dos-marca/editor/).** Eliges la plantilla, cambias los textos y descargas el PNG. Tiene 72 plantillas: publicaciones, eventos, convocatorias, podcast, carrusel, destacadas, **fotos** y **video**. Más detalles en [`editor/README.md`](editor/README.md).
+> 💡 **La forma más fácil es el [editor de plantillas](https://thetrashkat.github.io/tazon-para-dos-marca/editor/).** Eliges la plantilla, cambias los textos y descargas el PNG. Tiene 75 plantillas: publicaciones, eventos, convocatorias, podcast, carrusel, destacadas, **fotos** y **video**. Más detalles en [`editor/README.md`](editor/README.md).
 
 Para piezas que no estén en el editor:
 

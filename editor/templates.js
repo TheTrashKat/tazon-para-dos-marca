@@ -1568,6 +1568,51 @@
     },
   });
 
+  // ============================================================ ESTILO TIKTOK (video a pantalla completa)
+  const centeredCut = (text, s) => Math.round(540 - (D.measure(String(text || "").toUpperCase(), "cond", s, 800, 1) + s * 0.62) / 2);
+  add({
+    id: "subtitulo_tiktok", name: "Subtítulo estilo TikTok (transparente)", group: "Video", w: 1080, h: 1920, transparent: true,
+    fields: [{ key: "texto", label: "Texto (1 a 3 palabras)", type: "text", default: "VEN A JUGAR" },
+      { key: "destacar", label: "Palabra destacada en amarillo (1, 2, 3… · 0 = ninguna)", type: "number", default: 1 },
+      { key: "y", label: "Altura del centro del texto", type: "number", default: 1180 }],
+    render(v) {
+      const text = String(v.texto || "").toUpperCase().split(/\s+/).filter(Boolean).join(" ");
+      if (!text) return "";
+      let size = 120, lines;
+      for (;;) { lines = D.wrapBalanced(text, size, 780, "cond", 800); if (lines.length <= 2 || size <= 70) break; size -= 6; }
+      lines = lines.slice(0, 2);
+      const lh = size * 1.04, cy = Number(v.y) || 1180, hl = Number(v.destacar) || 0;
+      const top = cy - (lines.length * lh) / 2 + size * 0.72;
+      let wi = 0;
+      return lines.map((line, li) => {
+        const y = Math.round(top + li * lh);
+        const ws = line.split(" ");
+        const spans = ws.map((w, k) => { wi++; return `<tspan fill="${wi === hl ? SUN : CREAM}">${D.esc(w)}${k < ws.length - 1 ? " " : ""}</tspan>`; }).join("");
+        return `<text x="550" y="${y + 10}" text-anchor="middle" class="cond" font-size="${size}" fill="${INK}" stroke="${INK}" stroke-width="16" stroke-linejoin="round">${D.esc(line)}</text>
+          <text x="540" y="${y}" text-anchor="middle" class="cond" font-size="${size}" stroke="${INK}" stroke-width="14" stroke-linejoin="round" paint-order="stroke">${spans}</text>`;
+      }).join("");
+    },
+  });
+  add({
+    id: "gancho_tiktok", name: "Gancho inicial estilo TikTok (transparente)", group: "Video", w: 1080, h: 1920, transparent: true,
+    fields: [{ key: "linea1", label: "Recorte 1", type: "text", default: "¿PLAN PARA" }, { key: "linea2", label: "Recorte 2", type: "text", default: "EL SÁBADO?" }],
+    render(v) {
+      const s1 = cutoutSize(v.linea1, 130, 800), s2 = cutoutSize(v.linea2, 150, 800);
+      return `${cutout(centeredCut(v.linea1, s1), 640, -3, v.linea1, s1, SUN, INK)}
+        ${cutout(centeredCut(v.linea2, s2), 824, 2, v.linea2, s2, INK, CREAM)}
+        ${D.sparkle(150, 520, 70, SUN)}${D.sparkle(930, 930, 50, CREAM)}`;
+    },
+  });
+  add({
+    id: "overlay_tiktok", name: "Marca discreta estilo TikTok (transparente)", group: "Video", w: 1080, h: 1920, transparent: true,
+    fields: [f.usuario],
+    render(v) {
+      return `<g transform="rotate(-6 116 334)"><circle cx="125" cy="343" r="66" fill="${INK}"/><circle cx="116" cy="334" r="66" fill="${CREAM}" stroke="${INK}" stroke-width="6"/>
+          <use href="#bowl" x="76" y="293" width="80" height="83"/></g>
+        ${tag(192, 338, -3, v.usuario, D.fit(v.usuario, 36, 600, "sans", 700, 2), SUN, INK)}`;
+    },
+  });
+
   function introLogo(w, h, v) {
     const H = w < h;
     const cx = H ? 540 : 560, cy = H ? 760 : 540, R = H ? 270 : 280;

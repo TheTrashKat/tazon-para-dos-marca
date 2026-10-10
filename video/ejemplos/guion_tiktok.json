@@ -1,0 +1,13 @@
+{
+  "formato": "9x16",
+  "salida": "salida/tiktok.mp4",
+  "intro": false,
+  "cierre": true,
+  "audio": "original",
+  "capa": { "estilo": "tiktok", "linea": "zine", "usuario": "@tazonparados" },
+  "gancho": { "linea1": "¿PLAN PARA", "linea2": "EL SÁBADO?" },
+  "segmentos": [
+    { "foto": "../../editor/ejemplos/fotos/tablero.jpg", "duracion": 2.6, "texto": "Juegos de mesa para todos los gustos" },
+    { "foto": "../../editor/ejemplos/fotos/grabacion-podcast.jpg", "duracion": 2.6, "texto": "Historias narradas en vivo", "encuadre": "centro" }
+  ]
+}
