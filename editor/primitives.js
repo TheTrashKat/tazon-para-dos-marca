@@ -244,20 +244,27 @@
     convocatoria: { label: "Convocatoria (sol)", bg: SUN, block: CORAL, close: INK, ink: INK, hl: CREAM, hlShadow: INK, accent: CORAL, corner: [TEAL, CORAL], light: false },
     podcast: { label: "Podcast (tinta)", bg: INK, block: TEAL, close: INK, ink: CREAM, hl: SUN, hlShadow: TEAL, accent: CORAL, corner: [SUN, CORAL], light: true },
   };
+  // Inversión de colores de una combinación: el fondo de color pasa a tinta y ese color queda en el titular
+  // destacado y en las sombras de las fotos; la combinación de tinta (podcast) pasa a crema.
+  // Texto y etiquetas siguen el contraste de marca: crema sobre tinta, tinta sobre crema.
+  function invert(r) {
+    if (r.bg === INK) return { ...r, bg: CREAM, ink: INK, hl: CORAL, hlShadow: INK, accent: TEAL, light: false, shadow: TEAL, inverted: true };
+    return { ...r, bg: INK, block: r.bg, ink: CREAM, hl: r.bg, hlShadow: r.block, light: true, shadow: r.bg, inverted: true };
+  }
 
   // ---- fotos ----
   const FOCUS = { centro: "xMidYMid", arriba: "xMidYMin", abajo: "xMidYMax", izquierda: "xMinYMid", derecha: "xMaxYMid" };
   const FOCUS_OPTS = Object.keys(FOCUS).map((k) => [k, k[0].toUpperCase() + k.slice(1)]);
   let clipN = 0;
   // Foto recortada en un rectángulo (rx = radio). Sin foto muestra un marcador "TU FOTO AQUÍ".
-  // opts: { rx, focus, stroke, shadow, path } — path: recorte libre (d de un <path>) en vez de rectángulo.
+  // opts: { rx, focus, stroke, shadow, shadowColor, path } — path: recorte libre (d de un <path>) en vez de rectángulo.
   function photo(x, y, w, h, href, opts = {}) {
     const id = "clip" + (++clipN);
     const rx = opts.rx ?? 28;
     const shape = opts.path ? `<path d="${opts.path}"/>` : `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}"/>`;
     const outline = opts.path ? `<path d="${opts.path}"` : `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}"`;
     let out = "";
-    if (opts.shadow) out += opts.path ? "" : `<rect x="${x + 12}" y="${y + 12}" width="${w}" height="${h}" rx="${rx}" fill="${INK}"/>`;
+    if (opts.shadow) out += opts.path ? "" : `<rect x="${x + 12}" y="${y + 12}" width="${w}" height="${h}" rx="${rx}" fill="${opts.shadowColor || INK}"/>`;
     out += `<clipPath id="${id}">${shape}</clipPath>`;
     if (href) {
       out += `<image href="${esc(href)}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="${FOCUS[opts.focus] || "xMidYMid"} slice" clip-path="url(#${id})"/>`;
@@ -295,5 +302,5 @@
     };
   }
 
-  window.TPDDraw = { C, INK, CORAL, SUN, TEAL, CREAM, SUN_L, TEAL_L, esc, measure, fit, wrap, defs, background, corner, sparkle, meeple, header, pill, pillAuto, headline, paragraph, icon, d20, d6, card, mic, waveform, bubble, steps, infoCard, chips, illustration, twoLines, wrapBalanced, RECIPES, photo, playBadge, textBox, FOCUS_OPTS };
+  window.TPDDraw = { C, INK, CORAL, SUN, TEAL, CREAM, SUN_L, TEAL_L, esc, measure, fit, wrap, defs, background, corner, sparkle, meeple, header, pill, pillAuto, headline, paragraph, icon, d20, d6, card, mic, waveform, bubble, steps, infoCard, chips, illustration, twoLines, wrapBalanced, RECIPES, invert, photo, playBadge, textBox, FOCUS_OPTS };
 })();

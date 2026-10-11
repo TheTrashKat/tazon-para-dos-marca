@@ -51,6 +51,10 @@ Un editor web para hacer publicaciones sin saber diseño. Eliges la plantilla, c
 | `foto_evento` | Foto con fecha, hora, lugar y botón | 1080 × 1350 |
 | `foto_pregunta` | Historia con pregunta y recuadro para la encuesta de Instagram | 1080 × 1920 |
 | `cuenta_regresiva` | Historia «Faltan 3 días», con foto o ilustración | 1080 × 1920 |
+| `foto_completa` | Foto a sangre con banda de color diagonal, titular y sticker | 1080 × 1350 |
+| `foto_tira` | Tira de 3 fotos tipo fotomatón (historia) | 1080 × 1920 |
+| `foto_mosaico` | Mosaico de 6 fotos (álbum de la jornada) | 1080 × 1350 |
+| `foto_circulo` | Foto en círculo con etiqueta y sticker | 1080 × 1080 |
 | `video_portada` | Portada de Reel / video | 1080 × 1920 |
 | `miniatura` | Miniatura de video | 1280 × 720 |
 | `overlay_reel` | Capa de marca para Reel (transparente) | 1080 × 1920 |

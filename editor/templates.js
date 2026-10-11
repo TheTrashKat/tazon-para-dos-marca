@@ -22,6 +22,7 @@
     receta: { key: "receta", label: "Combinación de color", type: "select", options: RECIPE_OPTS, default: "general" },
     etiqueta: (d) => ({ key: "etiqueta", label: "Etiqueta (píldora, opcional)", type: "text", default: d }),
     usuario: { key: "usuario", label: "Usuario / redes", type: "text", default: "@tazonparados" },
+    invertir: { key: "invertir", label: "Invertir colores (fondo tinta; podcast: fondo crema)", type: "checkbox", default: false },
     ilustracion: { key: "ilustracion", label: "Ilustración", type: "select", options: ILLUS_OPTS, default: "mixto" },
   };
   const chipColors = (block) => (block === TEAL ? [CORAL, SUN, CREAM] : [TEAL, SUN, CREAM]);
@@ -324,6 +325,9 @@
 
   // ============================================================ FOTOS
   const foto = (key = "foto", label = "Foto") => ({ key, label, type: "image", default: "" });
+  // Combinación de color de una plantilla de fotos, invertida si se marca «Invertir colores»
+  const rec = (v) => (v.invertir ? D.invert(RECIPES[v.receta] || RECIPES.general) : RECIPES[v.receta] || RECIPES.general);
+  const INV_VARIANTS = [{ invertir: true }, { receta: "podcast", invertir: true }];
   const enfoque = (key = "enfoque") => ({ key, label: "Enfoque de la foto", type: "select", options: D.FOCUS_OPTS, default: "centro" });
   const STICKER_OPTS = [["d20", "Dado d20"], ["mic", "Micrófono"], ["meeple", "Meeple"], ["destello", "Destellos"], ["ninguno", "Ninguno"]];
   function sticker(kind, x, y, s = 1) {
@@ -341,14 +345,15 @@
 
   add({
     id: "foto_post", name: "Foto con marco 4:5", group: "Fotos", w: 1080, h: 1350,
-    fields: [foto(), enfoque(), f.receta, f.etiqueta("ARCHIVO"), { key: "titulo", label: "Título", type: "text", default: "LA MESA ES UN TERRITORIO" },
+    fields: [foto(), enfoque(), f.receta, f.invertir, f.etiqueta("ARCHIVO"), { key: "titulo", label: "Título", type: "text", default: "LA MESA ES UN TERRITORIO" },
       { key: "texto", label: "Texto", type: "textarea", default: "Personas que se reúnen para imaginar juntas." },
       { key: "sticker", label: "Sticker", type: "select", options: STICKER_OPTS, default: "d20" }, f.usuario],
+    variants: INV_VARIANTS,
     render(v) {
-      const r = RECIPES[v.receta];
+      const r = rec(v);
       const p = D.paragraph(64, 1160, v.texto, 32, 950, r.ink, { maxLines: 2, lineHeight: 40 });
       return `${D.background(1080, 1350, r.bg, r.light)}${D.corner(1080, ...r.corner)}${D.header(110, 96, 1, r.ink)}
-        ${D.photo(64, 170, 952, 800, v.foto, { focus: v.enfoque, shadow: true })}
+        ${D.photo(64, 170, 952, 800, v.foto, { focus: v.enfoque, shadow: true, shadowColor: r.shadow })}
         ${v.etiqueta ? D.pillAuto(96, 200, 52, INK, CREAM, v.etiqueta, 20) : ""}
         ${sticker(v.sticker, 955, 950)}
         ${D.headline(64, 1100, v.titulo, D.fit(v.titulo, 100, v.sticker === "ninguno" ? 950 : 820), r.ink)}
@@ -359,13 +364,14 @@
 
   add({
     id: "foto_cuadrado", name: "Foto con marco 1:1", group: "Fotos", w: 1080, h: 1080,
-    fields: [foto(), enfoque(), f.receta, f.etiqueta(""), { key: "titulo", label: "Título", type: "text", default: "HISTORIAS COMPARTIDAS" },
+    fields: [foto(), enfoque(), f.receta, f.invertir, f.etiqueta(""), { key: "titulo", label: "Título", type: "text", default: "HISTORIAS COMPARTIDAS" },
       { key: "texto", label: "Texto (1 línea)", type: "text", default: "Encuentros que luego se convierten en sonido." },
       { key: "sticker", label: "Sticker", type: "select", options: STICKER_OPTS, default: "meeple" }, f.usuario],
+    variants: INV_VARIANTS,
     render(v) {
-      const r = RECIPES[v.receta];
+      const r = rec(v);
       return `${D.background(1080, 1080, r.bg, r.light)}${D.corner(1080, ...r.corner, 150)}${D.header(110, 96, 1, r.ink)}
-        ${D.photo(64, 170, 952, 640, v.foto, { focus: v.enfoque, shadow: true })}
+        ${D.photo(64, 170, 952, 640, v.foto, { focus: v.enfoque, shadow: true, shadowColor: r.shadow })}
         ${v.etiqueta ? D.pillAuto(96, 200, 52, INK, CREAM, v.etiqueta, 20) : ""}
         ${sticker(v.sticker, 960, 790, 0.9)}
         ${D.headline(64, 920, v.titulo, D.fit(v.titulo, 96, v.sticker === "ninguno" ? 950 : 830), r.ink)}
@@ -376,11 +382,12 @@
 
   add({
     id: "foto_historia", name: "Foto historia 9:16", group: "Fotos", w: 1080, h: 1920,
-    fields: [foto(), enfoque(), f.receta, f.etiqueta(""), { key: "titulo1", label: "Título línea 1", type: "text", default: "ESTO PASÓ" },
+    fields: [foto(), enfoque(), f.receta, f.invertir, f.etiqueta(""), { key: "titulo1", label: "Título línea 1", type: "text", default: "ESTO PASÓ" },
       { key: "titulo2", label: "Título línea 2 (destacada)", type: "text", default: "EN LA MESA." },
       { key: "texto", label: "Texto", type: "textarea", default: "Personas que se reúnen para imaginar juntas." }, f.usuario],
+    variants: INV_VARIANTS,
     render(v) {
-      const r = RECIPES[v.receta];
+      const r = rec(v);
       const p = D.paragraph(76, 1615, v.texto, 40, 920, r.ink, { maxLines: 2, lineHeight: 50 });
       return `${D.background(1080, 1920, r.bg, r.light)}
         ${D.photo(0, 0, 1080, 1260, v.foto, { focus: v.enfoque, stroke: false, path: "M0,0 H1080 V1180 L0,1262 Z" })}
@@ -397,36 +404,40 @@
   add({
     id: "foto_cita", name: "Foto con cita 4:5", group: "Fotos", w: 1080, h: 1350,
     fields: [foto(), enfoque(), { key: "cita", label: "Cita / frase", type: "textarea", default: "Nos reunimos para inventar mundos y terminamos encontrando nuevas formas de habitar el nuestro." },
-      { key: "autor", label: "Autor/a (opcional)", type: "text", default: "Tazón para Dos" }, f.usuario],
+      { key: "autor", label: "Autor/a (opcional)", type: "text", default: "Tazón para Dos" }, { ...f.invertir, label: "Invertir colores (banda crema)" }, f.usuario],
+    variants: [{ invertir: true }],
     render(v) {
+      // invertida: banda crema con texto en tinta y franja coral (en vez de tinta con texto crema)
+      const [band, txt, dots, stripe, autorC] = v.invertir ? [CREAM, INK, "dots", CORAL, INK] : [INK, CREAM, "dotsLight", SUN, SUN];
       let size = 74, lines;
       for (;;) { lines = D.wrap(String(v.cita).toUpperCase(), size, 950, "cond", 800); if (lines.length <= 4 || size <= 44) break; size -= 4; }
       lines = lines.slice(0, 4);
       const lh = size * 0.98, y0 = 1010;
-      const quote = lines.map((l, i) => `<text x="64" y="${Math.round(y0 + i * lh)}" class="cond" font-size="${size}" fill="${CREAM}">${D.esc(l)}</text>`).join("");
+      const quote = lines.map((l, i) => `<text x="64" y="${Math.round(y0 + i * lh)}" class="cond" font-size="${size}" fill="${txt}">${D.esc(l)}</text>`).join("");
       const ay = y0 + (lines.length - 1) * lh + 62;
       return `${D.photo(0, 0, 1080, 960, v.foto, { focus: v.enfoque, stroke: false, rx: 0 })}
-        <path d="M0,900 L1080,840 V1350 H0 Z" fill="${INK}"/><path d="M0,900 L1080,840 V1350 H0 Z" fill="url(#dotsLight)"/>
-        <path d="M0,900 L1080,840 L1080,852 L0,912 Z" fill="${SUN}"/>
+        <path d="M0,900 L1080,840 V1350 H0 Z" fill="${band}"/><path d="M0,900 L1080,840 V1350 H0 Z" fill="url(#${dots})"/>
+        <path d="M0,900 L1080,840 L1080,852 L0,912 Z" fill="${stripe}"/>
         ${headerChip(64, 64)}
         <circle cx="950" cy="850" r="74" fill="${SUN}" stroke="${INK}" stroke-width="7"/>
         <text x="950" y="925" text-anchor="middle" class="cond" font-size="190" fill="${INK}">“</text>
         ${quote}
-        ${v.autor ? `<text x="64" y="${Math.round(ay)}" class="sans" font-weight="700" font-size="30" fill="${SUN}" letter-spacing="2">— ${D.esc(v.autor)}</text>` : ""}
-        <text x="1016" y="1300" text-anchor="end" class="sans" font-weight="700" font-size="26" fill="${CREAM}">${D.esc(v.usuario)}</text>`;
+        ${v.autor ? `<text x="64" y="${Math.round(ay)}" class="sans" font-weight="700" font-size="30" fill="${autorC}" letter-spacing="2">— ${D.esc(v.autor)}</text>` : ""}
+        <text x="1016" y="1300" text-anchor="end" class="sans" font-weight="700" font-size="26" fill="${txt}">${D.esc(v.usuario)}</text>`;
     },
   });
 
   add({
     id: "collage", name: "Collage de 3 fotos 4:5", group: "Fotos", w: 1080, h: 1350,
     fields: [foto("foto1", "Foto grande"), enfoque("enfoque1"), foto("foto2", "Foto 2"), enfoque("enfoque2"), foto("foto3", "Foto 3"), enfoque("enfoque3"),
-      f.receta, f.etiqueta("ASÍ VAMOS"), { key: "titulo", label: "Título", type: "text", default: "CRÓNICAS DE LA MESA" }, f.usuario],
+      f.receta, f.invertir, f.etiqueta("ASÍ VAMOS"), { key: "titulo", label: "Título", type: "text", default: "CRÓNICAS DE LA MESA" }, f.usuario],
+    variants: INV_VARIANTS,
     render(v) {
-      const r = RECIPES[v.receta];
+      const r = rec(v);
       return `${D.background(1080, 1350, r.bg, r.light)}${D.corner(1080, ...r.corner, 150)}${D.header(110, 96, 1, r.ink)}
-        ${D.photo(64, 170, 952, 560, v.foto1, { focus: v.enfoque1, shadow: true })}
-        ${D.photo(64, 760, 466, 400, v.foto2, { focus: v.enfoque2, shadow: true, rx: 22 })}
-        ${D.photo(560, 760, 456, 400, v.foto3, { focus: v.enfoque3, shadow: true, rx: 22 })}
+        ${D.photo(64, 170, 952, 560, v.foto1, { focus: v.enfoque1, shadow: true, shadowColor: r.shadow })}
+        ${D.photo(64, 760, 466, 400, v.foto2, { focus: v.enfoque2, shadow: true, shadowColor: r.shadow, rx: 22 })}
+        ${D.photo(560, 760, 456, 400, v.foto3, { focus: v.enfoque3, shadow: true, shadowColor: r.shadow, rx: 22 })}
         ${v.etiqueta ? D.pillAuto(96, 200, 52, INK, CREAM, v.etiqueta, 20) : ""}
         ${D.sparkle(1010, 735, 70, r.accent)}
         ${D.headline(64, 1270, v.titulo, D.fit(v.titulo, 96, Math.min(700, 952 - D.measure(v.usuario, "sans", 26, 700) - 48)), r.ink)}
@@ -643,10 +654,11 @@
   add({
     id: "foto_polaroid", name: "Fotos instantáneas 4:5", group: "Fotos", w: 1080, h: 1350,
     fields: [foto("foto", "Foto principal"), enfoque(), { key: "pie", label: "Pie de la foto principal", type: "text", default: "la primera tirada de la noche" },
-      foto("foto2", "Segunda foto (opcional)"), enfoque("enfoque2"), f.receta,
+      foto("foto2", "Segunda foto (opcional)"), enfoque("enfoque2"), f.receta, f.invertir,
       { key: "titulo", label: "Título", type: "text", default: "RECUERDOS DE LA MESA." }, f.usuario],
+    variants: INV_VARIANTS,
     render(v) {
-      const r = RECIPES[v.receta];
+      const r = rec(v);
       const two = !!v.foto2;
       const pola = (cx, cy, rot, w, href, focus, cap, tape) => {
         const pw = w - 80, h = pw + (cap !== null ? 200 : 80);
@@ -673,10 +685,11 @@
     fields: [foto("foto1", "Foto izquierda"), enfoque("enfoque1"), { key: "etiqueta1", label: "Etiqueta izquierda", type: "text", default: "PERSONAJE" },
       foto("foto2", "Foto derecha"), enfoque("enfoque2"), { key: "etiqueta2", label: "Etiqueta derecha", type: "text", default: "JUGADOR" },
       { key: "insignia", label: "Insignia central", type: "select", options: [["flecha", "Flecha"], ["vs", "VS"], ["ninguna", "Ninguna"]], default: "flecha" },
-      f.receta, { key: "titulo", label: "Título", type: "text", default: "DETRÁS DE CADA PERSONAJE." },
+      f.receta, f.invertir, { key: "titulo", label: "Título", type: "text", default: "DETRÁS DE CADA PERSONAJE." },
       { key: "texto", label: "Texto (1 línea)", type: "text", default: "Hay alguien que lo imaginó." }, f.usuario],
+    variants: INV_VARIANTS,
     render(v) {
-      const r = RECIPES[v.receta];
+      const r = rec(v);
       const L = "M64,170 H600 L480,1110 H64 Z", R = "M624,170 H1016 V1110 H504 Z";
       const badge = v.insignia === "vs"
         ? `<circle cx="562" cy="650" r="74" fill="${SUN}" stroke="${INK}" stroke-width="7"/><text x="562" y="680" text-anchor="middle" class="cond" font-size="84" fill="${INK}">VS</text>`
@@ -698,12 +711,13 @@
 
   add({
     id: "foto_carrusel", name: "Carrusel de fotos (lámina) 4:5", group: "Fotos", w: 1080, h: 1350,
-    fields: [foto(), enfoque(), f.receta, { key: "numero", label: "Número de lámina", type: "number", default: 2 }, { key: "total", label: "Total de láminas", type: "number", default: 5 },
+    fields: [foto(), enfoque(), f.receta, f.invertir, { key: "numero", label: "Número de lámina", type: "number", default: 2 }, { key: "total", label: "Total de láminas", type: "number", default: 5 },
       { key: "titulo", label: "Título", type: "text", default: "PRIMERO, LA MESA." },
       { key: "texto", label: "Texto (hasta 2 líneas)", type: "textarea", default: "Llegamos temprano, sacamos los dados y repartimos las fichas de personaje." },
       { key: "desliza", label: "Mostrar «Desliza»", type: "checkbox", default: true }, f.usuario],
+    variants: INV_VARIANTS,
     render(v) {
-      const r = RECIPES[v.receta];
+      const r = rec(v);
       const num = `${Number(v.numero) || 1}/${Number(v.total) || 1}`;
       const t = fitLines(v.titulo, 84, 800, 1, 52);
       const p = D.paragraph(64, 1185, v.texto, 32, 950, r.ink, { maxLines: 2, lineHeight: 42 });
@@ -723,11 +737,12 @@
   add({
     id: "collage_4", name: "Collage de 4 fotos 1:1", group: "Fotos", w: 1080, h: 1080,
     fields: [foto("foto1", "Foto 1"), enfoque("enfoque1"), foto("foto2", "Foto 2"), enfoque("enfoque2"), foto("foto3", "Foto 3"), enfoque("enfoque3"), foto("foto4", "Foto 4"), enfoque("enfoque4"),
-      f.receta, f.etiqueta(""), { key: "titulo", label: "Título", type: "text", default: "UN SÁBADO CUALQUIERA." }, f.usuario],
+      f.receta, f.invertir, f.etiqueta(""), { key: "titulo", label: "Título", type: "text", default: "UN SÁBADO CUALQUIERA." }, f.usuario],
+    variants: INV_VARIANTS,
     render(v) {
-      const r = RECIPES[v.receta];
+      const r = rec(v);
       const cells = [[64, 160], [550, 160], [64, 560], [550, 560]];
-      const ph = cells.map(([x, y], i) => D.photo(x, y, 466, 380, v[`foto${i + 1}`], { focus: v[`enfoque${i + 1}`], shadow: true, rx: 22, strokeWidth: 6 })).join("");
+      const ph = cells.map(([x, y], i) => D.photo(x, y, 466, 380, v[`foto${i + 1}`], { focus: v[`enfoque${i + 1}`], shadow: true, shadowColor: r.shadow, rx: 22, strokeWidth: 6 })).join("");
       const t = fitLines(v.titulo, 80, 700, 1, 48);
       return `${D.background(1080, 1080, r.bg, r.light)}${D.corner(1080, ...r.corner, 150)}${D.header(112, 90, 1, r.ink)}
         ${ph}
@@ -741,14 +756,15 @@
 
   add({
     id: "foto_evento", name: "Foto + datos del evento 4:5", group: "Fotos", w: 1080, h: 1350,
-    fields: [foto(), enfoque(), f.receta, f.etiqueta("ESTE SÁBADO"),
+    fields: [foto(), enfoque(), f.receta, f.invertir, f.etiqueta("ESTE SÁBADO"),
       { key: "dia", label: "Día (número)", type: "text", default: "18" }, { key: "mes", label: "Mes (abreviado)", type: "text", default: "OCT" },
       { key: "titulo", label: "Título", type: "text", default: "NOCHE DE ROL ABIERTA." },
       { key: "hora", label: "Hora", type: "text", default: SCHEDULE ? `Sábado · ${SCHEDULE}` : "[HORA]" },
       { key: "lugar", label: "Lugar", type: "text", default: PLACE },
       { key: "cta", label: "Botón", type: "text", default: "ESCRÍBENOS PARA RESERVAR" }, f.usuario],
+    variants: INV_VARIANTS,
     render(v) {
-      const r = RECIPES[v.receta];
+      const r = rec(v);
       const t = fitLines(v.titulo, 96, 950, 1, 56);
       const card = D.infoCard(64, 930, 952, [["reloj", v.hora], ["ubicacion", v.lugar]], 30);
       const date = v.dia ? `<g transform="translate(900,250) rotate(6)">
@@ -758,7 +774,7 @@
           <text x="0" y="-48" text-anchor="middle" class="sans" font-weight="700" font-size="${D.fit(v.mes, 30, 160, "sans", 700, 3)}" fill="${INK}" letter-spacing="3">${D.esc(String(v.mes).toUpperCase())}</text>
           <text x="0" y="88" text-anchor="middle" class="cond" font-size="${D.fit(v.dia, 120, 160)}" fill="${INK}">${D.esc(v.dia)}</text></g>` : "";
       return `${D.background(1080, 1350, r.bg, r.light)}${D.corner(1080, ...r.corner, 150)}${D.header(110, 96, 1, r.ink)}
-        ${D.photo(64, 170, 952, 600, v.foto, { focus: v.enfoque, shadow: true })}
+        ${D.photo(64, 170, 952, 600, v.foto, { focus: v.enfoque, shadow: true, shadowColor: r.shadow })}
         ${v.etiqueta ? D.pillAuto(96, 200, 56, INK, CREAM, v.etiqueta, 22) : ""}
         ${date}
         ${D.headline(64, 880, t.lines[0], t.size, r.ink)}
@@ -770,11 +786,12 @@
 
   add({
     id: "foto_pregunta", name: "Historia con pregunta (encuesta) 9:16", group: "Fotos", w: 1080, h: 1920,
-    fields: [foto(), enfoque(), f.receta, f.etiqueta("PREGUNTA DE LA SEMANA"),
+    fields: [foto(), enfoque(), f.receta, f.invertir, f.etiqueta("PREGUNTA DE LA SEMANA"),
       { key: "pregunta", label: "Pregunta", type: "textarea", default: "¿Qué clase jugarías en tu primera partida?" },
       { key: "guia", label: "Mostrar recuadro para el sticker de Instagram", type: "checkbox", default: true }, f.usuario],
+    variants: INV_VARIANTS,
     render(v) {
-      const r = RECIPES[v.receta];
+      const r = rec(v);
       const q = fitLines(v.pregunta, 104, 940, 3, 60);
       const qTop = 1040, lh = q.size * 1.02;
       const qsvg = q.lines.map((l, i) => D.headline(72, Math.round(qTop + q.size * 0.8 + i * lh), l, q.size, i === q.lines.length - 1 ? r.hl : r.ink, i === q.lines.length - 1 ? r.hlShadow : null, 8)).join("");
@@ -794,16 +811,17 @@
 
   add({
     id: "cuenta_regresiva", name: "Cuenta regresiva (historia) 9:16", group: "Fotos", w: 1080, h: 1920,
-    fields: [foto("foto", "Foto (opcional)"), enfoque(), f.receta, { key: "numero", label: "Número", type: "text", default: "3" },
+    fields: [foto("foto", "Foto (opcional)"), enfoque(), f.receta, f.invertir, { key: "numero", label: "Número", type: "text", default: "3" },
       { key: "unidad", label: "Unidad", type: "text", default: "DÍAS" }, { key: "evento", label: "Para qué", type: "text", default: "PARA LA NOCHE DE ROL." },
       { key: "fecha", label: "Fecha", type: "text", default: "SÁBADO 18 DE OCTUBRE" }, f.usuario],
+    variants: INV_VARIANTS,
     render(v) {
-      const r = RECIPES[v.receta];
+      const r = rec(v);
       const ns = Math.min(360, D.fit(v.numero, 360, 480));
       const nw = D.measure(v.numero, "cond", ns);
       const us = D.fit(String(v.unidad).toUpperCase(), 140, 1016 - (64 + nw + 40));
       const ev = fitLines(v.evento, 80, 950, 1, 48);
-      const ph = v.foto ? D.photo(64, 400, 952, 560, v.foto, { focus: v.enfoque, shadow: true }) : D.illustration("mixto", 540, 700, 0.85);
+      const ph = v.foto ? D.photo(64, 400, 952, 560, v.foto, { focus: v.enfoque, shadow: true, shadowColor: r.shadow }) : D.illustration("mixto", 540, 700, 0.85);
       return `${D.background(1080, 1920, r.bg, r.light)}${D.corner(1080, ...r.corner, 220)}${D.header(110, 320, 1, r.ink)}
         ${ph}
         ${D.headline(64, 1110, "FALTAN", 96, r.ink)}
@@ -816,9 +834,120 @@
     },
   });
 
+  // ---- Más plantillas de fotos (todas con combinación de color e «Invertir colores») ----
+  const stripeOf = (r) => (r.bg === CREAM ? SUN : CREAM);   // franja entre bloques: crema, o sol si el fondo ya es crema
+  const circlePath = (cx, cy, R) => `M${cx - R},${cy} a${R},${R} 0 1,0 ${2 * R},0 a${R},${R} 0 1,0 ${-2 * R},0 Z`;
+
+  add({
+    id: "foto_completa", name: "Foto a sangre con banda 4:5", group: "Fotos", w: 1080, h: 1350,
+    fields: [foto(), enfoque(), f.receta, f.invertir, f.etiqueta("CRÓNICA"),
+      { key: "titulo1", label: "Título línea 1", type: "text", default: "ASÍ SE VIVE" },
+      { key: "titulo2", label: "Título línea 2 (destacada)", type: "text", default: "UN SÁBADO." },
+      { key: "texto", label: "Texto (1 línea, opcional)", type: "text", default: "Juego, historias y comunidad." },
+      { key: "sticker", label: "Sticker", type: "select", options: STICKER_OPTS, default: "d20" }, f.usuario],
+    variants: INV_VARIANTS,
+    render(v) {
+      const r = rec(v);
+      const block = "M0,990 L1080,900 V1350 H0 Z";
+      const a = String(v.titulo1 || "").toUpperCase(), b = String(v.titulo2 || "").toUpperCase();
+      const s1 = Math.min(96, D.fit(a, 96, 950)), s2 = Math.min(116, D.fit(b, 116, 940));
+      const y1 = Math.round(1052 + s1 * 0.74), y2 = Math.round(y1 + s2 * 0.96);
+      const us = D.fit(v.usuario, 26, 320, "sans", 700), uw = D.measure(v.usuario, "sans", us, 700);
+      return `${D.photo(0, 0, 1080, 1000, v.foto, { focus: v.enfoque, stroke: false, path: "M0,0 H1080 V900 L0,990 Z", guide: [540, 480] })}
+        <path d="${block}" fill="${r.bg}"/><path d="${block}" fill="url(#${r.light ? "dotsLight" : "dots"})"/>
+        <path d="M0,990 L1080,900 L1080,938 L0,1028 Z" fill="${stripeOf(r)}"/><path d="M0,990 L1080,900" stroke="${INK}" stroke-width="6"/>
+        ${D.corner(1080, ...r.corner, 170)}${headerChip(64, 64)}
+        ${v.etiqueta ? D.pillAuto(64, 860, 56, INK, CREAM, v.etiqueta, 22) : ""}
+        ${sticker(v.sticker, 930, 900, 0.9)}
+        ${a ? D.headline(64, y1, a, s1, r.ink) : ""}
+        ${D.headline(64, y2, b, s2, r.hl, r.hlShadow, 9)}
+        ${v.texto ? `<text x="64" y="1296" class="sans" font-weight="600" font-size="${D.fit(v.texto, 30, 952 - uw - 60, "sans", 600)}" fill="${r.ink}">${D.esc(v.texto)}</text>` : ""}
+        <text x="1016" y="1296" text-anchor="end" class="sans" font-weight="700" font-size="${us}" fill="${r.ink}">${D.esc(v.usuario)}</text>`;
+    },
+  });
+
+  add({
+    id: "foto_tira", name: "Tira de fotos (fotomatón) 9:16", group: "Fotos", w: 1080, h: 1920,
+    fields: [foto("foto1", "Foto 1"), foto("foto2", "Foto 2"), foto("foto3", "Foto 3"), f.receta, f.invertir,
+      { key: "titulo1", label: "Título (primera parte)", type: "text", default: "ASÍ NOS" },
+      { key: "titulo2", label: "Título (parte destacada)", type: "text", default: "VIMOS." },
+      { key: "pie", label: "Pie de la tira", type: "text", default: "sábado de juegos" },
+      { key: "sticker", label: "Sticker", type: "select", options: STICKER_OPTS, default: "d20" }, f.usuario],
+    variants: INV_VARIANTS,
+    render(v) {
+      const r = rec(v);
+      const a = String(v.titulo1 || "").toUpperCase(), b = String(v.titulo2 || "").toUpperCase();
+      // en una línea si cabe grande; si no, cada parte en su línea
+      const one = Math.min(120, D.fit(`${a} ${b}`.trim(), 120, 940)), two = !!a && one < 96;
+      const sa = two ? Math.min(100, D.fit(a, 100, 940)) : one, sb = two ? Math.min(110, D.fit(b, 110, 930)) : one;
+      const x2 = two ? 64 : 64 + (a ? D.measure(`${a} `, "cond", one) : 0), ya = two ? 1560 : 1650;
+      // tira de 700 px de ancho girada -3°, con la parte de arriba en y = 390; con título de dos líneas las fotos
+      // son más bajas para que la tira termine antes del título
+      const PH = two ? 280 : 330, GAP = 20, SH = 30 + 3 * PH + 2 * GAP + 90, TOP = -SH / 2, CY = 390 + SH / 2;
+      const us = D.fit(v.usuario, 24, 260, "sans", 700), uw = D.measure(v.usuario, "sans", us, 700);
+      const shots = [v.foto1, v.foto2, v.foto3].map((src, i) => D.photo(-320, TOP + 30 + i * (PH + GAP), 640, PH, src, { rx: 8, strokeWidth: 5, guideSize: 70 })).join("");
+      return `${D.background(1080, 1920, r.bg, r.light)}${D.corner(1080, ...r.corner, 220)}${D.header(110, 300, 1, r.ink)}
+        <g transform="translate(540,${CY}) rotate(-3)">
+          <rect x="-336" y="${TOP + 14}" width="700" height="${SH}" rx="14" fill="${r.shadow || INK}"/>
+          <rect x="-350" y="${TOP}" width="700" height="${SH}" rx="14" fill="${CREAM}" stroke="${INK}" stroke-width="7"/>
+          ${shots}
+          ${v.pie ? `<text x="-320" y="${TOP + SH - 42}" class="sans" font-weight="600" font-style="italic" font-size="${D.fit(v.pie, 30, 640 - uw - 30, "sans", 600)}" fill="${INK}">${D.esc(v.pie)}</text>` : ""}
+          <text x="320" y="${TOP + SH - 42}" text-anchor="end" class="sans" font-weight="700" font-size="${us}" fill="${INK}">${D.esc(v.usuario)}</text>
+        </g>
+        ${sticker(v.sticker, 905, 440, 0.85)}
+        ${D.sparkle(985, 1250, 70, r.accent)}${D.sparkle(110, 1500, 46, r.accent)}
+        ${a ? D.headline(64, ya, a, sa, r.ink) : ""}
+        ${D.headline(x2, 1650, b, sb, r.hl, r.hlShadow, 9)}`;
+    },
+  });
+
+  add({
+    id: "foto_mosaico", name: "Mosaico de 6 fotos 4:5", group: "Fotos", w: 1080, h: 1350,
+    fields: [foto("foto1", "Foto ancha"), enfoque("enfoque1"), foto("foto2", "Foto 2"), foto("foto3", "Foto 3"), foto("foto4", "Foto 4"),
+      foto("foto5", "Foto 5"), foto("foto6", "Foto 6"), f.receta, f.invertir, f.etiqueta("ÁLBUM"),
+      { key: "titulo", label: "Título", type: "text", default: "LA JORNADA EN FOTOS." }, f.usuario],
+    variants: INV_VARIANTS,
+    render(v) {
+      const r = rec(v);
+      const o = (rx, focus) => ({ rx, focus, shadow: true, shadowColor: r.shadow, strokeWidth: 6, guideSize: 60 });
+      const us = D.fit(v.usuario, 26, 320, "sans", 700), uw = D.measure(v.usuario, "sans", us, 700);
+      return `${D.background(1080, 1350, r.bg, r.light)}${D.corner(1080, ...r.corner, 150)}${D.header(110, 96, 1, r.ink)}
+        ${D.photo(64, 170, 952, 330, v.foto1, { ...o(22, v.enfoque1), guideSize: 90 })}
+        ${D.photo(64, 524, 466, 290, v.foto2, o(18))}${D.photo(550, 524, 466, 290, v.foto3, o(18))}
+        ${[v.foto4, v.foto5, v.foto6].map((src, i) => D.photo(64 + i * 324, 838, 304, 290, src, o(16))).join("")}
+        ${v.etiqueta ? D.pillAuto(96, 200, 52, INK, CREAM, v.etiqueta, 22) : ""}
+        ${D.sparkle(1010, 510, 64, r.accent)}${D.sparkle(48, 830, 40, r.accent)}
+        ${D.headline(64, 1250, v.titulo, D.fit(v.titulo, 92, 952 - uw - 48), r.ink)}
+        <text x="1016" y="1248" text-anchor="end" class="sans" font-weight="700" font-size="${us}" fill="${r.ink}">${D.esc(v.usuario)}</text>`;
+    },
+  });
+
+  add({
+    id: "foto_circulo", name: "Foto en círculo 1:1", group: "Fotos", w: 1080, h: 1080,
+    fields: [foto(), enfoque(), f.receta, f.invertir, f.etiqueta("NUEVO EN LA MESA"),
+      { key: "titulo", label: "Título", type: "text", default: "TE ESPERAMOS EN LA MESA." },
+      { key: "texto", label: "Texto (1 línea)", type: "text", default: "Sábados de juego, historias y comunidad." },
+      { key: "sticker", label: "Sticker", type: "select", options: STICKER_OPTS, default: "d20" }, f.usuario],
+    variants: INV_VARIANTS,
+    render(v) {
+      const r = rec(v);
+      const cx = 540, cy = 492, R = 290;
+      const us = D.fit(v.usuario, 26, 300, "sans", 700), uw = D.measure(v.usuario, "sans", us, 700);
+      return `${D.background(1080, 1080, r.bg, r.light)}${D.corner(1080, ...r.corner, 150)}${D.header(110, 96, 1, r.ink)}
+        <circle cx="${cx + 16}" cy="${cy + 16}" r="${R}" fill="${r.shadow || INK}"/>
+        ${D.photo(cx - R, cy - R, 2 * R, 2 * R, v.foto, { focus: v.enfoque, path: circlePath(cx, cy, R), strokeWidth: 9 })}
+        ${v.etiqueta ? D.pillAuto(cx, cy + R - 34, 62, INK, CREAM, v.etiqueta, 24, { anchor: "middle" }) : ""}
+        ${sticker(v.sticker, 830, 300, 0.85)}
+        ${D.sparkle(200, 300, 70, r.accent)}${D.sparkle(250, 760, 40, r.accent)}
+        ${D.headline(64, 918, v.titulo, D.fit(v.titulo, 92, 952), r.ink)}
+        ${v.texto ? `<text x="64" y="980" class="sans" font-weight="600" font-size="${D.fit(v.texto, 30, 952 - uw - 60, "sans", 600)}" fill="${r.ink}">${D.esc(v.texto)}</text>` : ""}
+        <text x="1016" y="980" text-anchor="end" class="sans" font-weight="700" font-size="${us}" fill="${r.ink}">${D.esc(v.usuario)}</text>`;
+    },
+  });
+
   // ============================================================ VIDEO (más formatos)
   function separador(w, h, v) {
-    const r = RECIPES[v.receta];
+    const r = rec(v);
     const H = w < h;
     const num = String(v.numero || "");
     const t = fitLines(v.titulo, H ? 150 : 140, H ? 800 : 960, 2, 70);

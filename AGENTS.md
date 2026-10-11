@@ -55,7 +55,7 @@ Instructions for AI agents (Claude, Codex, Cursor, etc.) that create or edit vis
 
 ## Editable template editor (preferred for routine posts)
 
-`editor/` is a web editor with 76 editable templates. **For routine content, prefer it over writing new SVG:**
+`editor/` is a web editor with 80 editable templates. **For routine content, prefer it over writing new SVG:**
 - weekly event
 - general post or story
 - call for stories
@@ -128,8 +128,9 @@ When writing podcast copy, use the food vocabulary in `podcast.vocabulary` ("cad
 ## Photo & video
 
 **Photos:** use the editor templates:
-- Single photo: `foto_post`, `foto_cuadrado`, `foto_historia`, `foto_cita`, `foto_polaroid`.
-- Several photos: `collage` (3), `collage_4` (4), `foto_comparada` (2, side by side), `foto_carrusel` (one slide per photo, with `numero`/`total`).
+- Single photo: `foto_post`, `foto_cuadrado`, `foto_historia`, `foto_cita`, `foto_polaroid`, `foto_completa` (full bleed with a color band), `foto_circulo` (round frame).
+- Several photos: `collage` (3), `collage_4` (4), `foto_comparada` (2, side by side), `foto_carrusel` (one slide per photo, with `numero`/`total`), `foto_tira` (3, photo-booth strip story), `foto_mosaico` (6).
+- Every photo template has `invertir: true` ("Invertir colores"): the color background turns ink and that color moves to the highlighted headline and photo shadows; the ink recipe (podcast) turns cream. It uses `D.invert()` in `primitives.js`, so keep using `rec(v)` (not `RECIPES[v.receta]`) in photo templates and declare `variants: INV_VARIANTS`.
 - Photo + call to action: `foto_evento` (date, time, place, button), `foto_pregunta` (story with a box for the Instagram poll sticker), `cuenta_regresiva` (countdown story).
 
 Image fields take a local path in `render_editor.py` jobs (relative to the JSON file), and `enfoque` sets the crop focus. Never tint the photo; brand color goes around it.

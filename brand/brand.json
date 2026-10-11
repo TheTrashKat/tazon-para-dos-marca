@@ -589,9 +589,14 @@
       "collage_4",
       "foto_evento",
       "foto_pregunta",
-      "cuenta_regresiva"
+      "cuenta_regresiva",
+      "foto_completa",
+      "foto_tira",
+      "foto_mosaico",
+      "foto_circulo"
     ],
-    "rule_color": "Nunca poner filtros o capas de color sobre la foto: el color de marca va alrededor (marcos, bloques, stickers)."
+    "rule_color": "Nunca poner filtros o capas de color sobre la foto: el color de marca va alrededor (marcos, bloques, stickers).",
+    "inversion": "Todas las plantillas de fotos tienen «Invertir colores»: el fondo de color pasa a tinta y ese color queda en el titular destacado y la sombra de las fotos; la combinación podcast (tinta) pasa a crema. El texto sigue el contraste de marca (crema sobre tinta, tinta sobre crema)."
   },
   "editor": {
     "url": "https://thetrashkat.github.io/tazon-para-dos-marca/editor/",
@@ -632,6 +637,10 @@
       "foto_evento",
       "foto_pregunta",
       "cuenta_regresiva",
+      "foto_completa",
+      "foto_tira",
+      "foto_mosaico",
+      "foto_circulo",
       "separador_v",
       "separador_h",
       "audiograma",
