@@ -19,7 +19,7 @@ import ast, json, pathlib, re, shutil, subprocess, sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
-from render_editor import BROWSER, template_sizes  # noqa: E402
+from render_editor import ANDROID, BROWSER, template_sizes  # noqa: E402
 
 try:
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -89,7 +89,10 @@ def check():
         errors.append("editor/app.js ya no acepta ?embed=1&t=&d= (vista previa de capas en el panel)")
 
     # Programas externos (no son del kit, pero sin ellos el panel no genera nada)
-    if not BROWSER:
+    if ANDROID:   # en Termux render_editor.py usa Node + librsvg en vez del navegador
+        if not shutil.which("node"):
+            errors.append("No se encontró node: en Termux se necesita para generar imágenes")
+    elif not BROWSER:
         errors.append("No se encontró Edge ni Chrome: no se pueden generar imágenes")
     for exe in ("ffmpeg", "ffprobe"):
         if not shutil.which(exe):
