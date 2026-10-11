@@ -37,12 +37,13 @@
     fields: [f.receta, f.etiqueta(""), { key: "linea1", label: "Titular línea 1", type: "text", default: "JUGAR TAMBIÉN" },
       { key: "linea2", label: "Titular línea 2 (destacada)", type: "text", default: "ES ESCUCHAR." }, f.ilustracion,
       { key: "pie", label: "Texto del pie", type: "text", default: "JUEGOS DE MESA · ROL · PODCAST" }, f.usuario],
+    variants: [{ etiqueta: "JUEGOS DE ROL" }],
     render(v) {
       const r = RECIPES[v.receta];
       const tag = v.etiqueta ? D.pillAuto(64, 186, 50, r.ink === CREAM ? TEAL : INK, r.ink === CREAM ? INK : CREAM, v.etiqueta, 20) : "";
       return `${D.background(1080, 1080, r.bg, r.light)}${D.corner(1080, ...r.corner)}${D.header(110, 104, 1, r.ink)}${tag}
-        ${D.headline(64, 300, v.linea1, D.fit(v.linea1, 122, 760), r.ink)}
-        ${D.headline(64, 430, v.linea2, D.fit(v.linea2, 146, 860), r.hl, r.hlShadow, 7)}
+        ${D.headline(64, tag ? 340 : 300, v.linea1, D.fit(v.linea1, tag ? 100 : 122, 760), r.ink)}
+        ${D.headline(64, tag ? 462 : 430, v.linea2, D.fit(v.linea2, tag ? 120 : 146, 860), r.hl, r.hlShadow, 7)}
         ${D.sparkle(880, 230, 70, r.accent)}${D.sparkle(980, 340, 34, CREAM)}
         <path d="M0,560 L1080,480 L1080,518 L0,598 Z" fill="${CREAM}"/>
         <path d="M0,598 L1080,518 L1080,900 L0,950 Z" fill="${r.block}"/><path d="M0,598 L1080,518 L1080,900 L0,950 Z" fill="url(#dots)"/>
