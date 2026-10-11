@@ -263,9 +263,10 @@
       out += `<image href="${esc(href)}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="${FOCUS[opts.focus] || "xMidYMid"} slice" clip-path="url(#${id})"/>`;
     } else {
       out += `<g clip-path="url(#${id})"><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${C.cream}"/><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#dots)"/></g>`;
-      const s = Math.min(w, h) * 0.18;
-      out += icon("camara", x + w / 2, y + h / 2 - s * 0.35, s, C.muted, 3);
-      out += `<text data-guia="1" x="${x + w / 2}" y="${n(y + h / 2 + s * 0.75)}" text-anchor="middle" class="sans" font-weight="700" font-size="${n(Math.max(18, s * 0.28))}" fill="${C.muted}" letter-spacing="3">TU FOTO AQUÍ</text>`;
+      // opts.guide = [cx, cy]: dónde va el aviso «TU FOTO AQUÍ» si el centro queda tapado por otros elementos
+      const s = opts.guideSize || Math.min(w, h) * 0.18, [gx, gy] = opts.guide || [x + w / 2, y + h / 2];
+      out += icon("camara", gx, gy - s * 0.35, s, C.muted, 3);
+      out += `<text data-guia="1" x="${gx}" y="${n(gy + s * 0.75)}" text-anchor="middle" class="sans" font-weight="700" font-size="${n(Math.max(18, s * 0.28))}" fill="${C.muted}" letter-spacing="3">TU FOTO AQUÍ</text>`;
     }
     if (opts.stroke !== false) out += `${outline} fill="none" stroke="${INK}" stroke-width="${opts.strokeWidth || 8}" stroke-linejoin="round"/>`;
     return out;

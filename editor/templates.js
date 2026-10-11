@@ -440,14 +440,14 @@
 
   add({
     id: "video_portada", cover: true, name: "Portada de Reel / video 9:16", group: "Video", w: 1080, h: 1920,
-    fields: [foto("foto", "Foto o fotograma"), enfoque(), f.etiqueta("REEL"), { key: "titulo", label: "Título", type: "text", default: "ASÍ SE VIVE UNA PARTIDA" },
+    fields: [foto("foto", "Foto o fotograma"), enfoque(), f.etiqueta("REEL"), { key: "titulo", label: "Título", type: "text", default: "ASÍ SE VIVE UNA PARTIDA." },
       { key: "caja", label: "Color de la caja del título", type: "select", options: BOX_OPTS, default: "sol" },
       { key: "play", label: "Mostrar botón de reproducción", type: "checkbox", default: true }, f.usuario],
     render(v) {
       const [fill, ink] = BOX[v.caja] || BOX.sol;
       let size = 120, tb;
       for (;;) { tb = D.textBox(540, 700, String(v.titulo).toUpperCase(), size, 900, fill, ink, { kind: "cond", weight: 800, maxLines: 3 }); if ((tb.width <= 940 && tb.height <= 400) || size <= 64) break; size -= 6; }
-      return `${D.photo(0, 0, 1080, 1920, v.foto, { focus: v.enfoque, stroke: false, rx: 0 })}
+      return `${D.photo(0, 0, 1080, 1920, v.foto, { focus: v.enfoque, stroke: false, rx: 0, guide: [540, 1660], guideSize: 120 })}
         ${headerChip(64, 436, 1.25)}
         ${v.etiqueta ? D.pillAuto(540, 600, 76, INK, CREAM, v.etiqueta, 32, { anchor: "middle" }) : ""}
         ${tb.svg}
@@ -463,12 +463,14 @@
     render(v) {
       const r = RECIPES[v.receta];
       let size = 110, lines;
-      for (;;) { lines = D.wrapBalanced(String(v.titulo).toUpperCase(), size, 500, "cond", 800); if (lines.length <= 3 || size <= 56) break; size -= 6; }
+      // ancho máximo 440: la franja diagonal llega a x = 512 abajo; con la sombra el titular no debe tocarla
+      // prefiere 2 líneas grandes; solo pasa a 3 si el título no cabe en 2 a 86 px
+      for (;;) { lines = D.wrapBalanced(String(v.titulo).toUpperCase(), size, 440, "cond", 800); if (lines.length <= 2 || (lines.length <= 3 && size <= 86) || size <= 56) break; size -= 6; }
       lines = lines.slice(0, 3);
       const lh = size * 0.95, y0 = 250 + size * 0.8;
       const title = lines.map((l, i) => D.headline(56, Math.round(y0 + i * lh), l, size, i === lines.length - 1 ? r.hl : r.ink, i === lines.length - 1 ? r.hlShadow : null, 6)).join("");
       return `${D.background(1280, 720, r.bg, r.light)}
-        ${D.photo(0, 0, 1280, 720, v.foto, { focus: v.enfoque, stroke: false, path: "M640,0 H1280 V720 H540 Z" })}
+        ${D.photo(0, 0, 1280, 720, v.foto, { focus: v.enfoque, stroke: false, path: "M640,0 H1280 V720 H540 Z", guide: [930, 330], guideSize: 110 })}
         <path d="M612,0 H640 L540,720 H512 Z" fill="${CREAM}"/><path d="M640,0 L540,720" stroke="${INK}" stroke-width="6"/>
         ${D.header(116, 86, 1.25, r.ink, "ESPACIO CULTURAL")}
         ${v.etiqueta ? D.pillAuto(56, 160, 66, r.ink === CREAM ? TEAL : INK, r.ink === CREAM ? INK : CREAM, v.etiqueta, 28) : ""}
@@ -967,7 +969,7 @@
       const t = fitLines(v.titulo, 116, 950, 2, 64);
       const lh = t.size * 0.98, y0 = 664 + t.size * 0.72;
       const title = t.lines.map((l, i) => D.headline(64, Math.round(y0 + i * lh), l, t.size, i === t.lines.length - 1 ? r.hl : r.ink, i === t.lines.length - 1 ? r.hlShadow : null, 10)).join("");
-      return `${D.photo(0, 0, 1080, 1920, v.foto, { focus: v.enfoque, stroke: false, rx: 0 })}
+      return `${D.photo(0, 0, 1080, 1920, v.foto, { focus: v.enfoque, stroke: false, rx: 0, guide: [540, 1660], guideSize: 120 })}
         <path d="${block}" fill="${r.bg}"/><path d="${block}" fill="url(#${r.light ? "dotsLight" : "dots"})"/>
         <path d="M0,980 L1080,900 L1080,936 L0,1016 Z" fill="${CREAM}"/><path d="M0,1016 L1080,936" stroke="${INK}" stroke-width="7"/>
         ${D.corner(1080, ...r.corner, 240)}
