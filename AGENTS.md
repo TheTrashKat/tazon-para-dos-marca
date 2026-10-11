@@ -133,6 +133,8 @@ When writing podcast copy, use the food vocabulary in `podcast.vocabulary` ("cad
 - Every photo template has `invertir: true` ("Invertir colores"): the color background turns ink and that color moves to the highlighted headline and photo shadows; the ink recipe (podcast) turns cream. It uses `D.invert()` in `primitives.js`, so keep using `rec(v)` (not `RECIPES[v.receta]`) in photo templates and declare `variants: INV_VARIANTS`.
 - Photo + call to action: `foto_evento` (date, time, place, button), `foto_pregunta` (story with a box for the Instagram poll sticker), `cuenta_regresiva` (countdown story).
 
+The gallery in `index.html → Fotos` shows `plantillas/fotos/<id>.jpg` and `<id>_invertida.jpg` (rendered with the face-free `editor/ejemplos/fotos/tablero.jpg`). When you add a photo template, render both and add them there.
+
 Image fields take a local path in `render_editor.py` jobs (relative to the JSON file), and `enfoque` sets the crop focus. Never tint the photo; brand color goes around it.
 
 **Video kit:** lives in `video/` and is regenerated with `python -I tools/video.py` (needs ffmpeg and the `logotipo-apilado.png` from `tools/export.py`).
