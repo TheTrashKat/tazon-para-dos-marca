@@ -14,8 +14,9 @@ Formato del guion:
   "capa":  { "estilo": "clasico", "etiqueta": "...", "usuario": "@tazonparados", "info": "..." },  # 9x16 y 16x9
             # estilo 9x16: clasico | banda | stickers | marco | editorial | zine | tiktok
             #   tiktok: video a pantalla completa con acercamiento, subtítulos de 1-3 palabras con la palabra
-            #   activa en amarillo, marca discreta arriba y "gancho" opcional al inicio:
-            #   "gancho": {"linea1": "¿PLAN PARA", "linea2": "EL SÁBADO?"}; cierre según capa.linea (zine | editorial)
+            #   activa en amarillo, marca discreta arriba y "gancho" opcional al inicio (en el nivel principal
+            #   del guion o dentro de capa): "gancho": {"linea1": "¿PLAN PARA", "linea2": "EL SÁBADO?"};
+            #   cierre según capa.linea (zine | editorial)
             #   capa.subtitulos: karaoke | caja | recorte | pop | editorial
             #   formato lista: en cada segmento "numero": "3", "titulo": "CATAN" (número grande y título arriba)
             #   marco, editorial y zine ponen el clip en una ventana; en editorial y zine el texto de cada
@@ -155,15 +156,22 @@ def main():
                          "values": {"texto": s["texto"], "caja": s.get("estilo_texto", "tinta"), "pos": "abajo"}, "output": str(work / f"texto_{i}.png")})
         if s.get("rotulo"):
             jobs.append({"template": "tercio_inferior_v" if vertical else "tercio_inferior_h", "values": s["rotulo"], "output": str(work / f"rotulo_{i}.png")})
-    if tiktok and g.get("gancho"):
+    gancho = g.get("gancho") or capa.pop("gancho", None)   # se acepta arriba en el guion o dentro de "capa"
+    capa.pop("gancho", None)
+    if tiktok and gancho:
         first = next((k for k, s in enumerate(segs) if s.get("separador") is None), None)
         if first is not None:
             png = work / "gancho.png"
-            jobs.append({"template": "gancho_tiktok", "values": g["gancho"], "output": str(png)})
+            jobs.append({"template": "gancho_tiktok", "values": gancho, "output": str(png)})
             fin = round(min(1.8, float(segs[first].get("duracion", 4))), 3)
             timed.setdefault(first, []).append((png, 0, fin))
-            # el número de lista del primer segmento aparece cuando termina el gancho
-            timed[first] = [(p_, max(a, fin) if p_.name.startswith("numero_") else a, b) for p_, a, b in timed[first]]
+            # el número de lista y los subtítulos del primer segmento aparecen cuando termina el gancho
+            # (los subtítulos se reparten en el tiempo que queda, para no encimarse con él)
+            dur0 = float(segs[first].get("duracion", 4))
+            k = max(0.0, dur0 - fin) / dur0
+            timed[first] = [(p_, max(a, fin), b) if p_.name.startswith("numero_")
+                            else (p_, round(fin + a * k, 3), round(fin + b * k, 3)) if p_.name.startswith("sub_")
+                            else (p_, a, b) for p_, a, b in timed[first]]
     if fmt != "9x16-marco" and not por_segmento:
         key = ("v" if vertical else "h", estilo)
         if key not in CAPA:

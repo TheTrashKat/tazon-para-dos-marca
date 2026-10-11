@@ -588,14 +588,15 @@
       lines = lines.slice(0, 2);
       const ty = Math.max(top + size * 0.72, W.y - 30 - (lines.length - 1) * size * 0.95);
       const title = lines.map((l, i) => D.headline(60, Math.round(ty + i * size * 0.95), l, size, i === lines.length - 1 ? r.hl : r.ink, i === lines.length - 1 ? r.hlShadow : null, 8)).join("");
-      const tb = v.texto ? D.textBox(540, 1236, v.texto, 54, 800, r.bg === INK ? SUN : INK, r.bg === INK ? INK : CREAM, { maxLines: 2 }) : { svg: "" };
+      const tb = v.texto ? D.textBox(540, 1226, v.texto, 54, 800, r.bg === INK ? SUN : INK, r.bg === INK ? INK : CREAM, { maxLines: 2 }) : { svg: "", height: 0 };
+      const userY = Math.max(1412, Math.round(1226 + tb.height + 30));   // con texto de 2 líneas la píldora baja para no tocar la caja
       return `<path fill-rule="evenodd" d="${full} ${win}" fill="${r.bg}"/><path fill-rule="evenodd" d="${full} ${win}" fill="url(#${r.light ? "dotsLight" : "dots"})"/>
         <path fill-rule="evenodd" d="${roundRect(W.x + 14, W.y + 14, W.w, W.h, W.r)} ${win}" fill="${INK}"/>
         <path d="${win}" fill="none" stroke="${INK}" stroke-width="10"/>
         ${D.corner(1080, ...r.corner, 260)}${headerChip(64, 250, 1.2)}
         ${v.etiqueta ? D.pillAuto(64, 398, 62, r.ink === CREAM ? TEAL : INK, r.ink === CREAM ? INK : CREAM, v.etiqueta, 26) : ""}
         ${title}${tb.svg}
-        ${D.pillAuto(540, 1412, 80, CREAM, INK, v.usuario, 34, { anchor: "middle", stroke: INK })}
+        ${D.pillAuto(540, userY, 80, CREAM, INK, v.usuario, 34, { anchor: "middle", stroke: INK })}
         ${D.sparkle(1012, 1212, 56, r.accent)}`;
     },
   });
@@ -1491,12 +1492,20 @@
       { key: "titulo2", label: "Titular línea 2 (coral; en el montaje, el texto de cada segmento)", type: "text", default: "UNA PARTIDA." }, f.usuario],
     render(v) {
       const win = roundRect(48, 250, 984, 860, 8);   // ventana del clip: 984×860 en (48, 250)
-      const t = twoTitle(v.titulo1, v.titulo2, 100, 860, 52);
-      const y1 = Math.round(1186 + t.size * 0.74), y2 = Math.round(y1 + t.size * 0.96);
+      // En el montaje titulo2 cambia en cada segmento: si no cabe en una línea grande pasa a dos líneas
+      // (antes de encogerse), y titulo1 usa el mismo tamaño para que el bloque no salte entre segmentos.
+      const a = String(v.titulo1 || "").toUpperCase(), b = String(v.titulo2 || "").toUpperCase();
+      let size = Math.min(D.fit(a, 100, 860), b ? D.fit(b, 100, 860) : 100), lines = b ? [b] : [];
+      if (b && size < 84) {
+        const t = fitLines(b, 72, 860, 2, 48);
+        size = Math.min(t.size, D.fit(a, 72, 860)); lines = t.lines;
+      }
+      const y1 = Math.round(1186 + size * 0.74);
+      const rows = lines.map((l, i) => `<text x="50" y="${Math.round(y1 + size * (0.96 + i * 0.92))}" class="cond" font-size="${size}" fill="${CORAL}">${D.esc(l)}</text>`).join("");
       return `<path fill-rule="evenodd" d="${FULL_V} ${win}" fill="${CREAM}"/>
         ${edLabel(54, 1160, v.etiqueta, 860)}
-        <text x="50" y="${y1}" class="cond" font-size="${t.size}" fill="${INK}">${D.esc(t.a)}</text>
-        <text x="50" y="${y2}" class="cond" font-size="${t.size}" fill="${CORAL}">${D.esc(t.b)}</text>
+        <text x="50" y="${y1}" class="cond" font-size="${size}" fill="${INK}">${D.esc(a)}</text>
+        ${rows}
         <rect x="54" y="1398" width="860" height="4" fill="${INK}"/>
         ${firma(54, 1466, 1, INK)}
         <text x="914" y="1463" text-anchor="end" class="sans" font-weight="700" font-size="${D.fit(v.usuario, 26, 400, "sans", 700)}" fill="${MUTED}">${D.esc(v.usuario)}</text>`;
@@ -1512,7 +1521,18 @@
       const bg = COLOR[v.fondo] || TEAL, [alt, altInk] = zAlt(bg);
       const win = roundRect(100, 280, 880, 780, 4);   // ventana del clip: 880×780 en (100, 280)
       const card = roundRect(70, 250, 940, 900, 10);
-      const s1 = cutoutSize(v.titulo1, 100, 800), s2 = cutoutSize(v.titulo2, 110, 800);
+      // En el montaje el recorte 2 es el texto de cada segmento: si no cabe grande pasa a dos recortes
+      let s1 = cutoutSize(v.titulo1, 100, 800), s2 = cutoutSize(v.titulo2, 110, 800);
+      let cuts = `${cutout(54, 1250, -2, v.titulo1, s1, SUN, INK)}${cutout(70, 1388, 1.5, v.titulo2, s2, alt, altInk)}`;
+      if (v.titulo2 && s2 < 84) {
+        let size = 80, lines;
+        for (;;) { lines = D.wrapBalanced(String(v.titulo2).toUpperCase(), size, 800 - size * 0.62, "cond", 800); if (lines.length <= 2 || size <= 52) break; size -= 4; }
+        lines = lines.slice(0, 2);
+        size = Math.min(size, ...lines.map((l) => cutoutSize(l, size, 800)));
+        s1 = Math.min(s1, 90);
+        cuts = cutout(54, 1232, -2, v.titulo1, s1, SUN, INK) +
+          lines.map((l, i) => cutout(70 + i * 24, 1338 + i * size * 1.24, i ? -1 : 1.5, l, size, alt, altInk)).join("");
+      }
       return `<path fill-rule="evenodd" d="${FULL_V} ${win}" fill="${bg}"/><path fill-rule="evenodd" d="${FULL_V} ${win}" fill="url(#${bg === INK ? "dotsLight" : "dots"})"/>
         ${motif(170, 1700, 300, -10, bg === INK ? 0.08 : 0.1)}
         <path fill-rule="evenodd" d="${roundRect(86, 266, 940, 900, 10)} ${win}" fill="${INK}"/>
@@ -1523,8 +1543,7 @@
         ${v.pie ? `<text x="120" y="1114" class="sans" font-weight="600" font-style="italic" font-size="${D.fit(v.pie, 32, 480, "sans", 600)}" fill="${INK}">${D.esc(v.pie)}</text>` : ""}
         <text x="910" y="1114" text-anchor="end" class="sans" font-weight="700" font-size="${D.fit(v.usuario, 26, 300, "sans", 700)}" fill="${INK}">${D.esc(v.usuario)}</text>
         ${D.d20(1000, 320, 70, 14)}${D.sparkle(1010, 1240, 50, SUN)}
-        ${cutout(54, 1250, -2, v.titulo1, s1, SUN, INK)}
-        ${cutout(70, 1388, 1.5, v.titulo2, s2, alt, altInk)}`;
+        ${cuts}`;
     },
   });
 
