@@ -131,6 +131,12 @@ def main():
         n_err += len(r["errors"])
         n_warn += len(r["warnings"])
     ids = sorted({r["id"] for r in results})
+    # El generador web (D:\generador-web) lee montaje.py, --list y el editor: si cambian de forma, se rompe
+    from generador import check as contrato_generador
+    contrato = contrato_generador()
+    for e in contrato["errores"]:
+        print(f"  ERROR  generador web: {e}")
+    n_err += len(contrato["errores"])
     print(f"\n{len(ids)} plantillas × 2 casos: {n_err} errores, {n_warn} avisos.")
     if "--hojas" in args:
         sheets = contact_sheets(results, ROOT / "salida/validacion")

@@ -174,6 +174,15 @@ Research-based rules enforced by the validator (sources in `brand.json → edito
 
 For generated videos, also extract a few frames and look at them before delivering.
 
+## Web generator (`D:\generador-web`)
+
+A separate repo with a local panel (`iniciar.bat`, http://127.0.0.1:8765) that lets people make images and videos from their photos without touching this repo. It does not import the kit's code. Instead it runs the kit's tools and reads some of its files:
+- It runs `render_editor.py` (both `--list` and job files), `montaje.py`, `validar.py` and `video.py`.
+- It reads `SIZE`, `CAPA`, `VENTANA`, `TEXTO_EN_MARCO` and `TONEMAP` from `montaje.py` with `ast.literal_eval`, so they must stay top-level literals.
+- It uses `window.TPDTemplates` and the editor's `?embed=1&t=&d=` mode.
+
+`tools/generador.py` checks this contract, and `validar.py` runs it too. If you change any of these on purpose, update `tools/generador.py` and the panel together. The panel shows the result of the check in a banner (`/api/estado`).
+
 ## Repository workflow
 
 - **Commits:** the user wants every change committed and pushed. `tools/autocommit.py` does it (commit message built from the changed folders, skips files over 90 MB) and is meant to run from a Claude Code `Stop` hook. If the hook is not active, commit and push yourself when a piece of work is done.
