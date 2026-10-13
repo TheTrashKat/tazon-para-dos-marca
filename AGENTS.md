@@ -93,6 +93,7 @@ Rules for the editor:
 | Instagram highlight covers | `destacada_*` | `build_social()` loop: (slug, label, bg, icon) |
 | Website hero | `banner_web` | static |
 | Printed roll-up 80×180 cm | `pancarta_80x180` | static |
+| Any printed banner, pendón, roll-up or poster with editable text (also Tinieblas) | editor at https://thetrashkat.github.io/historias-tazon/editor/pancarta.html | `D:\herramientas\pdf-historias\editor\pancarta.js` (reuses the story editor) |
 | Stickers / merch | `aplicaciones/stickers`, `aplicaciones/merch_mockups` | `build_stickers()`, `build_print()` |
 | Business card 85×55 mm | `aplicaciones/tarjeta_frente`, `tarjeta_reverso` | `build_print()` |
 | Door sign with opening hours (A4) | `aplicaciones/letrero_horario_a4` | `build_print()` |

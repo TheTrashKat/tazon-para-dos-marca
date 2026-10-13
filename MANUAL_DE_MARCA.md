@@ -222,6 +222,7 @@ Hablamos como **amistades que te invitan a la mesa**, no como una empresa.
 | Historia / estado | 1080 × 1920 | 250 px arriba y abajo libres de texto clave | `historia`, `podcast_historia`, `convocatoria_historia` |
 | Banner web | 1920 × 720 | 86 px | `banner_web` |
 | Pancarta roll-up | 80 × 180 cm | 4 cm | `pancarta_80x180` |
+| Pancartas, pendones y afiches editables | 80 × 180, 85 × 200, 60 × 120, A3, A2, 200 × 80, 300 × 100, 150 × 50 cm | 6 % del lado corto | [Editor de pancartas](https://thetrashkat.github.io/historias-tazon/editor/pancarta.html) |
 | Portada podcast y episodio | 3000 × 3000 | 100 px | `podcast_portada`, `podcast_episodio_plantilla` |
 | Foto de perfil | 1080 × 1080 | círculo central | `perfil` |
 | Destacadas | 1080 × 1920 | círculo central | `destacada_*` |
