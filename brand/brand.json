@@ -901,5 +901,29 @@
     "B_zine": "foto como tarjeta con cinta, titular en recortes (sol / tinta), calendario sticker, dados; juguetona",
     "C_bloques": "fecha gigante, foto en arco o círculo con órbita, diagonales y bloques de color; gráfica",
     "estado": "Editorial (A) y Mesa / Zine (B) son las líneas oficiales: Editorial para información, agenda, carruseles, podcast y frases; Zine para crónicas con fotos, eventos, Reels y convocatorias. Bloques (C) queda como alternativa."
+  },
+  "dividers": {
+    "source": "tools/divisores.py",
+    "gallery": "divisores.html",
+    "modes": {
+      "claro": "Tazón sobre papel",
+      "noche": "Tinieblas oscuro",
+      "pergamino": "Tinieblas para imprimir"
+    },
+    "files": "assets/divisores/<modo>/<nombre>.svg",
+    "css": "assets/divisores/divisores-<modo>.css (clase .divisor.d-<nombre>)",
+    "usage": "::: divisor <nombre> en pdf-historias y en el editor de historias; 'diagonal' es la clásica a todo el ancho.",
+    "items": {
+      "cinta": "tres tiras de color con sombra; enérgico",
+      "destellos": "discreto, para texto largo",
+      "dados": "d6 · d20 · d6; rol y crónicas",
+      "puntos": "trama de puntos hecha línea",
+      "escalon": "la diagonal en tres escalones cortos",
+      "camino": "meeple en sendero punteado; cambio de lugar o tiempo",
+      "tazon": "tazón con vapor; cierre de capítulo",
+      "luna": "luna creciente y estrellas; modo Tinieblas",
+      "greca": "geometría escalonada de inspiración muisca",
+      "zarpazo": "tres zarpazos; Hombre Lobo, tensión"
+    }
   }
 }

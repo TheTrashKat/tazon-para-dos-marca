@@ -156,6 +156,25 @@ La identidad mezcla la energía del cómic con la calidez de una mesa de juego.
 
 Pon siempre un objeto principal con 2 a 4 secundarios y una sombra elíptica tinta al 22 % debajo del grupo.
 
+**Divisores** (en `assets/divisores/<modo>/`, comparados en `divisores.html`)
+
+Separan escenas dentro de un texto. Cada uno existe en tres modos: `claro` (Tazón), `noche` (Tinieblas oscuro) y `pergamino` (Tinieblas para imprimir). En las historias se usan con `::: divisor nombre` o eligiendo el estilo en el editor.
+
+| Divisor | Cuándo usarlo |
+|---|---|
+| `cinta` | Tres tiras de color con sombra. Enérgico, para separar escenas. |
+| `destellos` | El más discreto, para texto largo. |
+| `dados` | d6 · d20 · d6: historias de rol y crónicas de partida. |
+| `puntos` | La trama de puntos hecha línea, sin líneas laterales. |
+| `escalon` | La diagonal de la marca en tres escalones cortos. |
+| `camino` | Meeple en un sendero punteado: cambios de lugar o de tiempo. |
+| `tazon` | El tazón con vapor: para cerrar capítulos. |
+| `luna` | Luna creciente y estrellas: la más nocturna. |
+| `greca` | Geometría escalonada de inspiración muisca. |
+| `zarpazo` | Tres zarpazos: escenas de Hombre Lobo o de tensión. |
+
+La diagonal a todo el ancho sigue disponible como `diagonal`. Para cambiar o añadir divisores, edita `tools/divisores.py` y ejecuta `python -I tools/divisores.py`: regenera los SVG, el CSS listo para usar (`assets/divisores/divisores-<modo>.css`), la página de comparación y las copias del kit Tinieblas y de la herramienta de historias.
+
 ---
 
 ## 7. Fórmulas de color por línea

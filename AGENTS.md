@@ -99,6 +99,7 @@ Rules for the editor:
 | Character sheet (A4, any RPG system) | `aplicaciones/ficha_personaje_a4` | `build_print()` + `field()` |
 | Workshop certificate (A4 landscape) | `aplicaciones/certificado_taller` | `build_print()` |
 | Email signature | `aplicaciones/firma_correo.html` | hand-written HTML (tables + hosted PNG, no SVG) |
+| Scene divider inside a text (story, long post) | `assets/divisores/<modo>/<name>.svg` (modo: claro, noche, pergamino), CSS in `assets/divisores/divisores-<modo>.css`, gallery `divisores.html` | `tools/divisores.py` (also writes the Tinieblas kit and `D:\herramientas\pdf-historias\marca\divisores-claro.css`) |
 | Print-ready PDF / logo PNG / favicon | `impresion/*.pdf`, `assets/logo/png/`, `favicon.ico` | `python -I tools/export.py` (add new print pieces to `PRINT`) |
 
 Useful helpers in `tools/build.py`:
