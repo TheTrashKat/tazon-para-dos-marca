@@ -236,6 +236,11 @@ def main():
                 (raiz / modo / f"{nombre}.svg").write_text(svg_de(x["w"], x["svg"]), encoding="utf-8")
             (raiz / f"divisores-{modo}.css").write_text(css_modo(modo, D), encoding="utf-8")
     (AQUI / "divisores.html").write_text(pagina(todos), encoding="utf-8")
+    if (HERRAMIENTA / "navegacion.py").exists():  # barra común Tazón para Dos (sitios y herramientas)
+        import sys
+        sys.path.insert(0, str(HERRAMIENTA))
+        import navegacion
+        navegacion.main([(str(AQUI / "divisores.html"), "divisores")])
     if HERRAMIENTA.exists():
         shutil.copy(AQUI / "assets" / "divisores" / "divisores-claro.css", HERRAMIENTA / "marca" / "divisores-claro.css")
     print("Divisores:", ", ".join(todos["claro"]), "·", len(MODOS), "modos")
