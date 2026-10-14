@@ -13,12 +13,14 @@ Este repositorio reúne la identidad visual de [Tazón para Dos](https://tazon-p
 | Una persona que quiere ver todo de un vistazo | [`index.html`](index.html) en el navegador |
 | Una persona que quiere hacer una publicación | El [editor de plantillas](https://thetrashkat.github.io/tazon-para-dos-marca/editor/): cambias los textos y descargas el PNG |
 | Una persona que va a diseñar algo | [`MANUAL_DE_MARCA.md`](MANUAL_DE_MARCA.md) |
+| Una persona que quiere el **modo oscuro** (Tinieblas) | La sección 16 del manual y el [kit Tinieblas](https://thetrashkat.github.io/tazon-para-dos-tinieblas/) |
+| Una persona que quiere maquetar una **historia** o una **pancarta** | El [editor de historias](https://thetrashkat.github.io/historias-tazon/editor/) o el [de pancartas](https://thetrashkat.github.io/historias-tazon/editor/pancarta.html) |
 | Una IA o alguien programando | [`AGENTS.md`](AGENTS.md), [`brand/tokens.json`](brand/tokens.json) y [`brand/brand.json`](brand/brand.json) |
 
 ## Contenido
 
 ```
-brand/          tokens.json · tokens.css · brand.json (fuente de verdad)
+brand/          tokens.json · tokens.css · brand.json (fuente de verdad) · tinieblas/ (modo oscuro)
 assets/logo/    mascota, sello, logotipos (+ inversos), favicon, png/ transparentes
 assets/iconos/  21 íconos de línea 64 px + sprite.svg
 assets/elementos/ d20, d6, carta, meeple, micrófono, destello

@@ -925,5 +925,65 @@
       "greca": "geometría escalonada de inspiración muisca",
       "zarpazo": "tres zarpazos; Hombre Lobo, tensión"
     }
+  },
+  "sub_brands": {
+    "tinieblas": {
+      "name": "Tazón para Dos · Tinieblas",
+      "tagline": "Jugar también es escuchar lo que cuenta la niebla.",
+      "kit": "https://thetrashkat.github.io/tazon-para-dos-tinieblas/",
+      "local_copy": "brand/tinieblas/",
+      "use": "Modo oscuro: Mundo de Tinieblas y leyendas de Bogotá y Engativá.",
+      "palette": {
+        "abismo": "#110D18",
+        "noche": "#1C1629",
+        "niebla": "#2B2340",
+        "pergamino": "#E9DDC1",
+        "pergamino_viejo": "#D9C9A3",
+        "musgo": "#7FA68C",
+        "musgo_profundo": "#3E5E50",
+        "sangre": "#9E3A48",
+        "coral_ceniza": "#E07D84",
+        "vela": "#E3B35C",
+        "ambar": "#7E5A1E",
+        "luna": "#CFCADF",
+        "ceniza": "#A39AB0",
+        "tinta": "#28203B",
+        "tinta_suave": "#5A4E66"
+      },
+      "modes": {
+        "noche": "pantalla, fondo noche/abismo",
+        "pergamino": "impresión, páginas pergamino con tinta"
+      },
+      "assets": {
+        "logos": "assets/logo/tinieblas/",
+        "elements": "assets/elementos/tinieblas/",
+        "icons": "assets/iconos/tinieblas/",
+        "dividers": "assets/divisores/noche/ · assets/divisores/pergamino/",
+        "themes": "brand/tinieblas/tema-tinieblas*.css"
+      },
+      "sync": "python -I tools/tinieblas.py"
+    }
+  },
+  "tools": {
+    "story_editor": {
+      "url": "https://thetrashkat.github.io/historias-tazon/editor/",
+      "what": "Pegar texto e imágenes → historia maquetada en HTML/PDF, estilo claro u oscuro."
+    },
+    "banner_editor": {
+      "url": "https://thetrashkat.github.io/historias-tazon/editor/pancarta.html",
+      "what": "Pancartas, pendones, roll-ups y afiches a tamaño real (PDF, HTML, PNG)."
+    },
+    "stories_site": {
+      "url": "https://thetrashkat.github.io/historias-tazon/",
+      "what": "Historias publicadas, plantillas y editores."
+    },
+    "cli": {
+      "path": "D:\\herramientas\\pdf-historias\\maquetar.py",
+      "what": "Markdown con directivas → PDF y web; --tema para el modo oscuro."
+    },
+    "navigation": {
+      "path": "D:\\herramientas\\pdf-historias\\navegacion.py",
+      "what": "Barra común que une sitios, editores y kits."
+    }
   }
 }

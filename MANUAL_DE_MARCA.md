@@ -457,3 +457,100 @@ Para piezas que no estén en el editor:
 5. Exporta a PNG con `tools/render.ps1` (o desde Inkscape).
 
 Si trabajas con una IA (Claude, ChatGPT…), dale el archivo [`AGENTS.md`](AGENTS.md). Tiene las reglas en un formato que las máquinas entienden.
+---
+
+## 16. Modo oscuro: Tazón para Dos · Tinieblas
+
+> «Jugar también es escuchar lo que cuenta la niebla.»
+
+La sub-marca oscura sirve para el **Mundo de Tinieblas** (Mago, Hombre Lobo, Changeling) y las **leyendas de Bogotá y Engativá**. No es otra marca: es Tazón para Dos de noche. Mantiene la tipografía, las sombras duras, la trama de puntos, las diagonales y la esquina; solo cambia la luz. «Tinieblas» va siempre después del nombre madre, nunca solo.
+
+**Kit completo:** https://thetrashkat.github.io/tazon-para-dos-tinieblas/ (fuente de verdad, en `D:\tazon-para-dos-tinieblas`). Aquí hay una copia en `brand/tinieblas/`, `assets/logo/tinieblas/`, `assets/elementos/tinieblas/` y `assets/iconos/tinieblas/`; se actualiza con `python -I tools/tinieblas.py`.
+
+**Paleta**
+
+| Color | Hex | Uso |
+|---|---|---|
+| Abismo | `#110D18` | Tinta #28203B llevada al fondo del pozo. Fondo más oscuro, contornos y sombras. |
+| Noche | `#1C1629` | Fondo principal de pantalla y páginas. |
+| Niebla | `#2B2340` | Superficies elevadas: tarjetas, recuadros, paneles. |
+| Pergamino | `#E9DDC1` | Crema #F7F2E8 envejecida. Texto sobre oscuro y fondo de impresión. |
+| Pergamino viejo | `#D9C9A3` | Recuadros sobre pergamino, papel manchado. |
+| Musgo de humedal | `#7FA68C` | Turquesa #55C4BF apagada hacia el verde del humedal Jaboque. |
+| Musgo profundo | `#3E5E50` | Bloques de color con texto pergamino encima. |
+| Sangre seca | `#9E3A48` | Coral #EA6077 oxidado. Bloques, sombras duras, triángulo de esquina. |
+| Coral ceniza | `#E07D84` | La versión del coral que sí se lee como texto sobre fondos oscuros. |
+| Oro de vela | `#E3B35C` | Sol #F8CB67 a la luz de una vela. Franjas, destellos, dados, CTA. |
+| Ámbar | `#7E5A1E` | El oro de vela cuando va como texto sobre pergamino. |
+| Luna | `#CFCADF` | Texto secundario y líneas finas sobre oscuro. |
+| Ceniza | `#A39AB0` | Texto atenuado, pies de foto, bordes sobre oscuro. |
+| Tinta (original) | `#28203B` | La tinta de siempre, para texto sobre pergamino. |
+| Tinta suave | `#5A4E66` | Texto atenuado sobre pergamino. |
+
+**Contraste** (WCAG 2.1)
+
+| Combinación | Contraste | Nivel | Uso |
+|---|---|---|---|
+| pergamino sobre abismo | 14.23:1 | AAA | Texto principal |
+| pergamino sobre noche | 13.02:1 | AAA | Texto principal |
+| pergamino sobre niebla | 10.99:1 | AAA | Texto en tarjetas |
+| luna sobre noche | 11.01:1 | AAA | Texto secundario |
+| ceniza sobre noche | 6.53:1 | AA | Pies de foto, etiquetas |
+| ceniza sobre niebla | 5.51:1 | AA | Atenuado en tarjetas |
+| vela sobre noche | 9.09:1 | AAA | Destacados, enlaces |
+| musgo sobre noche | 6.47:1 | AA | Destacados |
+| coral_ceniza sobre noche | 6.22:1 | AA | Avisos, rótulos |
+| coral_ceniza sobre niebla | 5.25:1 | AA | Rótulos en tarjetas |
+| abismo sobre vela | 9.93:1 | AAA | Botones y píldoras |
+| abismo sobre musgo | 7.07:1 | AAA | Píldoras |
+| pergamino sobre sangre | 4.94:1 | AA | Texto en bloque sangre |
+| pergamino sobre musgo_profundo | 5.33:1 | AA | Texto en bloque musgo |
+| tinta sobre pergamino | 11.45:1 | AAA | Texto impreso |
+| tinta_suave sobre pergamino | 5.73:1 | AA | Atenuado impreso |
+| sangre sobre pergamino | 4.94:1 | AA | Titulares impresos |
+| ambar sobre pergamino | 4.62:1 | AA | Oro como texto impreso |
+| musgo_profundo sobre pergamino | 5.33:1 | AA | Musgo como texto impreso |
+| tinta sobre pergamino_viejo | 9.44:1 | AAA | Recuadros impresos |
+| vela sobre pergamino | 1.43:1 | No | NO: oro sobre pergamino |
+| sangre sobre noche | 2.64:1 | No | NO: sangre como texto en la noche |
+| pergamino sobre musgo | 2.01:1 | No | NO salvo titular grande con sombra |
+
+**Modos de uso**
+- **Noche** (pantalla): fondo noche o abismo, texto pergamino y luna, acentos musgo, sangre seca y oro de vela.
+- **Pergamino** (impresión): páginas pergamino con tinta; portada y contraportada oscuras.
+
+**Sí**
+- Partir siempre del logo original recoloreado; «Tinieblas» va en la fila del descriptor.
+- Texto largo en pergamino sobre noche o en tinta sobre pergamino.
+- Oro de vela para lo que debe brillar: franjas, destellos, botones, números.
+- Ilustraciones planas con contorno oscuro y pocos objetos (3–5).
+- Motivos muiscas como geometría (rombos, escalones, espirales) y con respeto: sin inventar significados sagrados.
+
+**No**
+- Rostros de personas reales sin consentimiento.
+- Sangre realista, gore o calaveras: el miedo se sugiere con niebla, luna y silencio.
+- Oro de vela o sangre seca como texto sobre pergamino o noche (no pasa AA); usa ámbar o coral ceniza.
+- Degradados, brillos difusos o sombras con desenfoque.
+- Redibujar el tazón o usar «Tinieblas» sin el nombre madre.
+- Fuentes góticas o de imitación medieval: la tipografía es la de siempre.
+
+**Logos:** son los originales recoloreados, con «☾ TINIEBLAS» en la fila del descriptor: `sello-tinieblas`, `sello-luna`, `logotipo-horizontal-tinieblas` (y `-fondo`, `-pergamino`), `logotipo-apilado-tinieblas`, `mascota-tinieblas`.
+
+**Motivos:** luna creciente y llena, niebla en bandas, humedal con juncos, greca muisca (rombo escalonado), medallón de Chía, d20 agrietado, zarpazo, espiral, anillo de hongos, vela, destello en oro.
+
+**Divisores:** los diez divisores existen también en noche y pergamino (sección 6); `luna`, `greca` y `zarpazo` son los más nocturnos.
+
+---
+
+## 17. Herramientas para historias, pancartas y la web
+
+Todo está conectado por la misma barra de navegación (Inicio · editores · historias · marca · divisores · Tinieblas · biblioteca · web).
+
+| Herramienta | Para qué | Enlace |
+|---|---|---|
+| **Editor de historias** | Pegar texto e imágenes y obtener una historia maquetada (portada, capítulos, 1–3 columnas, imágenes, recuadros, leyendas, contraportada) en HTML o PDF. Estilo Tazón o Tinieblas. Se puede escribir directamente sobre la vista previa. | [https://thetrashkat.github.io/historias-tazon/editor/](https://thetrashkat.github.io/historias-tazon/editor/) |
+| **Editor de pancartas** | Roll-up, pendón, afiches A3/A2 y pancartas horizontales a tamaño real, con las fórmulas de color de la marca y tres recetas Tinieblas. PDF, HTML o PNG. | [https://thetrashkat.github.io/historias-tazon/editor/pancarta.html](https://thetrashkat.github.io/historias-tazon/editor/pancarta.html) |
+| **Historias publicadas** | *La Puerta del Sol* (leyendas de Engativá) y *La marea detenida* (Mago), en claro y oscuro. | [https://thetrashkat.github.io/historias-tazon/](https://thetrashkat.github.io/historias-tazon/) |
+| **Maquetador** (`maquetar.py`) | La misma maquetación por línea de comandos, desde Markdown con directivas (`::: divisor luna`, `--tema`). | `D:\herramientas\pdf-historias` |
+| **Editor de plantillas** | Posts, historias, carruseles, fotos y video para redes (sección 15). | [editor/](https://thetrashkat.github.io/tazon-para-dos-marca/editor/) |
+

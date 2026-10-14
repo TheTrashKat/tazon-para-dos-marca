@@ -11,6 +11,7 @@ Instructions for AI agents (Claude, Codex, Cursor, etc.) that create or edit vis
 | `brand/brand.json` | Identity, about text, taglines, manifesto, location, links, offerings, 3-step process, voice do/don't, CTAs, composition rules, color recipes per line, illustration objects, publication formats, merch |
 | `tools/build.py` | Generator: SVG primitives (`header`, `pill`, `d20`, `d6`, `card`, `mic`, `waveform`, `bubble`, `steps`, `sparkle`, `text_path`) and all generated templates |
 | `plantillas/*.svg` | Finished reference compositions. Copy the closest one instead of starting from scratch |
+| `brand/tinieblas/` | **Dark mode** (sub-brand Tazón para Dos · Tinieblas): `tokens.json`, `tokens.css`, `brand.json` (palette, WCAG table, do/don't), and the story themes `tema-tinieblas*.css`. Synced copy; source of truth is `D:\tazon-para-dos-tinieblas` |
 
 `brand.json` text marked "propuesta" is a suggestion, not a fact. Never invent schedules, prices, dates, episode names or partners. Ask the user, or leave a clearly marked placeholder such as `[FECHA]`.
 
@@ -43,6 +44,20 @@ Instructions for AI agents (Claude, Codex, Cursor, etc.) that create or edit vis
    - Warm, playful, community-minded. Inclusive language, and never assume the reader's gender.
    - Short headlines ending with a period.
    - No corporate or sales tone, no aggressive gamer slang, no exclamation-mark spam.
+
+## Dark mode (Tinieblas)
+
+Use it for World of Darkness pieces (Mage, Werewolf, Changeling) and Bogotá/Engativá urban legends. Load `brand/tinieblas/brand.json` and `tokens.json`; everything not stated there is inherited from this kit.
+- **Palette:** backgrounds abismo `#110D18`, noche `#1C1629`, niebla `#2B2340`, pergamino `#E9DDC1`; accents musgo `#7FA68C` / musgo profundo `#3E5E50`, sangre `#9E3A48`, coral ceniza `#E07D84` (text-safe coral), vela `#E3B35C`, ámbar `#7E5A1E` (gold as text on parchment); text luna `#CFCADF`, ceniza `#A39AB0`. This palette replaces hard rule 1 only inside dark-mode pieces.
+- **Forbidden:** vela or sangre as small text on noche/pergamino (fails AA); gore, skulls or realistic blood; gothic fonts; «Tinieblas» without the parent name; redrawn logos.
+- **Assets:** logos in `assets/logo/tinieblas/`, motifs in `assets/elementos/tinieblas/`, icons in `assets/iconos/tinieblas/`, dividers in `assets/divisores/noche|pergamino/`. Refresh the copy with `python -I tools/tinieblas.py`.
+- **Tools:** story editor (https://thetrashkat.github.io/historias-tazon/editor/, Estilo → Tinieblas), banner editor (https://thetrashkat.github.io/historias-tazon/editor/pancarta.html, recipes niebla/sangre/vela), `maquetar.py --tema brand/tinieblas/tema-tinieblas.css`.
+
+## Story and banner tools
+
+- **Story editor** `https://thetrashkat.github.io/historias-tazon/editor/`: paste text + images → story HTML/PDF (all block types, divider styles, light/dark, edit text on the preview). Source in `D:\herramientas\pdf-historias\editor\` (`editor.js` + shared `comun.js`; build with `python -I editor/generar_editor.py`).
+- **Banner editor** `https://thetrashkat.github.io/historias-tazon/editor/pancarta.html`: roll-up 80×180 / 85×200, pendón 60×120, A3, A2, 200×80, 300×100, 150×50 cm; real-size PDF, HTML, PNG. Same build.
+- **CLI:** `maquetar.py` (Markdown with `:::` directives). Shared navigation bar: `navegacion.py` (re-run after regenerating any page).
 
 ## Color recipe by content line
 
