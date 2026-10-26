@@ -1888,7 +1888,33 @@
     { key: "nivel", label: "Nivel (chip)", type: "text", default: "PARA PRINCIPIANTES" },
     { key: "cupos", label: "Cupos (chip)", type: "text", default: "5 CUPOS" },
     { key: "narra", label: "Quién narra (chip, opcional)", type: "text", default: "" },
+    { key: "sello", label: "Sello (opcional: ¡ÚLTIMOS CUPOS!, NUEVA CAMPAÑA…)", type: "text", default: "" },
     { key: "cta", label: "Botón", type: "text", default: "ESCRÍBENOS PARA RESERVAR" }, f.usuario];
+  // Sello de estampa (estrella de 14 puntas) con un texto corto en 1–2 líneas, girado. El color evita el fondo y el bloque.
+  function selloPartida(cx, cy, texto, r, s = 1) {
+    const t = String(texto || "").trim().toUpperCase();
+    if (!t) return "";
+    const fill = [SUN, CORAL, TEAL, CREAM].find((c) => c !== r.bg && c !== r.block) || SUN;
+    const pts = [];
+    for (let i = 0; i < 28; i++) { const a = (Math.PI * i) / 14, rr = i % 2 ? 84 : 100; pts.push(`${(Math.cos(a) * rr).toFixed(1)},${(Math.sin(a) * rr).toFixed(1)}`); }
+    const palabras = t.split(/\s+/);
+    let lineas = [t];
+    if (palabras.length > 1 && D.measure(t, "cond", 40) > 150) {
+      let mejor = null;
+      for (let i = 1; i < palabras.length; i++) {
+        const a = palabras.slice(0, i).join(" "), b = palabras.slice(i).join(" ");
+        const ancho = Math.max(D.measure(a, "cond", 40), D.measure(b, "cond", 40));
+        if (!mejor || ancho < mejor[0]) mejor = [ancho, [a, b]];
+      }
+      lineas = mejor[1];
+    }
+    const fs = Math.min(...lineas.map((l) => D.fit(l, lineas.length > 1 ? 40 : 46, 136)));
+    const y0 = lineas.length > 1 ? -fs * 0.12 : fs * 0.36;
+    const textos = lineas.map((l, i) => `<text x="0" y="${(y0 + i * fs * 0.95).toFixed(1)}" text-anchor="middle" class="cond" font-size="${fs}" fill="${INK}">${D.esc(l)}</text>`).join("");
+    return `<g transform="translate(${cx},${cy}) rotate(-12) scale(${s})">
+      <polygon points="${pts.join(" ")}" fill="${INK}" transform="translate(8,8)"/>
+      <polygon points="${pts.join(" ")}" fill="${fill}" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>${textos}</g>`;
+  }
   // Hoja de calendario con mes y día, girada
   function hojaFecha(cx, cy, dia, mes, s = 1) {
     if (!dia) return "";
@@ -1933,7 +1959,7 @@
     render(v) {
       const r = rec(v), conFoto = !!v.foto;
       const pillFill = r.ink === CREAM ? TEAL : INK, pillInk = r.ink === CREAM ? INK : CREAM;
-      let top, cut;
+      let top, cut, sello = "";
       if (conFoto) {
         // La foto cede alto si el titular ocupa dos líneas, para que los chips no choquen con el botón
         const alto = (fh) => {
@@ -1948,11 +1974,13 @@
         top = `${D.photo(64, 170, 952, fh, v.foto, { focus: v.enfoque, shadow: true, shadowColor: r.shadow })}
           ${pillJuego(96, 200, 56, INK, CREAM, v, 22, 700)}
           ${hojaFecha(920, 250, v.dia, v.mes, 0.8)}${tt.svg}`;
+        sello = selloPartida(900, 170 + fh - 80, v.sello, r, 0.8);
       } else {
         const tt = titularPartida(v, r, 60, 270, 140, 690, 64);
         cut = Math.max(640, Math.round(tt.bottom + 60));
         top = `${pillJuego(64, 186, 50, pillFill, pillInk, v, 22, 680)}
-          ${tt.svg}${hojaFecha(905, 370, v.dia, v.mes)}${D.sparkle(800, 205, 40, r.ink)}${D.sparkle(1010, 540, 44, CREAM)}`;
+          ${tt.svg}${hojaFecha(905, 370, v.dia, v.mes)}${D.sparkle(800, 205, 40, r.ink)}${v.sello ? "" : D.sparkle(1010, 540, 44, CREAM)}`;
+        sello = selloPartida(925, cut - 80, v.sello, r, 0.85);
       }
       const filas = filasPartida(v), size = conFoto ? 32 : 40;
       const cardY = cut + 80, card = D.infoCard(64, cardY, 952, filas, size);
@@ -1964,7 +1992,7 @@
         <path d="${block}" fill="${r.block}"/><path d="${block}" fill="url(#dots)"/>
         ${card.svg}${chipsAjustados(64, chipY, chipsPartida(v, r.block), 58, 23, 952)}
         ${v.cta ? D.pillAuto(64, 1238, 64, INK, CREAM, v.cta, D.fit(v.cta, 24, 520, "sans", 700, 2)) : ""}
-        <text x="1016" y="1282" text-anchor="end" class="sans" font-weight="700" font-size="${D.fit(v.usuario, 28, 330, "sans", 700)}" fill="${INK}">${D.esc(v.usuario)}</text>`;
+        <text x="1016" y="1282" text-anchor="end" class="sans" font-weight="700" font-size="${D.fit(v.usuario, 28, 330, "sans", 700)}" fill="${INK}">${D.esc(v.usuario)}</text>${sello}`;
     },
   });
 
@@ -1988,7 +2016,7 @@
         cut = Math.max(900, Math.round(tt.bottom + 70));
         top = `${D.header(132, 300, 1.22, r.ink)}
           ${pillJuego(76, 400, 60, pillFill, pillInk, v, 24, 760)}
-          ${tt.svg}${hojaFecha(920, 610, v.dia, v.mes, 0.95)}${D.sparkle(990, 430, 70, r.accent)}`;
+          ${tt.svg}${hojaFecha(920, 610, v.dia, v.mes, 0.95)}${v.sello ? "" : D.sparkle(990, 430, 70, r.accent)}`;
       }
       const filas = filasPartida(v), size = conFoto ? 34 : 42;
       const cardY = cut + 80, card = D.infoCard(76, cardY, 928, filas, size);
@@ -2002,7 +2030,8 @@
         <path d="${block}" fill="${r.block}"/><path d="${block}" fill="url(#dots)"/>
         ${card.svg}${chipsAjustados(76, chipY, chips, 60, 24, 928)}
         ${v.cta ? D.pillAuto(540, ctaY, 66, INK, CREAM, v.cta, D.fit(v.cta, 26, 880, "sans", 700, 2), { anchor: "middle" }) : ""}
-        ${usuarioY + 58 <= 1650 ? D.pillAuto(540, usuarioY, 58, CREAM, INK, v.usuario, 26, { anchor: "middle", stroke: INK }) : ""}`;
+        ${usuarioY + 58 <= 1650 ? D.pillAuto(540, usuarioY, 58, CREAM, INK, v.usuario, 26, { anchor: "middle", stroke: INK }) : ""}
+        ${conFoto ? selloPartida(170, 545, v.sello, r, 0.95) : selloPartida(925, cut - 70, v.sello, r, 0.95)}`;
     },
   });
 
