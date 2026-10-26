@@ -1897,19 +1897,26 @@
     const fill = [SUN, CORAL, TEAL, CREAM].find((c) => c !== r.bg && c !== r.block) || SUN;
     const pts = [];
     for (let i = 0; i < 28; i++) { const a = (Math.PI * i) / 14, rr = i % 2 ? 84 : 100; pts.push(`${(Math.cos(a) * rr).toFixed(1)},${(Math.sin(a) * rr).toFixed(1)}`); }
+    // Reparte el texto en 1–3 líneas (las menos posibles) sin bajar de 30 px (× escala ≥ 22 px en la pieza)
     const palabras = t.split(/\s+/);
-    let lineas = [t];
-    if (palabras.length > 1 && D.measure(t, "cond", 40) > 150) {
+    const partir = (k) => {
+      if (k === 1 || palabras.length < k) return [t];
       let mejor = null;
-      for (let i = 1; i < palabras.length; i++) {
-        const a = palabras.slice(0, i).join(" "), b = palabras.slice(i).join(" ");
-        const ancho = Math.max(D.measure(a, "cond", 40), D.measure(b, "cond", 40));
-        if (!mejor || ancho < mejor[0]) mejor = [ancho, [a, b]];
-      }
-      lineas = mejor[1];
+      const probar = (desde, quedan, acc) => {
+        if (quedan === 1) { const l = [...acc, palabras.slice(desde).join(" ")], w = Math.max(...l.map((x) => D.measure(x, "cond", 40))); if (!mejor || w < mejor[0]) mejor = [w, l]; return; }
+        for (let i = desde + 1; i <= palabras.length - quedan + 1; i++) probar(i, quedan - 1, [...acc, palabras.slice(desde, i).join(" ")]);
+      };
+      probar(0, k, []);
+      return mejor[1];
+    };
+    let lineas, fs;
+    for (const k of [1, 2, 3]) {
+      lineas = partir(k);
+      fs = Math.min(...lineas.map((l) => D.fit(l, k === 1 ? 46 : k === 2 ? 40 : 34, 136)));
+      if (fs >= 30) break;
     }
-    const fs = Math.min(...lineas.map((l) => D.fit(l, lineas.length > 1 ? 40 : 46, 136)));
-    const y0 = lineas.length > 1 ? -fs * 0.12 : fs * 0.36;
+    fs = Math.max(fs, 30);
+    const y0 = fs * 0.36 - ((lineas.length - 1) * fs * 0.95) / 2;
     const textos = lineas.map((l, i) => `<text x="0" y="${(y0 + i * fs * 0.95).toFixed(1)}" text-anchor="middle" class="cond" font-size="${fs}" fill="${INK}">${D.esc(l)}</text>`).join("");
     return `<g transform="translate(${cx},${cy}) rotate(-12) scale(${s})">
       <polygon points="${pts.join(" ")}" fill="${INK}" transform="translate(8,8)"/>
