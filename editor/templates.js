@@ -1876,5 +1876,127 @@
   add({ id: "intro_logo_v", name: "Logo para intro de video 9:16 (transparente)", group: "Video", w: 1080, h: 1920, transparent: true, fields: introFields, render: (v) => introLogo(1080, 1920, v) });
   add({ id: "intro_logo_h", name: "Logo para intro de video 16:9 (transparente)", group: "Video", w: 1920, h: 1080, transparent: true, fields: introFields, render: (v) => introLogo(1920, 1080, v) });
 
+  // ============================================================ PARTIDAS (publicador de partidas de rol)
+  // Usadas por el publicador (repo tazon-partidas): mismas claves de campo en post e historia.
+  const partidaFields = [foto("foto", "Foto o ilustración (opcional)"), enfoque(), f.receta, f.invertir,
+    { key: "juego", label: "Juego / sistema (píldora)", type: "text", default: "JUEGO DE ROL" },
+    { key: "titulo", label: "Nombre de la partida", type: "text", default: "UNA NUEVA AVENTURA." },
+    { key: "dia", label: "Día (número)", type: "text", default: "1" }, { key: "mes", label: "Mes (abreviado)", type: "text", default: "NOV" },
+    { key: "fecha", label: "Fecha", type: "text", default: "Sábado 1 de noviembre" },
+    { key: "hora", label: "Hora", type: "text", default: SCHEDULE || "[HORA]" },
+    { key: "lugar", label: "Lugar", type: "text", default: PLACE },
+    { key: "nivel", label: "Nivel (chip)", type: "text", default: "PARA PRINCIPIANTES" },
+    { key: "cupos", label: "Cupos (chip)", type: "text", default: "5 CUPOS" },
+    { key: "narra", label: "Quién narra (chip, opcional)", type: "text", default: "" },
+    { key: "cta", label: "Botón", type: "text", default: "ESCRÍBENOS PARA RESERVAR" }, f.usuario];
+  // Hoja de calendario con mes y día, girada
+  function hojaFecha(cx, cy, dia, mes, s = 1) {
+    if (!dia) return "";
+    return `<g transform="translate(${cx},${cy}) rotate(6) scale(${s})">
+      <rect x="-96" y="-90" width="192" height="200" rx="22" fill="${INK}" transform="translate(10,10)"/>
+      <rect x="-96" y="-90" width="192" height="200" rx="22" fill="${SUN}" stroke="${INK}" stroke-width="7"/>
+      <rect x="-96" y="-90" width="192" height="56" rx="22" fill="${CORAL}" stroke="${INK}" stroke-width="7"/><rect x="-92" y="-50" width="184" height="14" fill="${CORAL}"/>
+      <text x="0" y="-48" text-anchor="middle" class="sans" font-weight="700" font-size="${D.fit(String(mes).toUpperCase(), 30, 160, "sans", 700, 3)}" fill="${INK}" letter-spacing="3">${D.esc(String(mes).toUpperCase())}</text>
+      <text x="0" y="88" text-anchor="middle" class="cond" font-size="${D.fit(dia, 120, 160)}" fill="${INK}">${D.esc(dia)}</text></g>`;
+  }
+  // Titular en 1–2 líneas; la última va destacada con sombra
+  function titularPartida(v, r, x, yTop, size, maxW, min) {
+    const t = fitLines(v.titulo, size, maxW, 2, min), lh = t.size * 0.98;
+    const svg = t.lines.map((l, i) => {
+      const last = i === t.lines.length - 1;
+      return D.headline(x, Math.round(yTop + t.size * 0.82 + i * lh), l, t.size, last ? r.hl : r.ink, last ? r.hlShadow : null, Math.round(t.size / 16));
+    }).join("");
+    return { svg, bottom: yTop + t.lines.length * lh };
+  }
+  const chipsPartida = (v, block) => {
+    const cc = chipColors(block);
+    return [v.nivel, v.cupos, v.narra].map((x) => String(x || "").trim().toUpperCase()).filter(Boolean).map((a, i) => [a, cc[i % 3]]);
+  };
+  // Chips que caben en maxW: bajan de tamaño hasta 22 px y, si aún no caben, se quedan los primeros
+  function chipsAjustados(x, y, items, h, size, maxW) {
+    const total = (its, fs) => its.reduce((acc, [l]) => acc + D.measure(l, "sans", fs, 700, 2) + 56 + 16, -16);
+    let its = items, fs = size;
+    while (fs > 22 && total(its, fs) > maxW) fs -= 1;
+    while (its.length > 1 && total(its, fs) > maxW) its = its.slice(0, -1);
+    if (its.length === 1 && total(its, fs) > maxW) return "";
+    return D.chips(x, y, its, h, fs);
+  }
+  const pillJuego = (x, y, h, fill, ink, v, size, maxW) => {
+    const t = String(v.juego || "").toUpperCase();
+    return t ? D.pillAuto(x, y, h, fill, ink, t, D.fit(t, size, maxW - 70, "sans", 700, 2)) : "";
+  };
+  const filasPartida = (v) => [["calendario", v.fecha], ["reloj", v.hora], ["ubicacion", v.lugar]].filter((x) => String(x[1] || "").trim());
+
+  add({
+    id: "partida_post", name: "Partida de rol 4:5", group: "Partidas", w: 1080, h: 1350, fields: partidaFields,
+    variants: [...INV_VARIANTS, { foto: "" }],
+    render(v) {
+      const r = rec(v), conFoto = !!v.foto;
+      const pillFill = r.ink === CREAM ? TEAL : INK, pillInk = r.ink === CREAM ? INK : CREAM;
+      let top, cut;
+      if (conFoto) {
+        const tt = titularPartida(v, r, 64, 580, 96, 952, 56);
+        cut = Math.round(tt.bottom + 40);
+        top = `${D.photo(64, 170, 952, 380, v.foto, { focus: v.enfoque, shadow: true, shadowColor: r.shadow })}
+          ${pillJuego(96, 200, 56, INK, CREAM, v, 22, 700)}
+          ${hojaFecha(920, 250, v.dia, v.mes, 0.8)}${tt.svg}`;
+      } else {
+        const tt = titularPartida(v, r, 60, 270, 140, 690, 64);
+        cut = Math.max(640, Math.round(tt.bottom + 60));
+        top = `${pillJuego(64, 186, 50, pillFill, pillInk, v, 22, 680)}
+          ${tt.svg}${hojaFecha(905, 370, v.dia, v.mes)}${D.sparkle(800, 205, 40, r.ink)}${D.sparkle(1010, 540, 44, CREAM)}`;
+      }
+      const filas = filasPartida(v), size = conFoto ? 32 : 40;
+      const cardY = cut + 80, card = D.infoCard(64, cardY, 952, filas, size);
+      const chipY = cardY + card.height + 34;
+      const block = `M0,${cut + 38} L1080,${cut - 22} L1080,1350 L0,1350 Z`;
+      return `${D.background(1080, 1350, r.bg, r.light)}${D.corner(1080, ...r.corner, conFoto ? 150 : 180)}${D.header(110, conFoto ? 96 : 104, 1, r.ink)}
+        ${top}
+        <path d="M0,${cut} L1080,${cut - 60} L1080,${cut - 22} L0,${cut + 38} Z" fill="${CREAM}"/>
+        <path d="${block}" fill="${r.block}"/><path d="${block}" fill="url(#dots)"/>
+        ${card.svg}${chipsAjustados(64, chipY, chipsPartida(v, r.block), 58, 23, 952)}
+        ${v.cta ? D.pillAuto(64, 1238, 64, INK, CREAM, v.cta, D.fit(v.cta, 24, 520, "sans", 700, 2)) : ""}
+        <text x="1016" y="1282" text-anchor="end" class="sans" font-weight="700" font-size="${D.fit(v.usuario, 28, 330, "sans", 700)}" fill="${INK}">${D.esc(v.usuario)}</text>`;
+    },
+  });
+
+  add({
+    id: "partida_historia", name: "Partida de rol historia 9:16", group: "Partidas", w: 1080, h: 1920, fields: partidaFields,
+    variants: [...INV_VARIANTS, { foto: "" }],
+    render(v) {
+      const r = rec(v), conFoto = !!v.foto;
+      const pillFill = r.ink === CREAM ? TEAL : INK, pillInk = r.ink === CREAM ? INK : CREAM;
+      let top, tt, cut;
+      if (conFoto) {
+        // Foto a sangre arriba (detrás de la interfaz de Instagram solo queda foto, nunca texto clave)
+        tt = titularPartida(v, r, 70, 770, 112, 940, 60);
+        cut = Math.round(tt.bottom + 40);
+        top = `${D.photo(0, 0, 1080, 660, v.foto, { focus: v.enfoque, stroke: false, path: "M0,0 H1080 V600 L0,660 Z", guide: [540, 420] })}
+          <path d="M0,660 L1080,600" stroke="${INK}" stroke-width="6"/>${headerChip(64, 250)}
+          ${hojaFecha(900, 560, v.dia, v.mes, 0.8)}
+          ${pillJuego(72, 690, 56, pillFill, pillInk, v, 22, 720)}${tt.svg}`;
+      } else {
+        tt = titularPartida(v, r, 70, 500, 160, 720, 64);
+        cut = Math.max(900, Math.round(tt.bottom + 70));
+        top = `${D.header(132, 300, 1.22, r.ink)}
+          ${pillJuego(76, 400, 60, pillFill, pillInk, v, 24, 760)}
+          ${tt.svg}${hojaFecha(920, 610, v.dia, v.mes, 0.95)}${D.sparkle(990, 430, 70, r.accent)}`;
+      }
+      const filas = filasPartida(v), size = conFoto ? 34 : 42;
+      const cardY = cut + 80, card = D.infoCard(76, cardY, 928, filas, size);
+      const chips = chipsPartida(v, r.block), chipY = cardY + card.height + 36;
+      const ctaY = chipY + (chips.length ? 60 : 0) + 44;
+      const block = `M0,${cut + 40} L1080,${cut - 20} L1080,1920 L0,1920 Z`;
+      const usuarioY = ctaY + (v.cta ? 92 : 0);
+      return `${D.background(1080, 1920, r.bg, r.light)}${D.corner(1080, ...r.corner, conFoto ? 200 : 260)}
+        ${top}
+        <path d="M0,${cut} L1080,${cut - 60} L1080,${cut - 20} L0,${cut + 40} Z" fill="${CREAM}"/>
+        <path d="${block}" fill="${r.block}"/><path d="${block}" fill="url(#dots)"/>
+        ${card.svg}${chipsAjustados(76, chipY, chips, 60, 24, 928)}
+        ${v.cta ? D.pillAuto(540, ctaY, 66, INK, CREAM, v.cta, D.fit(v.cta, 26, 880, "sans", 700, 2), { anchor: "middle" }) : ""}
+        ${usuarioY + 58 <= 1650 ? D.pillAuto(540, usuarioY, 58, CREAM, INK, v.usuario, 26, { anchor: "middle", stroke: INK }) : ""}`;
+    },
+  });
+
   window.TPDTemplates = templates;
 })();

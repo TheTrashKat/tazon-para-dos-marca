@@ -98,6 +98,7 @@ Rules for the editor:
 | Request | Template(s) | Generator |
 |---|---|---|
 | "Invite people this Saturday" / weekly agenda | `evento_vertical`, `evento_historia` | `build_social()`, `info_card(AGENDA)`, `chips(ACTIVIDADES)` |
+| Announce a role-playing session (partida) with date, time, seats, level | `partida_post`, `partida_historia` (editor, group «Partidas»; optional photo) | used by the publisher https://thetrashkat.github.io/tazon-partidas/ (repo TheTrashKat/tazon-partidas), which posts to Telegram, Facebook, Instagram and the website |
 | Explain the process / educational post | `carrusel_01`…`carrusel_05` | `build_social()`, slides 2–4 loop over `brand.json → process` |
 | General brand post / story | `post_cuadrado`, `historia` | static |
 | Podcast promo | `podcast_cuadrado`, `podcast_historia` | `build_templates()` |
