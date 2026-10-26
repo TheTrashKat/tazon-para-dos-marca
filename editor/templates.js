@@ -1935,9 +1935,17 @@
       const pillFill = r.ink === CREAM ? TEAL : INK, pillInk = r.ink === CREAM ? INK : CREAM;
       let top, cut;
       if (conFoto) {
-        const tt = titularPartida(v, r, 64, 580, 96, 952, 56);
-        cut = Math.round(tt.bottom + 40);
-        top = `${D.photo(64, 170, 952, 380, v.foto, { focus: v.enfoque, shadow: true, shadowColor: r.shadow })}
+        // La foto cede alto si el titular ocupa dos líneas, para que los chips no choquen con el botón
+        const alto = (fh) => {
+          const t = titularPartida(v, r, 64, 200 + fh, 96, 952, 56);
+          const c = Math.round(t.bottom + 40), n = filasPartida(v).length;
+          return { t, c, fin: c + 80 + n * 32 * 2.6 + 32 * 0.8 + 34 + (chipsPartida(v, r.block).length ? 58 : 0) };
+        };
+        let fh = 380, L = alto(fh);
+        if (L.fin > 1200) { fh = Math.max(220, fh - (L.fin - 1200)); L = alto(fh); }
+        const tt = L.t;
+        cut = L.c;
+        top = `${D.photo(64, 170, 952, fh, v.foto, { focus: v.enfoque, shadow: true, shadowColor: r.shadow })}
           ${pillJuego(96, 200, 56, INK, CREAM, v, 22, 700)}
           ${hojaFecha(920, 250, v.dia, v.mes, 0.8)}${tt.svg}`;
       } else {
