@@ -102,7 +102,8 @@ window.TPD = {
   }
  },
  "location": {
-  "address": "Tv. 76b #81f-08",
+  "venue": "Centro Cultural Tag Tabú",
+  "address": "Tv. 76b #81b-43",
   "locality": "Engativá",
   "city": "Bogotá",
   "country": "Colombia",
