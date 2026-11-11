@@ -2209,7 +2209,8 @@
   // ============================================================ LUDOTECA FAMILIAR (4:5 y 9:16)
   // Juegos editables (nombre + descripción), fecha, hora, lugar, contacto y foto opcional.
   const ludotecaFields = [
-    foto("foto", "Foto de fondo (opcional)"), enfoque(), f.receta, f.invertir,
+    foto("foto", "Foto (opcional)"), enfoque(), f.receta, f.invertir,
+    { key: "fondo", label: "Foto como", type: "select", options: [["completo", "Fondo completo (detrás del texto)"], ["marco", "Marco dentro de la pieza"]], default: "completo" },
     { key: "invita", label: "Invitación", type: "text", default: "Tazón para Dos te invita" },
     { key: "titulo", label: "Título", type: "text", default: "LUDOTECA FAMILIAR" },
     { key: "subtitulo", label: "Subtítulo", type: "text", default: "Juegos para todas las edades" },
@@ -2223,16 +2224,23 @@
     { key: "contacto", label: "Contacto e inscripciones", type: "text", default: "310 7722348 · 3176963104" },
   ];
   function ludotecaRender(v, h) {
-    const r = rec(v), W = 1080, ink = r.ink, acc = r.hl, banda = 140, top = h - banda;
+    const r0 = rec(v), W = 1080, banda = 140, top = h - banda;
     const conFoto = !!v.foto;
+    const aFondo = conFoto && v.fondo !== "marco";
+    const r = aFondo ? { bg: "#1C1629", light: false, ink: "#F7F2E8", hl: "#FFE600" } : r0;
+    const ink = r.ink, acc = r.hl;
     const juegos = [[v.j1, v.d1], [v.j2, v.d2], [v.j3, v.d3], [v.j4, v.d4]].filter(([n]) => String(n || "").trim());
     let svg = `${D.background(W, h, r.bg, r.light)}`;
+    if (aFondo) {
+      svg += `<image href="${D.esc(v.foto)}" x="0" y="0" width="${W}" height="${h}" preserveAspectRatio="${({centro:"xMidYMid",arriba:"xMidYMin",abajo:"xMidYMax",izquierda:"xMinYMid",derecha:"xMaxYMid"}[v.enfoque] || "xMidYMid")} slice" opacity="0.3"/>`;
+      svg += `<rect x="0" y="0" width="${W}" height="${h}" fill="url(#dots)" opacity="0.6"/>`;
+    }
     svg += tx(70, 90, String(v.invita || "").toUpperCase(), D.fit(String(v.invita || ""), 26, 940, "sans", 700, 3), ink, { ls: 3 });
     const tt = D.fit(v.titulo || "", h > 1500 ? 170 : 150, 940, "cond", 800);
     svg += D.headline(70, h > 1500 ? 330 : 260, String(v.titulo || "").toUpperCase(), tt, last(acc, ink), null, 0);
     svg += tx(70, h > 1500 ? 390 : 320, String(v.subtitulo || ""), D.fit(String(v.subtitulo || ""), 44, 940, "cond", 800), ink, { cond: true });
     let y = h > 1500 ? 440 : 380;
-    if (conFoto) {
+    if (conFoto && !aFondo) {
       const ph = h > 1500 ? 520 : 240;
       svg += D.photo(70, y, 940, ph, v.foto, { focus: v.enfoque, rx: 18, strokeWidth: 6 });
       y += ph + 30;
