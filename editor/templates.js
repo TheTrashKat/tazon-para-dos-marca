@@ -1890,7 +1890,8 @@
     { key: "cupos", label: "Cupos (chip)", type: "text", default: "5 CUPOS" },
     { key: "narra", label: "Quién narra (chip, opcional)", type: "text", default: "" },
     { key: "sello", label: "Sello (opcional: ¡ÚLTIMOS CUPOS!, NUEVA CAMPAÑA…)", type: "text", default: "" },
-    { key: "cta", label: "Botón", type: "text", default: "ESCRÍBENOS PARA RESERVAR" }, f.usuario];
+    { key: "cta", label: "Botón", type: "text", default: "ESCRÍBENOS PARA RESERVAR" }, f.usuario,
+    { key: "logo", label: "Logo Tazón (opcional)", type: "checkbox", default: false }];
   // Sello de estampa (estrella de 14 puntas) con un texto corto en 1–2 líneas, girado. El color evita el fondo y el bloque.
   function selloPartida(cx, cy, texto, r, s = 1) {
     const t = String(texto || "").trim().toUpperCase();
@@ -2048,6 +2049,8 @@
   // Para redes: campos iguales a los de partida_post/partida_historia (el publicador no cambia).
   const tx = (x, y, s, size, fill, o = {}) => `<text x="${x}" y="${y}" class="${o.cond ? "cond" : "sans"}" font-weight="${o.cond ? 800 : 700}" font-size="${size}" fill="${fill}" text-anchor="${o.anchor || "start"}" letter-spacing="${o.ls || 0}">${D.esc(s)}</text>`;
   const dirTexto = (v) => v.direccion || v.lugar || PLACE;
+  // Logo opcional: solo el sello (mascota en círculo), para no repetir el nombre de la marca dentro de la pieza
+  const logoSello = (x, y, s) => `<circle cx="${x}" cy="${y}" r="${46 * s}" fill="${CREAM}" stroke="${INK}" stroke-width="${4 * s}"/><use href="#bowl" x="${x - 29 * s}" y="${y - 31 * s}" width="${58 * s}" height="${60 * s}"/>`;
 
   // Boleto de entrada: tarjeta crema con perforación; el talón lleva la fecha y la dirección va debajo de la línea
   add({
@@ -2074,7 +2077,8 @@
         ${tx(845, 1130, v.dia, D.fit(v.dia, 220, 240, "cond", 800), INK, { cond: true, anchor: "middle" })}
         ${D.pillAuto(70, 1245, 64, INK, CREAM, v.cta, D.fit(v.cta, 26, 560, "sans", 700, 2))}
         ${tx(1010, 1285, v.usuario, D.fit(v.usuario, 28, 330), INK, { anchor: "end" })}
-        ${selloPartida(985, 212, v.sello, r, 0.5)}`;
+        ${selloPartida(985, 212, v.sello, r, 0.5)}
+        ${v.logo ? logoSello(985, 90, 0.75) : ""}`;
     },
   });
 
@@ -2101,7 +2105,8 @@
         ${tx(845, 1215, v.mes, D.fit(v.mes, 44, 220, "sans", 700, 6), INK, { anchor: "middle", ls: 6 })}
         ${tx(845, 1400, v.dia, D.fit(v.dia, 230, 220, "cond", 800), INK, { cond: true, anchor: "middle" })}
         ${D.pillAuto(130, 1490, 64, INK, CREAM, v.cta, D.fit(v.cta, 26, 540, "sans", 700, 2))}
-        ${selloPartida(975, 340, v.sello, r, 0.5)}`;
+        ${selloPartida(975, 340, v.sello, r, 0.5)}
+        ${v.logo ? logoSello(845, 1500, 0.75) : ""}`;
     },
   });
 
@@ -2117,7 +2122,7 @@
       const datos = filas.map(([k, val], i) => `${tx(60, 930 + i * 96, k, 24, INK, { ls: 4 })}
         ${tx(60, 966 + i * 96, val, D.fit(val, 38, 960, "sans", 700), INK)}
         <line x1="60" y1="${944 + i * 96 + 30}" x2="1020" y2="${944 + i * 96 + 30}" stroke="${INK}" stroke-width="3" opacity="0.3"/>`).join("");
-      return `${D.background(1080, 1350, r.bg, r.light)}${D.header(110, 110, 1, INK)}
+      return `${D.background(1080, 1350, r.bg, r.light)}${v.logo ? D.header(110, 110, 1, INK) : ""}
         ${D.photo(560, 200, 440, 660, conFoto ? v.foto : "", { path: arco, focus: v.enfoque, strokeWidth: 8 })}
         ${conFoto ? "" : D.d20(780, 520, 130)}
         ${tx(60, 300, v.mes, 46, INK, { ls: 8 })}
@@ -2141,7 +2146,7 @@
       const filas = [["FECHA", v.fecha], ["HORA", v.hora], ["DIRECCIÓN", dirTexto(v)]];
       const datos = filas.map(([k, val], i) => `${tx(90, 1430 + i * 84, k, 24, INK, { ls: 4 })}
         ${tx(90, 1466 + i * 84, val, D.fit(val, 38, 900, "sans", 700), INK)}`).join("");
-      return `${D.background(1080, 1920, r.bg, r.light)}${D.header(120, 300, 1.2, INK)}
+      return `${D.background(1080, 1920, r.bg, r.light)}${v.logo ? D.header(120, 300, 1.2, INK) : ""}
         ${D.photo(90, 380, 900, 620, conFoto ? v.foto : "", { path: arco, focus: v.enfoque, strokeWidth: 8 })}
         ${conFoto ? "" : D.d20(540, 690, 170)}
         ${t.lines.map((l, i) => D.headline(90, 1120 + i * lh, l, t.size, INK, i === t.lines.length - 1 ? r.accent : null, 10)).join("")}
@@ -2162,7 +2167,8 @@
       return `${D.background(1080, 1350, r.bg, r.light)}
         <rect x="60" y="170" width="960" height="1100" rx="28" fill="${CREAM}" stroke="${INK}" stroke-width="8"/>
         <rect x="60" y="170" width="960" height="96" rx="28" fill="${INK}"/><rect x="60" y="220" width="960" height="46" fill="${INK}"/>
-        ${tx(100, 236, `FICHA · ${v.juego}`.toUpperCase(), D.fit(`FICHA · ${v.juego}`.toUpperCase(), 46, 880, "cond", 800), CREAM, { cond: true })}
+        ${tx(100, 236, `FICHA · ${v.juego}`.toUpperCase(), D.fit(`FICHA · ${v.juego}`.toUpperCase(), 46, 780, "cond", 800), CREAM, { cond: true })}
+        ${v.logo ? logoSello(990, 218, 0.7) : ""}
         ${conFoto ? D.photo(100, 300, 470, 430, v.foto, { focus: v.enfoque, rx: 18, strokeWidth: 6 }) : D.d20(335, 515, 150)}
         ${t.lines.map((l, i) => D.headline(610, 380 + i * lh, l, t.size, INK, i === t.lines.length - 1 ? r.accent : null, 8)).join("")}
         ${celda(100, 760, 435, "FECHA", v.fecha)}${celda(565, 760, 435, "HORA", v.hora)}
@@ -2171,6 +2177,7 @@
         ${D.pillAuto(100, 1150, 64, INK, CREAM, v.cta, D.fit(v.cta, 26, 520, "sans", 700, 2))}
         ${tx(1000, 1310, v.usuario, D.fit(v.usuario, 28, 330), INK, { anchor: "end" })}
         ${selloPartida(540, 690, v.sello, r, 0.5)}`;
+
     },
   });
 
