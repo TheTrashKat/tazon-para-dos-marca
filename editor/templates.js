@@ -2292,8 +2292,12 @@
     { key: "info", label: "Fecha y horario general", type: "text", default: "Sábado 14 de noviembre · 11:00 a. m. – 9:00 p. m." },
     { key: "lugar", label: "Lugar", type: "text", default: "Centro Cultural Tag Tabú · Transversal 76 B No. 81 F – 08, Engativá" },
     { key: "contacto", label: "Contacto e inscripciones", type: "text", default: "310 7722348 · 3176963104" },
+    { key: "qrOn", label: "Mostrar QR general (abajo)", type: "checkbox", default: false },
+    { key: "qrUrl", label: "URL del QR general", type: "text", default: "" },
+    { key: "qrTexto", label: "Texto bajo el QR general", type: "text", default: "Reserva tu cupo" },
     { key: "n1", label: "Mesa 1: nombre", type: "text", default: "Dungeons & Dragons" },
     { key: "t1", label: "Mesa 1: tipo (Campaña / One Shot)", type: "text", default: "Campaña" },
+    { key: "i1", label: "Mesa 1: hora de inicio", type: "text", default: "18:00" },
     { key: "h1", label: "Mesa 1: horario", type: "text", default: "" },
     { key: "b1", label: "Mesa 1: players que buscas", type: "text", default: "" },
     { key: "d1", label: "Mesa 1: descripción", type: "text", default: "Una campaña de fantasía clásica: exploración, combate y decisiones que cambian la historia." },
@@ -2303,6 +2307,7 @@
     { key: "url1", label: "Mesa 1: URL del QR (se genera sola)", type: "text", default: "" },
     { key: "n2", label: "Mesa 2: nombre", type: "text", default: "Vampiro: La Mascarada" },
     { key: "t2", label: "Mesa 2: tipo (Campaña / One Shot)", type: "text", default: "Campaña" },
+    { key: "i2", label: "Mesa 2: hora de inicio", type: "text", default: "18:00" },
     { key: "h2", label: "Mesa 2: horario", type: "text", default: "" },
     { key: "b2", label: "Mesa 2: players que buscas", type: "text", default: "" },
     { key: "d2", label: "Mesa 2: descripción", type: "text", default: "Intriga y política en una ciudad que vive de noche. Cada decisión tiene un precio." },
@@ -2312,6 +2317,7 @@
     { key: "url2", label: "Mesa 2: URL del QR (se genera sola)", type: "text", default: "" },
     { key: "n3", label: "Mesa 3: nombre", type: "text", default: "Hombre Lobo" },
     { key: "t3", label: "Mesa 3: tipo (Campaña / One Shot)", type: "text", default: "One Shot" },
+    { key: "i3", label: "Mesa 3: hora de inicio", type: "text", default: "19:00" },
     { key: "h3", label: "Mesa 3: horario", type: "text", default: "" },
     { key: "b3", label: "Mesa 3: players que buscas", type: "text", default: "" },
     { key: "d3", label: "Mesa 3: descripción", type: "text", default: "Un pueblo que vive con miedo a la luna. Sospecha, traición y una noche muy larga." },
@@ -2335,7 +2341,7 @@
     svg += D.headline(70, h > 1500 ? 330 : 260, String(v.titulo || "").toUpperCase(), D.fit(String(v.titulo || ""), h > 1500 ? 170 : 150, 940, "cond", 800), acc, null, 0);
     svg += tx(70, h > 1500 ? 390 : 320, String(v.subtitulo || ""), D.fit(String(v.subtitulo || ""), 52, 940, "cond", 800), ink, { cond: true });
     const mesas = [1, 2, 3].map(i => ({
-      nombre: v["n" + i], tipo: v["t" + i], hora: v["h" + i], buscamos: v["b" + i], desc: v["d" + i],
+      nombre: v["n" + i], tipo: v["t" + i], inicio: v["i" + i], hora: v["h" + i], buscamos: v["b" + i], desc: v["d" + i],
       nivel: v["p" + i], master: v["m" + i], color: v["c" + i] || acc, qr: v["qr" + i]
     })).filter(m => String(m.nombre || "").trim());
     let y = h > 1500 ? 470 : 380;
@@ -2344,7 +2350,7 @@
       const yy = y + i * rowH;
       svg += `<line x1="70" y1="${yy}" x2="1010" y2="${yy}" stroke="${m.color}" stroke-width="4"/>`;
       svg += tx(70, yy + rowH * 0.62, String(i + 1).padStart(2, "0"), 90, m.color, { cond: true });
-      const meta = [m.tipo, m.hora].filter(x => String(x || "").trim()).join(" · ");
+      const meta = [m.tipo, m.inicio ? "Inicia " + m.inicio : ""].filter(x => String(x || "").trim()).join(" · ");
       const nombreTxt = String(m.nombre).toUpperCase();
       const nSize = D.fit(nombreTxt, 52, 600, "cond", 800);
       svg += tx(190, yy + 52, nombreTxt, nSize, m.color, { cond: true });
@@ -2370,6 +2376,10 @@
     [v.info, v.lugar].filter(x => String(x || "").trim()).forEach((l, i) => {
       svg += tx(70, yInfo + i * 38, String(l).toUpperCase(), D.fit(String(l).toUpperCase(), 26, 940, "sans", 700), ink);
     });
+    if (v.qrOn && v.qrImg) {
+      svg += `<image href="${esc(v.qrImg)}" x="${W - 130}" y="${top - 170}" width="110" height="110"/>`;
+      svg += tx(W - 130, top - 18, String(v.qrTexto || ""), 14, ink);
+    }
     svg += `<rect x="0" y="${top}" width="${W}" height="${banda}" fill="#FFFDF8"/><line x1="0" y1="${top}" x2="${W}" y2="${top}" stroke="#28203B" stroke-width="4"/>`;
     svg += tx(50, top + 80, "ORGANIZAN:", 15, "#28203B", { ls: 2 });
     svg += `<image href="../assets/logo/mascota.svg" x="190" y="${top + 22}" width="92" height="96"/>`;

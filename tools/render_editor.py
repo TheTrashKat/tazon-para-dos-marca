@@ -85,6 +85,12 @@ def stage_images(values, base):
             v = f"_tmp/{dst.name}"
         out[k] = v
     # QR dinámico: url1..url3 (texto) se convierten en qr1..qr3 (PNG) si no hay imagen de QR
+    if out.get("qrOn") and out.get("qrUrl"):
+        import qrcode
+        TMP.mkdir(exist_ok=True)
+        dst = TMP / f"qrgen_{abs(hash(out['qrUrl']))}.png"
+        qrcode.make(out["qrUrl"], box_size=10, border=2).save(dst)
+        out["qrImg"] = f"_tmp/{dst.name}"
     for n in (1, 2, 3):
         url = out.get(f"url{n}")
         if url and not out.get(f"qr{n}"):
