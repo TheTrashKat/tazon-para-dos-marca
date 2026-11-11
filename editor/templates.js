@@ -2205,5 +2205,72 @@
     },
   });
 
+
+  // ============================================================ LUDOTECA FAMILIAR (4:5 y 9:16)
+  // Juegos editables (nombre + descripción), fecha, hora, lugar, contacto y foto opcional.
+  const ludotecaFields = [
+    foto("foto", "Foto de fondo (opcional)"), enfoque(), f.receta, f.invertir,
+    { key: "invita", label: "Invitación", type: "text", default: "Tazón para Dos te invita" },
+    { key: "titulo", label: "Título", type: "text", default: "LUDOTECA FAMILIAR" },
+    { key: "subtitulo", label: "Subtítulo", type: "text", default: "Juegos para todas las edades" },
+    { key: "j1", label: "Juego 1", type: "text", default: "Catán" }, { key: "d1", label: "Descripción juego 1", type: "text", default: "Comercia, construye y conquista la isla." },
+    { key: "j2", label: "Juego 2", type: "text", default: "Kingdomino" }, { key: "d2", label: "Descripción juego 2", type: "text", default: "Coloca losetas y construye tu reino." },
+    { key: "j3", label: "Juego 3", type: "text", default: "Dixit" }, { key: "d3", label: "Descripción juego 3", type: "text", default: "Imagina y adivina con cartas ilustradas." },
+    { key: "j4", label: "Juego 4", type: "text", default: "Unstable Unicorns" }, { key: "d4", label: "Descripción juego 4", type: "text", default: "Cartas de unicornios con mucha estrategia." },
+    { key: "fecha", label: "Fecha", type: "text", default: "Sábado 14 de noviembre" },
+    { key: "hora", label: "Horario", type: "text", default: "11:00 a. m. – 9:00 p. m." },
+    { key: "lugar", label: "Lugar", type: "text", default: "Centro Cultural Tag Tabú · Transversal 76 B No. 81 F – 08, Engativá" },
+    { key: "contacto", label: "Contacto e inscripciones", type: "text", default: "310 7722348 · 3176963104" },
+  ];
+  function ludotecaRender(v, h) {
+    const r = rec(v), W = 1080, ink = r.ink, acc = r.hl, banda = 140, top = h - banda;
+    const conFoto = !!v.foto;
+    const juegos = [[v.j1, v.d1], [v.j2, v.d2], [v.j3, v.d3], [v.j4, v.d4]].filter(([n]) => String(n || "").trim());
+    let svg = `${D.background(W, h, r.bg, r.light)}`;
+    svg += tx(70, 90, String(v.invita || "").toUpperCase(), D.fit(String(v.invita || ""), 26, 940, "sans", 700, 3), ink, { ls: 3 });
+    const tt = D.fit(v.titulo || "", h > 1500 ? 170 : 150, 940, "cond", 800);
+    svg += D.headline(70, h > 1500 ? 330 : 260, String(v.titulo || "").toUpperCase(), tt, last(acc, ink), null, 0);
+    svg += tx(70, h > 1500 ? 390 : 320, String(v.subtitulo || ""), D.fit(String(v.subtitulo || ""), 44, 940, "cond", 800), ink, { cond: true });
+    let y = h > 1500 ? 440 : 380;
+    if (conFoto) {
+      const ph = h > 1500 ? 520 : 240;
+      svg += D.photo(70, y, 940, ph, v.foto, { focus: v.enfoque, rx: 18, strokeWidth: 6 });
+      y += ph + 30;
+    }
+    const rowH = h > 1500 ? 150 : 112;
+    juegos.forEach(([n, d], i) => {
+      const yy = y + i * rowH;
+      svg += `<line x1="70" y1="${yy}" x2="1010" y2="${yy}" stroke="${ink}" stroke-width="3"/>`;
+      svg += tx(70, yy + rowH * 0.7, String(i + 1).padStart(2, "0"), 74, acc, { cond: true });
+      svg += tx(190, yy + 52, String(n).toUpperCase(), D.fit(String(n), 50, 820, "cond", 800), ink, { cond: true });
+      if (d) svg += tx(190, yy + 84, String(d), D.fit(String(d), 26, 820), ink);
+    });
+    y += juegos.length * rowH + 30;
+    const info = [v.fecha, v.hora, v.lugar].filter(x => String(x || "").trim());
+    info.forEach((l, i) => { svg += tx(70, y + i * 38, String(l).toUpperCase(), D.fit(String(l).toUpperCase(), 26, 940, "sans", 700), ink); });
+    // Banda inferior con los logos
+    svg += `<rect x="0" y="${top}" width="${W}" height="${banda}" fill="#FFFDF8"/><line x1="0" y1="${top}" x2="${W}" y2="${top}" stroke="${ink === "#28203B" ? "#28203B" : "#28203B"}" stroke-width="4"/>`;
+    svg += tx(50, top + 80, "ORGANIZAN:", 15, "#28203B", { ls: 2 });
+    svg += `<image href="../assets/logo/mascota.svg" x="190" y="${top + 22}" width="92" height="96"/>`;
+    svg += tx(298, top + 80, "Tazón para Dos", 18, "#28203B");
+    svg += `<line x1="450" y1="${top + 20}" x2="450" y2="${top + banda - 20}" stroke="#55C4BF" stroke-width="3"/>`;
+    svg += `<image href="../assets/logo/tagtabu-logotipo.png" x="478" y="${top + 22}" width="170" height="96" preserveAspectRatio="xMidYMid meet"/>`;
+    svg += `<line x1="668" y1="${top + 20}" x2="668" y2="${top + banda - 20}" stroke="#55C4BF" stroke-width="3"/>`;
+    svg += tx(690, top + 60, "INFO E INSCRIPCIONES:", 15, "#28203B", { ls: 2 });
+    svg += tx(690, top + 96, String(v.contacto || ""), D.fit(String(v.contacto || ""), 24, 340, "sans", 600), "#28203B");
+    return svg;
+  }
+  const last = (a) => a;
+  add({
+    id: "ludoteca_post", name: "Ludoteca familiar 4:5", group: "Partidas", w: 1080, h: 1350, fields: ludotecaFields,
+    variants: [...INV_VARIANTS, { foto: "" }],
+    render(v) { return ludotecaRender(v, 1350); },
+  });
+  add({
+    id: "ludoteca_historia", name: "Ludoteca familiar 9:16", group: "Partidas", w: 1080, h: 1920, fields: ludotecaFields,
+    variants: [...INV_VARIANTS, { foto: "" }],
+    render(v) { return ludotecaRender(v, 1920); },
+  });
+
   window.TPDTemplates = templates;
 })();
