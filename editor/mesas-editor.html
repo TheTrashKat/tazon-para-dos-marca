@@ -34,6 +34,10 @@ body{margin:0;display:flex;height:100vh;font:600 14px Barlow,system-ui,sans-seri
   <label>Mascota de Tazón</label>
   <select id="logo"><option value="si">Mostrar</option><option value="no">Ocultar</option></select>
   <label>Contacto e inscripciones</label><input type="text" id="contacto">
+  <h2>QR general (abajo)</h2>
+  <label><input type="checkbox" id="qrOn" style="width:auto"> Mostrar QR general</label>
+  <label>URL del QR general</label><input type="text" id="qrUrl" placeholder="https://...">
+  <label>Texto bajo el QR</label><input type="text" id="qrTexto">
   <h2>Fondo</h2>
   <label>Modo</label>
   <select id="modo"><option value="oscuro">Oscuro (foto + logos inversos)</option><option value="claro">Claro (crema)</option></select>
@@ -56,7 +60,7 @@ const S = {
   invita:'Tazón para Dos te invita', titulo:'Sábado', subtitulo:'Mesas de rol en Tag Tabú',
   info:'Sábado 14 de noviembre · 11:00 a. m. – 9:00 p. m.',
   lugar:'Centro Cultural Tag Tabú · Transversal 76 B No. 81 F – 08, Engativá',
-  contacto:'310 7722348 · 3176963104',
+  contacto:'310 7722348 · 3176963104', qrOn:false, qrUrl:'', qrTexto:'Reserva tu cupo',
   logo:'si', modo:'oscuro', foto:'', opacidad:0.3,
   mesas:[
     {num:'01', nombre:'Dungeons & Dragons', tipo:'Campaña', hora:'', buscamos:'', desc:'Una campaña de fantasía clásica: exploración, combate y decisiones que cambian la historia.', nivel:'NIVEL 3', master:'[MÁSTER]', color:'#FFE600', qr:'', url:'', grupo:true},
@@ -102,6 +106,7 @@ function pieza(mesasP, idx, total){
       <div class="up" style="font:800 52px 'Barlow Condensed';line-height:.95">${esc(S.subtitulo)}</div></div>
     <div style="position:absolute;left:70px;right:70px;top:360px;display:flex;flex-direction:column;color:${txt}">${filas}</div>
     <div style="position:absolute;left:70px;right:70px;top:1140px;font:700 24px Barlow;text-transform:uppercase;line-height:1.35;color:${txt}">${info}</div>
+    ${S.qrOn && S.qrUrl && idx===total-1 ? `<div style="position:absolute;right:70px;top:1046px;width:124px;text-align:center;color:${txt}"><img src="${qrDataUrl(S.qrUrl)}" style="width:124px;height:124px;background:#fff;padding:5px"><div style="font:700 15px Barlow;text-transform:uppercase;margin-top:2px;white-space:nowrap">${esc(S.qrTexto)}</div></div>` : ''}
     ${banda}${idx+1<total?'':''}</div></div>`;
 }
 function dibujar(){
@@ -120,9 +125,11 @@ const GENERALES = ['invita','titulo','subtitulo','info','lugar','contacto','logo
 function leerGenerales(){
   for (const id of GENERALES) S[id] = document.getElementById(id).value;
   S.opacidad = parseFloat(document.getElementById('opacidad').value);
+  S.qrOn = document.getElementById('qrOn').checked;
 }
 function enlazar(){
-  for (const id of [...GENERALES,'opacidad']) document.getElementById(id).addEventListener('input', ()=>{ leerGenerales(); dibujar(); });
+  for (const id of [...GENERALES,'opacidad','qrUrl','qrTexto']) document.getElementById(id).addEventListener('input', ()=>{ leerGenerales(); dibujar(); });
+  document.getElementById('qrOn').addEventListener('change', ()=>{ leerGenerales(); dibujar(); });
   document.getElementById('foto').addEventListener('change', e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ S.foto=r.result; dibujar(); }; r.readAsDataURL(f); });
   document.getElementById('addMesa').addEventListener('click', ()=>{ const n=S.mesas.length+1; S.mesas.push({num:String(n).padStart(2,'0'), nombre:'Nueva mesa', tipo:'Campaña', hora:'', buscamos:'', desc:'Descripción de la mesa.', nivel:'NIVEL', master:'[MÁSTER]', color:'#55C4BF', qr:'', grupo:true}); pintarMesas(); dibujar(); });
   document.getElementById('exportar').addEventListener('click', ()=>{ const c = JSON.stringify({...S, foto: S.foto?'[imagen]':''}, null, 2); navigator.clipboard?.writeText(c); alert('Configuración copiada.'); });
@@ -154,5 +161,6 @@ function pintarMesas(){
 }
 // valores iniciales
 for (const id of GENERALES) document.getElementById(id).value = S[id];
+document.getElementById('qrUrl').value = S.qrUrl; document.getElementById('qrTexto').value = S.qrTexto; document.getElementById('qrOn').checked = S.qrOn;
 pintarMesas(); enlazar(); dibujar();
 </script></body></html>
