@@ -1891,6 +1891,7 @@
     { key: "narra", label: "Quién narra (chip, opcional)", type: "text", default: "" },
     { key: "sello", label: "Sello (opcional: ¡ÚLTIMOS CUPOS!, NUEVA CAMPAÑA…)", type: "text", default: "" },
     { key: "cta", label: "Botón", type: "text", default: "ESCRÍBENOS PARA RESERVAR" }, f.usuario,
+    { key: "tipo", label: "Tipo de mesa", type: "select", options: [["rol", "Mesa de rol"], ["mesa", "Juegos de mesa"]], default: "rol" },
     { key: "logo", label: "Logo Tazón (opcional)", type: "checkbox", default: false }];
   // Sello de estampa (estrella de 14 puntas) con un texto corto en 1–2 líneas, girado. El color evita el fondo y el bloque.
   function selloPartida(cx, cy, texto, r, s = 1) {
@@ -2049,6 +2050,7 @@
   // Para redes: campos iguales a los de partida_post/partida_historia (el publicador no cambia).
   const tx = (x, y, s, size, fill, o = {}) => `<text x="${x}" y="${y}" class="${o.cond ? "cond" : "sans"}" font-weight="${o.cond ? 800 : 700}" font-size="${size}" fill="${fill}" text-anchor="${o.anchor || "start"}" letter-spacing="${o.ls || 0}">${D.esc(s)}</text>`;
   const dirTexto = (v) => v.direccion || v.lugar || PLACE;
+  const tipoTxt = (v) => (v.tipo === "mesa" ? "JUEGOS DE MESA" : "MESA DE ROL");
   // Logo opcional: solo el sello (mascota en círculo), para no repetir el nombre de la marca dentro de la pieza
   const logoSello = (x, y, s) => `<circle cx="${x}" cy="${y}" r="${46 * s}" fill="${CREAM}" stroke="${INK}" stroke-width="${4 * s}"/><use href="#bowl" x="${x - 29 * s}" y="${y - 31 * s}" width="${58 * s}" height="${60 * s}"/>`;
 
@@ -2060,7 +2062,7 @@
       const r = rec(v), conFoto = !!v.foto;
       const TX = 70, TW = 940, TY = 170, TB = 1215, CUT = 860;
       const ticket = `<path d="M${TX},${TY} H${TX + TW} V${CUT - 34} A34,34 0 0 0 ${TX + TW},${CUT + 34} V${TB} H${TX} V${CUT + 34} A34,34 0 0 0 ${TX},${CUT - 34} Z" fill="${CREAM}" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/>`;
-      const lbl = `${v.juego} · ${v.nivel}`.toUpperCase();
+      const lbl = `${tipoTxt(v)} · ${v.nivel}`.toUpperCase();
       const t = fitLines(v.titulo, 112, 820, 1, 60);
       const area = conFoto ? D.photo(130, 270, 820, 430, v.foto, { focus: v.enfoque, rx: 18, strokeWidth: 6 }) : D.d20(540, 480, 150);
       const dir = D.wrap(dirTexto(v), 34, 540, "sans", 700).slice(0, 2);
@@ -2089,7 +2091,7 @@
       const r = rec(v), conFoto = !!v.foto;
       const TX = 90, TW = 900, TY = 300, TB = 1600, CUT = 1150;
       const ticket = `<path d="M${TX},${TY} H${TX + TW} V${CUT - 34} A34,34 0 0 0 ${TX + TW},${CUT + 34} V${TB} H${TX} V${CUT + 34} A34,34 0 0 0 ${TX},${CUT - 34} Z" fill="${CREAM}" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/>`;
-      const lbl = `${v.juego} · ${v.nivel}`.toUpperCase();
+      const lbl = `${tipoTxt(v)} · ${v.nivel}`.toUpperCase();
       const t = fitLines(v.titulo, 110, 820, 1, 60);
       const area = conFoto ? D.photo(130, 400, 820, 560, v.foto, { focus: v.enfoque, rx: 18, strokeWidth: 6 }) : D.d20(540, 680, 190);
       const dir = D.wrap(dirTexto(v), 34, 540, "sans", 700).slice(0, 2);
@@ -2167,7 +2169,7 @@
       return `${D.background(1080, 1350, r.bg, r.light)}
         <rect x="60" y="170" width="960" height="1100" rx="28" fill="${CREAM}" stroke="${INK}" stroke-width="8"/>
         <rect x="60" y="170" width="960" height="96" rx="28" fill="${INK}"/><rect x="60" y="220" width="960" height="46" fill="${INK}"/>
-        ${tx(100, 236, `FICHA · ${v.juego}`.toUpperCase(), D.fit(`FICHA · ${v.juego}`.toUpperCase(), 46, 780, "cond", 800), CREAM, { cond: true })}
+        ${tx(100, 236, `FICHA · ${tipoTxt(v)}`.toUpperCase(), D.fit(`FICHA · ${tipoTxt(v)}`.toUpperCase(), 46, 780, "cond", 800), CREAM, { cond: true })}
         ${v.logo ? logoSello(990, 218, 0.7) : ""}
         ${conFoto ? D.photo(100, 300, 470, 430, v.foto, { focus: v.enfoque, rx: 18, strokeWidth: 6 }) : D.d20(335, 515, 150)}
         ${t.lines.map((l, i) => D.headline(610, 380 + i * lh, l, t.size, INK, i === t.lines.length - 1 ? r.accent : null, 8)).join("")}
@@ -2193,7 +2195,7 @@
         <rect x="80" y="300" width="920" height="1340" rx="28" fill="${CREAM}" stroke="${INK}" stroke-width="8"/>
         <rect x="80" y="300" width="920" height="100" rx="28" fill="${INK}"/><rect x="80" y="350" width="920" height="50" fill="${INK}"/>
         ${tx(120, 370, "FICHA DE PARTIDA", 50, CREAM, { cond: true })}
-        ${D.pillAuto(960, 325, 56, SUN, INK, v.juego, 24, { anchor: "end" })}
+        ${D.pillAuto(960, 325, 56, SUN, INK, tipoTxt(v), 24, { anchor: "end" })}
         ${conFoto ? D.photo(130, 440, 820, 480, v.foto, { focus: v.enfoque, rx: 18, strokeWidth: 6 }) : D.d20(540, 680, 190)}
         ${t.lines.map((l, i) => D.headline(130, 1048 + i * lh, l, t.size, INK, i === t.lines.length - 1 ? r.accent : null, 8)).join("")}
         ${celda(130, 1190, 390, 120, "FECHA", v.fecha)}${celda(560, 1190, 390, 120, "HORA", v.hora)}

@@ -1,0 +1,92 @@
+[
+  {
+    "template": "partida_ficha_post",
+    "values": {
+      "foto": "fotos/tablero.jpg",
+      "tipo": "rol",
+      "receta": "general",
+      "invertir": false,
+      "logo": true,
+      "nivel": "PARA PRINCIPIANTES",
+      "cupos": "5 CUPOS",
+      "titulo": "TU MESA TE ESPERA.",
+      "dia": "14",
+      "mes": "NOV",
+      "fecha": "Sábado 14 de noviembre",
+      "hora": "11:00 a. m. – 9:00 p. m.",
+      "lugar": "Tazón para Dos · Espacio cultural",
+      "direccion": "Transversal 76 B No. 81 F – 08, Engativá",
+      "cta": "VEN A JUGAR CON NOSOTROS",
+      "usuario": "@tazonparados",
+      "sello": "ÚLTIMOS CUPOS"
+    },
+    "output": "salida/ejemplos/ficha_rol_post.png"
+  },
+  {
+    "template": "partida_ficha_post",
+    "values": {
+      "foto": "fotos/tablero.jpg",
+      "tipo": "mesa",
+      "receta": "mesa",
+      "invertir": false,
+      "logo": true,
+      "nivel": "PARA TODAS Y TODOS",
+      "cupos": "5 CUPOS",
+      "titulo": "NOCHE DE TABLERO.",
+      "dia": "14",
+      "mes": "NOV",
+      "fecha": "Sábado 14 de noviembre",
+      "hora": "11:00 a. m. – 9:00 p. m.",
+      "lugar": "Tazón para Dos · Espacio cultural",
+      "direccion": "Transversal 76 B No. 81 F – 08, Engativá",
+      "cta": "VEN A JUGAR CON NOSOTROS",
+      "usuario": "@tazonparados"
+    },
+    "output": "salida/ejemplos/ficha_mesa_post.png"
+  },
+  {
+    "template": "partida_ficha_historia",
+    "values": {
+      "foto": "fotos/tablero.jpg",
+      "tipo": "rol",
+      "receta": "general",
+      "invertir": false,
+      "logo": false,
+      "nivel": "PARA PRINCIPIANTES",
+      "cupos": "5 CUPOS",
+      "titulo": "TU MESA TE ESPERA.",
+      "dia": "14",
+      "mes": "NOV",
+      "fecha": "Sábado 14 de noviembre",
+      "hora": "11:00 a. m. – 9:00 p. m.",
+      "lugar": "Tazón para Dos · Espacio cultural",
+      "direccion": "Transversal 76 B No. 81 F – 08, Engativá",
+      "cta": "VEN A JUGAR CON NOSOTROS",
+      "usuario": "@tazonparados"
+    },
+    "output": "salida/ejemplos/ficha_rol_historia.png"
+  },
+  {
+    "template": "partida_boleto_post",
+    "values": {
+      "foto": "fotos/tablero.jpg",
+      "tipo": "mesa",
+      "receta": "general",
+      "invertir": false,
+      "logo": true,
+      "nivel": "PARA TODAS Y TODOS",
+      "cupos": "5 CUPOS",
+      "titulo": "TE ESPERAMOS.",
+      "dia": "14",
+      "mes": "NOV",
+      "fecha": "Sábado 14 de noviembre",
+      "hora": "11:00 a. m. – 9:00 p. m.",
+      "lugar": "Tazón para Dos · Espacio cultural",
+      "direccion": "Transversal 76 B No. 81 F – 08, Engativá",
+      "cta": "VEN A JUGAR CON NOSOTROS",
+      "usuario": "@tazonparados",
+      "sello": "ÚLTIMOS CUPOS"
+    },
+    "output": "salida/ejemplos/boleto_mesa_post.png"
+  }
+]
