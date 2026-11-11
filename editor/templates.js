@@ -2236,7 +2236,7 @@
       svg += `<rect x="0" y="0" width="${W}" height="${h}" fill="url(#dots)" opacity="0.6"/>`;
     }
     svg += tx(70, 90, String(v.invita || "").toUpperCase(), D.fit(String(v.invita || ""), 26, 940, "sans", 700, 3), ink, { ls: 3 });
-    const tt = D.fit(v.titulo || "", h > 1500 ? 170 : 150, 940, "cond", 800);
+    const tt = D.fit(String(v.titulo || "").toUpperCase(), h > 1500 ? 170 : 150, 940, "cond", 800);
     svg += D.headline(70, h > 1500 ? 330 : 260, String(v.titulo || "").toUpperCase(), tt, last(acc, ink), null, 0);
     svg += tx(70, h > 1500 ? 390 : 320, String(v.subtitulo || ""), D.fit(String(v.subtitulo || ""), 44, 940, "cond", 800), ink, { cond: true });
     let y = h > 1500 ? 440 : 380;

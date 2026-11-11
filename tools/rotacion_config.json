@@ -1,0 +1,24 @@
+{
+  "_nota": "Configuración de la publicación automática. modo: 'aprobar' (default, nada sale sin tu OK) o 'automatico'.",
+  "cada_dias": 2,
+  "modo": "aprobar",
+  "hora_inicio": "10:00",
+  "alternar": ["juegos", "mesas"],
+  "recetas": ["general", "mesa", "convocatoria", "podcast"],
+  "juegos_de_mesa": [
+    {"titulo": "Ludoteca familiar", "juegos": [["Catán", "Comercia, construye y conquista la isla."], ["Kingdomino", "Coloca losetas y construye tu reino."], ["Dixit", "Imagina y adivina con cartas ilustradas."], ["Unstable Unicorns", "Cartas de unicornios con mucha estrategia."]]},
+    {"titulo": "Noche de estrategia", "juegos": [["Santorini", "Construye y sube antes que tus rivales."], ["The Mind", "Juego cooperativo sin hablar."], ["Symbiose", "Evoluciona tu ecosistema."], ["El Mundo de Terra", "Reconstruye comunidades."]]},
+    {"titulo": "Juegos para todas las edades", "juegos": [["Catán", "Comercia, construye y conquista la isla."], ["Dixit", "Imagina y adivina con cartas ilustradas."], ["The Mind", "Juego cooperativo sin hablar."], ["Kingdomino", "Coloca losetas y construye tu reino."]]}
+  ],
+  "mesas_de_rol": [
+    {"titulo": "Mesas de rol en Tag Tabú", "mesas": [
+      {"nombre": "Dungeons & Dragons", "tipo": "Campaña", "inicio": "18:00", "horario": "18:00 – 22:00", "buscamos": "4", "desc": "Una campaña de fantasía clásica: exploración, combate y decisiones que cambian la historia.", "nivel": "NIVEL 3", "master": "[MÁSTER]", "color": "#FFE600", "url": ""},
+      {"nombre": "Vampiro: La Mascarada", "tipo": "Campaña", "inicio": "18:00", "horario": "18:00 – 22:00", "buscamos": "5", "desc": "Intriga y política en una ciudad que vive de noche. Cada decisión tiene un precio.", "nivel": "GENERACIÓN 13", "master": "[MÁSTER]", "color": "#E07D84", "url": ""},
+      {"nombre": "Hombre Lobo", "tipo": "One Shot", "inicio": "19:00", "horario": "19:00 – 21:00", "buscamos": "5", "desc": "Un pueblo que vive con miedo a la luna. Sospecha, traición y una noche muy larga.", "nivel": "RANGO 1", "master": "[MÁSTER]", "color": "#7FA68C", "url": ""}
+    ]}
+  ],
+  "fecha_evento": "Sábado 14 de noviembre · 11:00 a. m. – 9:00 p. m.",
+  "lugar": "Centro Cultural Tag Tabú · Transversal 76 B No. 81 F – 08, Engativá",
+  "contacto": "310 7722348 · 3176963104",
+  "usuario": "@tazonparados"
+}
