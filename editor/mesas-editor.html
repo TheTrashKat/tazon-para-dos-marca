@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es"><head><meta charset="utf-8"><script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=Barlow:wght@600;700&display=swap"><title>Editor · mesas Tazón para Dos</title>
+<html lang="es"><head><meta charset="utf-8"><script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=Barlow:wght@600;700&display=swap"><title>Editor · mesas Tazón para Dos</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;display:flex;height:100vh;font:600 14px Barlow,system-ui,sans-serif;background:#14101f;color:#F7F2E8}
@@ -48,6 +48,7 @@ body{margin:0;display:flex;height:100vh;font:600 14px Barlow,system-ui,sans-seri
   <button id="addMesa">+ Agregar mesa</button>
   <h2>Exportar</h2>
   <button id="exportar">Copiar configuración (JSON)</button>
+  <button id="png">Descargar PNG (1080×1350 por imagen)</button>
   <p style="font-size:12px;opacity:.7">Para guardar la imagen: captura la vista previa o usa Ctrl+P.</p>
 </div>
 <div id="vista"></div>
@@ -120,6 +121,19 @@ function fit(){
   document.querySelectorAll('.pz').forEach(z=>{ const pz=z.querySelector('.pieza'); pz.style.transform=`scale(${k})`; z.style.width=`${1080*k}px`; z.style.height=`${1350*k+30}px`; });
 }
 window.addEventListener('resize', fit);
+async function descargarPng(){
+  const piezas = [...document.querySelectorAll('.pz')];
+  for (let i=0; i<piezas.length; i++){
+    const pieza = piezas[i].querySelector('.pieza');
+    const prev = pieza.style.transform;
+    pieza.style.transform = 'none';
+    try {
+      const url = await htmlToImage.toPng(pieza, { width:1080, height:1350, pixelRatio:1, cacheBust:true });
+      const a = document.createElement('a'); a.href = url; a.download = `mesas_${i+1}_de_${piezas.length}.png`; a.click();
+    } catch(e){ alert('No se pudo exportar: '+e); }
+    pieza.style.transform = prev;
+  }
+}
 
 const GENERALES = ['invita','titulo','subtitulo','info','lugar','contacto','logo','modo'];
 function leerGenerales(){
@@ -132,6 +146,7 @@ function enlazar(){
   document.getElementById('qrOn').addEventListener('change', ()=>{ leerGenerales(); dibujar(); });
   document.getElementById('foto').addEventListener('change', e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ S.foto=r.result; dibujar(); }; r.readAsDataURL(f); });
   document.getElementById('addMesa').addEventListener('click', ()=>{ const n=S.mesas.length+1; S.mesas.push({num:String(n).padStart(2,'0'), nombre:'Nueva mesa', tipo:'Campaña', hora:'', buscamos:'', desc:'Descripción de la mesa.', nivel:'NIVEL', master:'[MÁSTER]', color:'#55C4BF', qr:'', grupo:true}); pintarMesas(); dibujar(); });
+  document.getElementById('png').addEventListener('click', descargarPng);
   document.getElementById('exportar').addEventListener('click', ()=>{ const c = JSON.stringify({...S, foto: S.foto?'[imagen]':''}, null, 2); navigator.clipboard?.writeText(c); alert('Configuración copiada.'); });
 }
 function pintarMesas(){
