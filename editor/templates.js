@@ -1884,7 +1884,8 @@
     { key: "dia", label: "Día (número)", type: "text", default: "1" }, { key: "mes", label: "Mes (abreviado)", type: "text", default: "NOV" },
     { key: "fecha", label: "Fecha", type: "text", default: "Sábado 1 de noviembre" },
     { key: "hora", label: "Hora", type: "text", default: SCHEDULE || "[HORA]" },
-    { key: "lugar", label: "Lugar", type: "text", default: PLACE },
+    { key: "lugar", label: "Lugar (nombre del espacio)", type: "text", default: "Tazón para Dos · Espacio cultural" },
+    { key: "direccion", label: "Dirección (apartado propio)", type: "text", default: PLACE },
     { key: "nivel", label: "Nivel (chip)", type: "text", default: "PARA PRINCIPIANTES" },
     { key: "cupos", label: "Cupos (chip)", type: "text", default: "5 CUPOS" },
     { key: "narra", label: "Quién narra (chip, opcional)", type: "text", default: "" },
@@ -1958,7 +1959,8 @@
     const t = String(v.juego || "").toUpperCase();
     return t ? D.pillAuto(x, y, h, fill, ink, t, D.fit(t, size, maxW - 70, "sans", 700, 2)) : "";
   };
-  const filasPartida = (v) => [["calendario", v.fecha], ["reloj", v.hora], ["ubicacion", v.lugar]].filter((x) => String(x[1] || "").trim());
+  // Filas de la tarjeta de datos: fecha, hora y la dirección (la fila de ubicación); sin dirección, cae al lugar
+  const filasPartida = (v) => [["calendario", v.fecha], ["reloj", v.hora], ["ubicacion", v.direccion || v.lugar]].filter((x) => String(x[1] || "").trim());
 
   add({
     id: "partida_post", name: "Partida de rol 4:5", group: "Partidas", w: 1080, h: 1350, fields: partidaFields,
