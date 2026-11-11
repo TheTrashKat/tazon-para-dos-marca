@@ -2280,5 +2280,117 @@
     render(v) { return ludotecaRender(v, 1920); },
   });
 
+
+  // ============================================================ MESAS DE ROL (4:5 y 9:16)
+  // Hasta 3 mesas por pieza: tipo (campaña / one shot), horario, players que buscas, máster, color y QR de su grupo.
+  const mesasRolFields = [
+    foto("foto", "Foto (opcional)"), enfoque(), f.invertir,
+    { key: "fondo", label: "Foto como", type: "select", options: [["completo", "Fondo completo (detrás del texto)"], ["marco", "Sin foto de fondo"]], default: "completo" },
+    { key: "invita", label: "Invitación", type: "text", default: "Tazón para Dos te invita" },
+    { key: "titulo", label: "Título", type: "text", default: "Sábado" },
+    { key: "subtitulo", label: "Subtítulo", type: "text", default: "Mesas de rol en Tag Tabú" },
+    { key: "info", label: "Fecha y horario general", type: "text", default: "Sábado 14 de noviembre · 11:00 a. m. – 9:00 p. m." },
+    { key: "lugar", label: "Lugar", type: "text", default: "Centro Cultural Tag Tabú · Transversal 76 B No. 81 F – 08, Engativá" },
+    { key: "contacto", label: "Contacto e inscripciones", type: "text", default: "310 7722348 · 3176963104" },
+    { key: "n1", label: "Mesa 1: nombre", type: "text", default: "Dungeons & Dragons" },
+    { key: "t1", label: "Mesa 1: tipo (Campaña / One Shot)", type: "text", default: "Campaña" },
+    { key: "h1", label: "Mesa 1: horario", type: "text", default: "" },
+    { key: "b1", label: "Mesa 1: players que buscas", type: "text", default: "" },
+    { key: "d1", label: "Mesa 1: descripción", type: "text", default: "Una campaña de fantasía clásica: exploración, combate y decisiones que cambian la historia." },
+    { key: "p1", label: "Mesa 1: nivel", type: "text", default: "NIVEL 3" },
+    { key: "m1", label: "Mesa 1: máster", type: "text", default: "[MÁSTER]" },
+    { key: "c1", label: "Mesa 1: color", type: "select", options: [["#FFE600","Sol"],["#E07D84","Coral"],["#7FA68C","Musgo"],["#55C4BF","Turquesa"],["#F7F2E8","Crema"]], default: "#FFE600" },
+    foto("qr1", "Mesa 1: QR de su grupo"),
+    { key: "n2", label: "Mesa 2: nombre", type: "text", default: "Vampiro: La Mascarada" },
+    { key: "t2", label: "Mesa 2: tipo (Campaña / One Shot)", type: "text", default: "Campaña" },
+    { key: "h2", label: "Mesa 2: horario", type: "text", default: "" },
+    { key: "b2", label: "Mesa 2: players que buscas", type: "text", default: "" },
+    { key: "d2", label: "Mesa 2: descripción", type: "text", default: "Intriga y política en una ciudad que vive de noche. Cada decisión tiene un precio." },
+    { key: "p2", label: "Mesa 2: nivel", type: "text", default: "GENERACIÓN 13" },
+    { key: "m2", label: "Mesa 2: máster", type: "text", default: "[MÁSTER]" },
+    { key: "c2", label: "Mesa 2: color", type: "select", options: [["#FFE600","Sol"],["#E07D84","Coral"],["#7FA68C","Musgo"],["#55C4BF","Turquesa"],["#F7F2E8","Crema"]], default: "#E07D84" },
+    foto("qr2", "Mesa 2: QR de su grupo"),
+    { key: "n3", label: "Mesa 3: nombre", type: "text", default: "Hombre Lobo" },
+    { key: "t3", label: "Mesa 3: tipo (Campaña / One Shot)", type: "text", default: "One Shot" },
+    { key: "h3", label: "Mesa 3: horario", type: "text", default: "" },
+    { key: "b3", label: "Mesa 3: players que buscas", type: "text", default: "" },
+    { key: "d3", label: "Mesa 3: descripción", type: "text", default: "Un pueblo que vive con miedo a la luna. Sospecha, traición y una noche muy larga." },
+    { key: "p3", label: "Mesa 3: nivel", type: "text", default: "RANGO 1" },
+    { key: "m3", label: "Mesa 3: máster", type: "text", default: "[MÁSTER]" },
+    { key: "c3", label: "Mesa 3: color", type: "select", options: [["#FFE600","Sol"],["#E07D84","Coral"],["#7FA68C","Musgo"],["#55C4BF","Turquesa"],["#F7F2E8","Crema"]], default: "#7FA68C" },
+    foto("qr3", "Mesa 3: QR de su grupo"),
+  ];
+  function mesasRolRender(v, h) {
+    const W = 1080, banda = 140, top = h - banda;
+    const conFoto = !!v.foto;
+    const aFondo = conFoto && v.fondo !== "marco";
+    const bg = "#1C1629", ink = "#F7F2E8", acc = "#FFE600";
+    const esc = D.esc;
+    let svg = `${D.background(W, h, bg, false)}`;
+    if (aFondo) {
+      svg += `<image href="${esc(v.foto)}" x="0" y="0" width="${W}" height="${h}" preserveAspectRatio="xMidYMid slice" opacity="0.3"/>`;
+      svg += `<rect x="0" y="0" width="${W}" height="${h}" fill="url(#dots)" opacity="0.6"/>`;
+    }
+    svg += tx(70, 90, String(v.invita || "").toUpperCase(), D.fit(String(v.invita || ""), 26, 940, "sans", 700, 3), ink, { ls: 3 });
+    svg += D.headline(70, h > 1500 ? 330 : 260, String(v.titulo || "").toUpperCase(), D.fit(String(v.titulo || ""), h > 1500 ? 170 : 150, 940, "cond", 800), acc, null, 0);
+    svg += tx(70, h > 1500 ? 390 : 320, String(v.subtitulo || ""), D.fit(String(v.subtitulo || ""), 52, 940, "cond", 800), ink, { cond: true });
+    const mesas = [1, 2, 3].map(i => ({
+      nombre: v["n" + i], tipo: v["t" + i], hora: v["h" + i], buscamos: v["b" + i], desc: v["d" + i],
+      nivel: v["p" + i], master: v["m" + i], color: v["c" + i] || acc, qr: v["qr" + i]
+    })).filter(m => String(m.nombre || "").trim());
+    let y = h > 1500 ? 470 : 380;
+    const rowH = h > 1500 ? 300 : 250;
+    mesas.forEach((m, i) => {
+      const yy = y + i * rowH;
+      svg += `<line x1="70" y1="${yy}" x2="1010" y2="${yy}" stroke="${m.color}" stroke-width="4"/>`;
+      svg += tx(70, yy + rowH * 0.62, String(i + 1).padStart(2, "0"), 90, m.color, { cond: true });
+      const meta = [m.tipo, m.hora].filter(x => String(x || "").trim()).join(" · ");
+      const nombreTxt = String(m.nombre).toUpperCase();
+      const nSize = D.fit(nombreTxt, 52, 600, "cond", 800);
+      svg += tx(190, yy + 52, nombreTxt, nSize, m.color, { cond: true });
+
+      const lineas = D.wrap(String(m.desc || ""), 22, 680, "sans", 600).slice(0, 2);
+      lineas.forEach((ln, j) => { svg += tx(190, yy + 84 + j * 27, ln, 22, ink); });
+      const py = yy + 84 + lineas.length * 27 + 14;
+      const pills = [meta, m.nivel, `Máster: ${m.master}`, String(m.buscamos || "").trim() ? `${m.buscamos} players` : ""].filter(x => String(x || "").trim());
+      let px = 190, pyy = py;
+      pills.forEach(p => {
+        const pTxt = p.toUpperCase();
+        const pSize = D.fit(pTxt, 20, 250, "sans", 700, 1);
+        const pw = D.measure(pTxt, "sans", pSize, 700, 1) + 36;
+        if (px + pw > 870) { px = 190; pyy += 44; }
+        svg += `<rect x="${px}" y="${pyy}" width="${pw}" height="36" rx="18" fill="none" stroke="${m.color}" stroke-width="3"/>`;
+        svg += tx(px + 18, pyy + 25, pTxt, pSize, ink);
+        px += pw + 10;
+      });
+      if (m.qr) svg += `<image href="${esc(m.qr)}" x="890" y="${yy + 14}" width="120" height="120" preserveAspectRatio="xMidYMid meet"/>`;
+      else svg += `<rect x="890" y="${yy + 14}" width="120" height="120" fill="none" stroke="${m.color}" stroke-width="3" stroke-dasharray="8 6"/>`;
+    });
+    const yInfo = y + mesas.length * rowH + 30;
+    [v.info, v.lugar].filter(x => String(x || "").trim()).forEach((l, i) => {
+      svg += tx(70, yInfo + i * 38, String(l).toUpperCase(), D.fit(String(l).toUpperCase(), 26, 940, "sans", 700), ink);
+    });
+    svg += `<rect x="0" y="${top}" width="${W}" height="${banda}" fill="#FFFDF8"/><line x1="0" y1="${top}" x2="${W}" y2="${top}" stroke="#28203B" stroke-width="4"/>`;
+    svg += tx(50, top + 80, "ORGANIZAN:", 15, "#28203B", { ls: 2 });
+    svg += `<image href="../assets/logo/mascota.svg" x="190" y="${top + 22}" width="92" height="96"/>`;
+    svg += tx(298, top + 80, "Tazón para Dos", 18, "#28203B");
+    svg += `<line x1="450" y1="${top + 20}" x2="450" y2="${top + banda - 20}" stroke="#55C4BF" stroke-width="3"/>`;
+    svg += `<image href="../assets/logo/tagtabu-logotipo.png" x="478" y="${top + 22}" width="170" height="96" preserveAspectRatio="xMidYMid meet"/>`;
+    svg += `<line x1="668" y1="${top + 20}" x2="668" y2="${top + banda - 20}" stroke="#55C4BF" stroke-width="3"/>`;
+    svg += tx(690, top + 60, "INFO E INSCRIPCIONES:", 15, "#28203B", { ls: 2 });
+    svg += tx(690, top + 96, String(v.contacto || ""), D.fit(String(v.contacto || ""), 24, 340, "sans", 600), "#28203B");
+    return svg;
+  }
+  add({
+    id: "mesas_rol_post", name: "Mesas de rol 4:5", group: "Partidas", w: 1080, h: 1350, fields: mesasRolFields,
+    variants: [{ foto: "" }],
+    render(v) { return mesasRolRender(v, 1350); },
+  });
+  add({
+    id: "mesas_rol_historia", name: "Mesas de rol 9:16", group: "Partidas", w: 1080, h: 1920, fields: mesasRolFields,
+    variants: [{ foto: "" }],
+    render(v) { return mesasRolRender(v, 1920); },
+  });
+
   window.TPDTemplates = templates;
 })();
