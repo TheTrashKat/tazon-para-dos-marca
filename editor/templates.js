@@ -2044,5 +2044,157 @@
     },
   });
 
+  // ============================================================ PARTIDAS · FAMILIAS NUEVAS (boleto, afiche, ficha)
+  // Para redes: campos iguales a los de partida_post/partida_historia (el publicador no cambia).
+  const tx = (x, y, s, size, fill, o = {}) => `<text x="${x}" y="${y}" class="${o.cond ? "cond" : "sans"}" font-weight="${o.cond ? 800 : 700}" font-size="${size}" fill="${fill}" text-anchor="${o.anchor || "start"}" letter-spacing="${o.ls || 0}">${D.esc(s)}</text>`;
+  const dirTexto = (v) => v.direccion || v.lugar || PLACE;
+
+  // Boleto de entrada: tarjeta crema con perforación; el talón lleva la fecha y la dirección va debajo de la línea
+  add({
+    id: "partida_boleto_post", name: "Partida · boleto de entrada 4:5", group: "Partidas", w: 1080, h: 1350, fields: partidaFields,
+    variants: [...INV_VARIANTS, { foto: "" }],
+    render(v) {
+      const r = rec(v), conFoto = !!v.foto;
+      const TX = 70, TW = 940, TY = 170, TB = 1215, CUT = 860;
+      const ticket = `<path d="M${TX},${TY} H${TX + TW} V${CUT - 34} A34,34 0 0 0 ${TX + TW},${CUT + 34} V${TB} H${TX} V${CUT + 34} A34,34 0 0 0 ${TX},${CUT - 34} Z" fill="${CREAM}" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/>`;
+      const lbl = `${v.juego} · ${v.nivel}`.toUpperCase();
+      const t = fitLines(v.titulo, 112, 820, 1, 60);
+      const area = conFoto ? D.photo(130, 270, 820, 430, v.foto, { focus: v.enfoque, rx: 18, strokeWidth: 6 }) : D.d20(540, 480, 150);
+      const dir = D.wrap(dirTexto(v), 34, 540, "sans", 700).slice(0, 2);
+      return `${D.background(1080, 1350, r.bg, r.light)}${ticket}
+        <line x1="${TX + 40}" y1="${CUT}" x2="${TX + TW - 40}" y2="${CUT}" stroke="${INK}" stroke-width="4" stroke-dasharray="14 12"/>
+        ${tx(130, 236, lbl, D.fit(lbl, 30, 600, "sans", 700, 3), INK, { ls: 3 })}
+        ${area}
+        ${D.headline(130, 790, t.lines[0], t.size, INK, r.accent, 8)}
+        ${tx(130, 940, v.fecha, D.fit(v.fecha, 40, 540, "sans", 700), INK)}
+        ${tx(130, 1000, v.hora, D.fit(v.hora, 40, 540, "sans", 700), INK)}
+        ${dir.map((l, i) => tx(130, 1060 + i * 40, l, 34, INK)).join("")}
+        <line x1="710" y1="${CUT + 50}" x2="710" y2="${TB - 50}" stroke="${INK}" stroke-width="4" stroke-dasharray="10 10"/>
+        ${tx(845, 960, v.mes, D.fit(v.mes, 44, 220, "sans", 700, 6), INK, { anchor: "middle", ls: 6 })}
+        ${tx(845, 1130, v.dia, D.fit(v.dia, 220, 240, "cond", 800), INK, { cond: true, anchor: "middle" })}
+        ${D.pillAuto(70, 1245, 64, INK, CREAM, v.cta, D.fit(v.cta, 26, 560, "sans", 700, 2))}
+        ${tx(1010, 1285, v.usuario, D.fit(v.usuario, 28, 330), INK, { anchor: "end" })}
+        ${selloPartida(985, 212, v.sello, r, 0.5)}`;
+    },
+  });
+
+  add({
+    id: "partida_boleto_historia", name: "Partida · boleto de entrada 9:16", group: "Partidas", w: 1080, h: 1920, fields: partidaFields,
+    variants: [...INV_VARIANTS, { foto: "" }],
+    render(v) {
+      const r = rec(v), conFoto = !!v.foto;
+      const TX = 90, TW = 900, TY = 300, TB = 1600, CUT = 1150;
+      const ticket = `<path d="M${TX},${TY} H${TX + TW} V${CUT - 34} A34,34 0 0 0 ${TX + TW},${CUT + 34} V${TB} H${TX} V${CUT + 34} A34,34 0 0 0 ${TX},${CUT - 34} Z" fill="${CREAM}" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/>`;
+      const lbl = `${v.juego} · ${v.nivel}`.toUpperCase();
+      const t = fitLines(v.titulo, 110, 820, 1, 60);
+      const area = conFoto ? D.photo(130, 400, 820, 560, v.foto, { focus: v.enfoque, rx: 18, strokeWidth: 6 }) : D.d20(540, 680, 190);
+      const dir = D.wrap(dirTexto(v), 34, 540, "sans", 700).slice(0, 2);
+      return `${D.background(1080, 1920, r.bg, r.light)}${ticket}
+        <line x1="${TX + 40}" y1="${CUT}" x2="${TX + TW - 40}" y2="${CUT}" stroke="${INK}" stroke-width="4" stroke-dasharray="14 12"/>
+        ${tx(130, 360, lbl, D.fit(lbl, 30, 600, "sans", 700, 3), INK, { ls: 3 })}
+        ${area}
+        ${D.headline(130, 1060, t.lines[0], t.size, INK, r.accent, 8)}
+        ${tx(130, 1230, v.fecha, D.fit(v.fecha, 40, 540, "sans", 700), INK)}
+        ${tx(130, 1292, v.hora, D.fit(v.hora, 40, 540, "sans", 700), INK)}
+        ${dir.map((l, i) => tx(130, 1354 + i * 40, l, 34, INK)).join("")}
+        <line x1="710" y1="${CUT + 50}" x2="710" y2="${TB - 50}" stroke="${INK}" stroke-width="4" stroke-dasharray="10 10"/>
+        ${tx(845, 1215, v.mes, D.fit(v.mes, 44, 220, "sans", 700, 6), INK, { anchor: "middle", ls: 6 })}
+        ${tx(845, 1400, v.dia, D.fit(v.dia, 230, 220, "cond", 800), INK, { cond: true, anchor: "middle" })}
+        ${D.pillAuto(130, 1490, 64, INK, CREAM, v.cta, D.fit(v.cta, 26, 540, "sans", 700, 2))}
+        ${selloPartida(975, 340, v.sello, r, 0.5)}`;
+    },
+  });
+
+  // Afiche editorial: foto en arco, titular grande y datos en filas tipográficas (sin tarjetas)
+  add({
+    id: "partida_afiche_post", name: "Partida · afiche editorial 4:5", group: "Partidas", w: 1080, h: 1350, fields: partidaFields,
+    variants: [...INV_VARIANTS, { foto: "" }],
+    render(v) {
+      const r = rec(v), conFoto = !!v.foto;
+      const arco = "M560,860 V360 Q560,200 720,200 H840 Q1000,200 1000,360 V860 Z";
+      const t = fitLines(v.titulo, 96, 440, 2, 56), lh = t.size * 0.98;
+      const filas = [["FECHA", v.fecha], ["HORA", v.hora], ["DIRECCIÓN", dirTexto(v)]];
+      const datos = filas.map(([k, val], i) => `${tx(60, 930 + i * 96, k, 24, INK, { ls: 4 })}
+        ${tx(60, 966 + i * 96, val, D.fit(val, 38, 960, "sans", 700), INK)}
+        <line x1="60" y1="${944 + i * 96 + 30}" x2="1020" y2="${944 + i * 96 + 30}" stroke="${INK}" stroke-width="3" opacity="0.3"/>`).join("");
+      return `${D.background(1080, 1350, r.bg, r.light)}${D.header(110, 110, 1, INK)}
+        ${D.photo(560, 200, 440, 660, conFoto ? v.foto : "", { path: arco, focus: v.enfoque, strokeWidth: 8 })}
+        ${conFoto ? "" : D.d20(780, 520, 130)}
+        ${tx(60, 300, v.mes, 46, INK, { ls: 8 })}
+        ${D.headline(56, 540, v.dia, D.fit(v.dia, 300, 420, "cond", 800), INK, r.accent, 14)}
+        ${t.lines.map((l, i) => D.headline(60, 650 + i * lh, l, t.size, INK, i === t.lines.length - 1 ? r.accent : null, 8)).join("")}
+        ${datos}
+        ${tx(60, 1230, `${v.nivel} · ${v.cupos}`, D.fit(`${v.nivel} · ${v.cupos}`, 30, 960, "sans", 700, 3), INK, { ls: 3 })}
+        ${D.pillAuto(60, 1268, 56, INK, CREAM, v.cta, D.fit(v.cta, 26, 560, "sans", 700, 2))}
+        ${tx(1020, 1302, v.usuario, D.fit(v.usuario, 28, 330), INK, { anchor: "end" })}
+        ${selloPartida(470, 250, v.sello, r, 0.6)}`;
+    },
+  });
+
+  add({
+    id: "partida_afiche_historia", name: "Partida · afiche editorial 9:16", group: "Partidas", w: 1080, h: 1920, fields: partidaFields,
+    variants: [...INV_VARIANTS, { foto: "" }],
+    render(v) {
+      const r = rec(v), conFoto = !!v.foto;
+      const arco = "M90,1000 V560 Q90,380 270,380 H810 Q990,380 990,560 V1000 Z";
+      const t = fitLines(v.titulo, 130, 900, 2, 64), lh = t.size * 0.98;
+      const filas = [["FECHA", v.fecha], ["HORA", v.hora], ["DIRECCIÓN", dirTexto(v)]];
+      const datos = filas.map(([k, val], i) => `${tx(90, 1430 + i * 84, k, 24, INK, { ls: 4 })}
+        ${tx(90, 1466 + i * 84, val, D.fit(val, 38, 900, "sans", 700), INK)}`).join("");
+      return `${D.background(1080, 1920, r.bg, r.light)}${D.header(120, 300, 1.2, INK)}
+        ${D.photo(90, 380, 900, 620, conFoto ? v.foto : "", { path: arco, focus: v.enfoque, strokeWidth: 8 })}
+        ${conFoto ? "" : D.d20(540, 690, 170)}
+        ${t.lines.map((l, i) => D.headline(90, 1120 + i * lh, l, t.size, INK, i === t.lines.length - 1 ? r.accent : null, 10)).join("")}
+        ${datos}
+        ${selloPartida(880, 440, v.sello, r, 0.7)}`;
+    },
+  });
+
+  // Ficha de personaje: marco crema con banda de título, foto, celdas de datos y píldoras
+  add({
+    id: "partida_ficha_post", name: "Partida · ficha de personaje 4:5", group: "Partidas", w: 1080, h: 1350, fields: partidaFields,
+    variants: [...INV_VARIANTS, { foto: "" }],
+    render(v) {
+      const r = rec(v), conFoto = !!v.foto;
+      const t = fitLines(v.titulo, 96, 380, 3, 52), lh = t.size * 0.98;
+      const celda = (x, y, w, k, val) => `<rect x="${x}" y="${y}" width="${w}" height="${k === "DIRECCIÓN" ? 120 : 120}" rx="18" fill="none" stroke="${INK}" stroke-width="5"/>
+        ${tx(x + 24, y + 40, k, 22, INK, { ls: 3 })}${tx(x + 24, y + 92, val, D.fit(val, 36, w - 48, "sans", 700), INK)}`;
+      return `${D.background(1080, 1350, r.bg, r.light)}
+        <rect x="60" y="170" width="960" height="1100" rx="28" fill="${CREAM}" stroke="${INK}" stroke-width="8"/>
+        <rect x="60" y="170" width="960" height="96" rx="28" fill="${INK}"/><rect x="60" y="220" width="960" height="46" fill="${INK}"/>
+        ${tx(100, 236, `FICHA · ${v.juego}`.toUpperCase(), D.fit(`FICHA · ${v.juego}`.toUpperCase(), 46, 880, "cond", 800), CREAM, { cond: true })}
+        ${conFoto ? D.photo(100, 300, 470, 430, v.foto, { focus: v.enfoque, rx: 18, strokeWidth: 6 }) : D.d20(335, 515, 150)}
+        ${t.lines.map((l, i) => D.headline(610, 380 + i * lh, l, t.size, INK, i === t.lines.length - 1 ? r.accent : null, 8)).join("")}
+        ${celda(100, 760, 435, "FECHA", v.fecha)}${celda(565, 760, 435, "HORA", v.hora)}
+        ${celda(100, 900, 900, "DIRECCIÓN", dirTexto(v))}
+        ${chipsAjustados(100, 1046, chipsPartida(v, r.block), 56, 24, 900)}
+        ${D.pillAuto(100, 1150, 64, INK, CREAM, v.cta, D.fit(v.cta, 26, 520, "sans", 700, 2))}
+        ${tx(1000, 1310, v.usuario, D.fit(v.usuario, 28, 330), INK, { anchor: "end" })}
+        ${selloPartida(540, 690, v.sello, r, 0.5)}`;
+    },
+  });
+
+  add({
+    id: "partida_ficha_historia", name: "Partida · ficha de personaje 9:16", group: "Partidas", w: 1080, h: 1920, fields: partidaFields,
+    variants: [...INV_VARIANTS, { foto: "" }],
+    render(v) {
+      const r = rec(v), conFoto = !!v.foto;
+      const t = fitLines(v.titulo, 120, 820, 2, 60), lh = t.size * 0.98;
+      const celda = (x, y, w, h, k, val) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="18" fill="none" stroke="${INK}" stroke-width="5"/>
+        ${tx(x + 24, y + 40, k, 22, INK, { ls: 3 })}${tx(x + 24, y + 92, val, D.fit(val, 36, w - 48, "sans", 700), INK)}`;
+      return `${D.background(1080, 1920, r.bg, r.light)}
+        <rect x="80" y="300" width="920" height="1340" rx="28" fill="${CREAM}" stroke="${INK}" stroke-width="8"/>
+        <rect x="80" y="300" width="920" height="100" rx="28" fill="${INK}"/><rect x="80" y="350" width="920" height="50" fill="${INK}"/>
+        ${tx(120, 370, "FICHA DE PARTIDA", 50, CREAM, { cond: true })}
+        ${D.pillAuto(960, 325, 56, SUN, INK, v.juego, 24, { anchor: "end" })}
+        ${conFoto ? D.photo(130, 440, 820, 480, v.foto, { focus: v.enfoque, rx: 18, strokeWidth: 6 }) : D.d20(540, 680, 190)}
+        ${t.lines.map((l, i) => D.headline(130, 1048 + i * lh, l, t.size, INK, i === t.lines.length - 1 ? r.accent : null, 8)).join("")}
+        ${celda(130, 1190, 390, 120, "FECHA", v.fecha)}${celda(560, 1190, 390, 120, "HORA", v.hora)}
+        ${celda(130, 1330, 820, 120, "DIRECCIÓN", dirTexto(v))}
+        ${D.pillAuto(130, 1500, 60, INK, CREAM, v.cta, D.fit(v.cta, 26, 700, "sans", 700, 2))}
+        ${selloPartida(880, 470, v.sello, r, 0.6)}`;
+    },
+  });
+
   window.TPDTemplates = templates;
 })();
