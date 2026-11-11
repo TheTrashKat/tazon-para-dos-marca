@@ -2300,7 +2300,7 @@
     { key: "p1", label: "Mesa 1: nivel", type: "text", default: "NIVEL 3" },
     { key: "m1", label: "Mesa 1: máster", type: "text", default: "[MÁSTER]" },
     { key: "c1", label: "Mesa 1: color", type: "select", options: [["#FFE600","Sol"],["#E07D84","Coral"],["#7FA68C","Musgo"],["#55C4BF","Turquesa"],["#F7F2E8","Crema"]], default: "#FFE600" },
-    foto("qr1", "Mesa 1: QR de su grupo"),
+    { key: "url1", label: "Mesa 1: URL del QR (se genera sola)", type: "text", default: "" },
     { key: "n2", label: "Mesa 2: nombre", type: "text", default: "Vampiro: La Mascarada" },
     { key: "t2", label: "Mesa 2: tipo (Campaña / One Shot)", type: "text", default: "Campaña" },
     { key: "h2", label: "Mesa 2: horario", type: "text", default: "" },
@@ -2309,7 +2309,7 @@
     { key: "p2", label: "Mesa 2: nivel", type: "text", default: "GENERACIÓN 13" },
     { key: "m2", label: "Mesa 2: máster", type: "text", default: "[MÁSTER]" },
     { key: "c2", label: "Mesa 2: color", type: "select", options: [["#FFE600","Sol"],["#E07D84","Coral"],["#7FA68C","Musgo"],["#55C4BF","Turquesa"],["#F7F2E8","Crema"]], default: "#E07D84" },
-    foto("qr2", "Mesa 2: QR de su grupo"),
+    { key: "url2", label: "Mesa 2: URL del QR (se genera sola)", type: "text", default: "" },
     { key: "n3", label: "Mesa 3: nombre", type: "text", default: "Hombre Lobo" },
     { key: "t3", label: "Mesa 3: tipo (Campaña / One Shot)", type: "text", default: "One Shot" },
     { key: "h3", label: "Mesa 3: horario", type: "text", default: "" },
@@ -2318,7 +2318,7 @@
     { key: "p3", label: "Mesa 3: nivel", type: "text", default: "RANGO 1" },
     { key: "m3", label: "Mesa 3: máster", type: "text", default: "[MÁSTER]" },
     { key: "c3", label: "Mesa 3: color", type: "select", options: [["#FFE600","Sol"],["#E07D84","Coral"],["#7FA68C","Musgo"],["#55C4BF","Turquesa"],["#F7F2E8","Crema"]], default: "#7FA68C" },
-    foto("qr3", "Mesa 3: QR de su grupo"),
+    { key: "url3", label: "Mesa 3: URL del QR (se genera sola)", type: "text", default: "" },
   ];
   function mesasRolRender(v, h) {
     const W = 1080, banda = 140, top = h - banda;
