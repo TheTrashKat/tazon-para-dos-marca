@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><title>Editor · mesas Tazón para Dos</title>
+<style>
+@font-face{font-family:BC;font-weight:800;src:url('file:///D:/tazon-para-dos-marca/tools/fonts/BarlowCondensed-ExtraBold.ttf')}
+@font-face{font-family:BR;font-weight:700;src:url('file:///D:/tazon-para-dos-marca/tools/fonts/Barlow-Bold.ttf')}
+@font-face{font-family:BR;font-weight:600;src:url('file:///D:/tazon-para-dos-marca/tools/fonts/Barlow-SemiBold.ttf')}
+*{box-sizing:border-box}
+body{margin:0;display:flex;height:100vh;font:600 14px BR,system-ui,sans-serif;background:#14101f;color:#F7F2E8}
+#panel{width:380px;overflow:auto;padding:16px;border-right:2px solid #2B2340}
+#panel h2{font:800 22px BC;text-transform:uppercase;color:#F8CB67;margin:14px 0 6px}
+#panel label{display:block;margin:8px 0 3px;font-size:12px;opacity:.85}
+#panel input[type=text],#panel textarea,#panel select{width:100%;padding:6px 8px;background:#1C1629;color:#F7F2E8;border:1px solid #3E3457;border-radius:6px;font:inherit}
+#panel textarea{min-height:56px}
+#panel .mesa{border:1px solid #3E3457;border-radius:10px;padding:10px;margin:10px 0}
+#panel button{margin-top:8px;padding:7px 12px;background:#55C4BF;color:#28203B;border:0;border-radius:6px;font:700 13px BR;cursor:pointer}
+#panel button.sec{background:#2B2340;color:#F7F2E8}
+#vista{flex:1;display:flex;flex-direction:column;align-items:center;padding:20px;overflow:auto}
+.pz{position:relative;flex:none;margin-bottom:10px}
+.etq{font:700 14px BR;opacity:.7;margin-bottom:6px}
+.pieza{position:absolute;left:0;top:0;width:1080px;height:1350px;overflow:hidden;transform-origin:top left}
+.row{display:flex;gap:20px;align-items:center;padding:6px 0;border-top:3px solid currentColor}
+.n{font:800 100px BC;line-height:.8;min-width:100px}
+.row h3{font:800 50px BC;text-transform:uppercase;line-height:1;margin:0}
+.row p{font:600 22px BR;line-height:1.2;margin:0}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.pill{border:3px solid;border-radius:999px;padding:8px 20px;font:700 22px BR;text-transform:uppercase}
+.up{text-transform:uppercase}
+</style></head><body>
+<div id="panel">
+  <h2>Textos generales</h2>
+  <label>Invitación</label><input type="text" id="invita">
+  <label>Titular</label><input type="text" id="titulo">
+  <label>Subtítulo</label><input type="text" id="subtitulo">
+  <label>Fecha y horario general</label><textarea id="info"></textarea>
+  <label>Lugar</label><input type="text" id="lugar">
+  <h2>Banda de logos (abajo)</h2>
+  <label>Mascota de Tazón</label>
+  <select id="logo"><option value="si">Mostrar</option><option value="no">Ocultar</option></select>
+  <label>Contacto e inscripciones</label><input type="text" id="contacto">
+  <h2>Fondo</h2>
+  <label>Modo</label>
+  <select id="modo"><option value="oscuro">Oscuro (foto + logos inversos)</option><option value="claro">Claro (crema)</option></select>
+  <label>Foto de fondo (opcional)</label><input type="file" id="foto" accept="image/*">
+  <label>Opacidad de la foto</label><input type="range" id="opacidad" min="0" max="1" step="0.05" value="0.3" style="width:100%">
+  <h2>Mesas</h2>
+  <div id="mesas"></div>
+  <button id="addMesa">+ Agregar mesa</button>
+  <h2>Exportar</h2>
+  <button id="exportar">Copiar configuración (JSON)</button>
+  <p style="font-size:12px;opacity:.7">Para guardar la imagen: captura la vista previa o usa Ctrl+P.</p>
+</div>
+<div id="vista"></div>
+
+<script>
+const LOGO = 'file:///D:/tazon-para-dos-marca/assets/logo/';
+const TT = 'file:///D:/marcavisualtagtabu/assets/tagtabu_logotipo.png';
+const COLORES = {'#FFE600':'Sol','#E07D84':'Coral','#7FA68C':'Musgo','#55C4BF':'Turquesa','#F8CB67':'Sol claro','#F7F2E8':'Crema'};
+const S = {
+  invita:'Tazón para Dos te invita', titulo:'Sábado', subtitulo:'Mesas de rol en Tag Tabú',
+  info:'Sábado 14 de noviembre · 11:00 a. m. – 9:00 p. m.',
+  lugar:'Centro Cultural Tag Tabú · Transversal 76 B No. 81 F – 08, Engativá',
+  contacto:'310 7722348 · 3176963104',
+  logo:'si', modo:'oscuro', foto:'', opacidad:0.3,
+  mesas:[
+    {num:'01', nombre:'Dungeons & Dragons', tipo:'Campaña', hora:'', buscamos:'', desc:'Una campaña de fantasía clásica: exploración, combate y decisiones que cambian la historia.', nivel:'NIVEL 3', master:'[MÁSTER]', color:'#FFE600', qr:'', grupo:true},
+    {num:'02', nombre:'Vampiro: La Mascarada', tipo:'Campaña', hora:'', buscamos:'', desc:'Intriga y política en una ciudad que vive de noche. Cada decisión tiene un precio.', nivel:'GENERACIÓN 13', master:'[MÁSTER]', color:'#E07D84', qr:'', grupo:true},
+    {num:'03', nombre:'Hombre Lobo', tipo:'One Shot', hora:'', buscamos:'', desc:'Un pueblo que vive con miedo a la luna. Sospecha, traición y una noche muy larga.', nivel:'RANGO 1', master:'[MÁSTER]', color:'#7FA68C', qr:'', grupo:true},
+  ]
+};
+const esc = s => String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const MESAS_POR_IMAGEN = 3;
+
+function paginas(){ const out=[]; for(let i=0;i<S.mesas.length;i+=MESAS_POR_IMAGEN) out.push(S.mesas.slice(i,i+MESAS_POR_IMAGEN)); return out.length?out:[[]]; }
+
+function pieza(mesasP, idx, total){
+  const oscuro = S.modo==='oscuro';
+  const txt = oscuro ? '#F7F2E8' : '#28203B';
+  const bg = oscuro ? '#1C1629' : '#F7F2E8';
+  const acc = oscuro ? '#FFE600' : '#28203B';
+  const foto = S.foto ? `<div style="position:absolute;inset:0;background:url('${S.foto}') center/cover;opacity:${S.opacidad}"></div>` : '';
+  const filas = mesasP.map(m => {
+    const meta = [m.tipo, m.hora].filter(Boolean).map(esc).join(' · ');
+    const pills = [m.nivel, m.buscamos ? `Buscamos ${m.buscamos} players` : ''].filter(Boolean)
+      .map(x=>`<span class="pill" style="border-color:${m.color};color:${txt}">${esc(x)}</span>`).join('')
+      + `<span class="pill" style="border-color:${m.color};color:${txt}">Máster: ${esc(m.master)}</span>`;
+    const qr = m.grupo ? (m.qr ? `<div style="text-align:center;color:${txt}"><img src="${m.qr}" style="width:100px;height:100px;background:#fff;padding:4px"></div>` : `<div style="width:100px;height:100px;border:3px dashed ${m.color};color:${txt};display:flex;align-items:center;justify-content:center;text-align:center;font:700 16px BR;text-transform:uppercase">Sube QR</div>`) : '';
+    return `<div class="row" style="color:${m.color}"><div class="n">${esc(m.num||'')}</div><div style="flex:1"><h3>${esc(m.nombre)}${meta?` <span style="font:700 24px BR;letter-spacing:1px;display:inline-block;vertical-align:baseline;margin-left:12px;color:${txt};line-height:1">${meta}</span>`:''}</h3><p style="color:${txt}">${esc(m.desc)}</p><div class="pills">${pills}</div></div>${qr}</div>`;
+  }).join('');
+  const info = [S.info, S.lugar].filter(Boolean).map(l=>`<div>${esc(l)}</div>`).join('');
+  const bandaLogo = S.logo==='si' ? `<img src="${LOGO}mascota.svg" style="height:86px">` : '';
+  const banda = `<div style="position:absolute;left:0;right:0;bottom:0;height:140px;background:#FFFDF8;border-top:4px solid #28203B;display:flex;align-items:center;justify-content:space-between;padding:0 50px;color:#28203B">
+      <div style="display:flex;align-items:center;gap:12px"><span class="up" style="font:700 15px BR;letter-spacing:2px;text-decoration:underline">Organizan:</span>${bandaLogo}<span style="font:700 18px BR">Tazón para Dos</span></div>
+      <div style="width:3px;height:96px;background:#55C4BF"></div>
+      <div style="display:flex;align-items:center;gap:10px"><img src="${TT}" style="height:86px"></div>
+      <div style="width:3px;height:96px;background:#55C4BF"></div>
+      <div><div class="up" style="font:700 15px BR;letter-spacing:2px;text-decoration:underline">Info e inscripciones:</div><div style="font:600 24px BR;margin-top:4px">${esc(S.contacto)}</div></div></div>`;
+  return `<div class="pz"><div class="etq">Imagen ${idx+1} de ${total}</div><div class="pieza" style="transform:none"><div style="position:absolute;inset:0;background:${bg}"></div>${foto}
+    <div style="position:absolute;left:70px;top:58px;font:700 26px BR;text-transform:uppercase;letter-spacing:3px;color:${txt}">${esc(S.invita)}</div>
+    <div style="position:absolute;left:70px;right:70px;top:110px;display:flex;flex-direction:column;gap:12px;color:${txt}">
+      <div class="up" style="font:800 150px BC;line-height:.85;color:${acc}">${esc(S.titulo)}</div>
+      <div class="up" style="font:800 52px BC;line-height:.95">${esc(S.subtitulo)}</div></div>
+    <div style="position:absolute;left:70px;right:70px;top:360px;display:flex;flex-direction:column;color:${txt}">${filas}</div>
+    <div style="position:absolute;left:70px;right:70px;top:1140px;font:700 24px BR;text-transform:uppercase;line-height:1.35;color:${txt}">${info}</div>
+    ${banda}${idx+1<total?'':''}</div></div>`;
+}
+function dibujar(){
+  const ps = paginas();
+  document.getElementById('vista').innerHTML = ps.map((m,i)=>pieza(m,i,ps.length)).join('');
+  fit();
+}
+function fit(){
+  const v = document.getElementById('vista');
+  const k = Math.min(1, (v.clientWidth-60)/1080);
+  document.querySelectorAll('.pz').forEach(z=>{ const pz=z.querySelector('.pieza'); pz.style.transform=`scale(${k})`; z.style.width=`${1080*k}px`; z.style.height=`${1350*k+30}px`; });
+}
+window.addEventListener('resize', fit);
+
+const GENERALES = ['invita','titulo','subtitulo','info','lugar','contacto','logo','modo'];
+function leerGenerales(){
+  for (const id of GENERALES) S[id] = document.getElementById(id).value;
+  S.opacidad = parseFloat(document.getElementById('opacidad').value);
+}
+function enlazar(){
+  for (const id of [...GENERALES,'opacidad']) document.getElementById(id).addEventListener('input', ()=>{ leerGenerales(); dibujar(); });
+  document.getElementById('foto').addEventListener('change', e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ S.foto=r.result; dibujar(); }; r.readAsDataURL(f); });
+  document.getElementById('addMesa').addEventListener('click', ()=>{ const n=S.mesas.length+1; S.mesas.push({num:String(n).padStart(2,'0'), nombre:'Nueva mesa', tipo:'Campaña', hora:'', buscamos:'', desc:'Descripción de la mesa.', nivel:'NIVEL', master:'[MÁSTER]', color:'#55C4BF', qr:'', grupo:true}); pintarMesas(); dibujar(); });
+  document.getElementById('exportar').addEventListener('click', ()=>{ const c = JSON.stringify({...S, foto: S.foto?'[imagen]':''}, null, 2); navigator.clipboard?.writeText(c); alert('Configuración copiada.'); });
+}
+function pintarMesas(){
+  const cont = document.getElementById('mesas'); cont.innerHTML = '';
+  S.mesas.forEach((m,i)=>{
+    const d = document.createElement('div'); d.className='mesa';
+    const colores = Object.entries(COLORES).map(([c,n])=>`<option value="${c}" ${c===m.color?'selected':''}>${n}</option>`).join('');
+    const tipos = ['Campaña','One Shot'].map(t=>`<option ${t===m.tipo?'selected':''}>${t}</option>`).join('');
+    d.innerHTML = `
+      <label>Número</label><input type="text" value="${esc(m.num||'')}" data-k="num">
+      <label>Nombre</label><input type="text" value="${esc(m.nombre)}" data-k="nombre">
+      <label>Tipo</label><select data-k="tipo">${tipos}</select>
+      <label>Horario de esta mesa</label><input type="text" value="${esc(m.hora||'')}" data-k="hora" placeholder="18:00 – 22:00">
+      <label>Players que buscas</label><input type="text" value="${esc(m.buscamos||'')}" data-k="buscamos" placeholder="4">
+      <label>Descripción</label><textarea data-k="desc">${esc(m.desc)}</textarea>
+      <label>Nivel (píldora)</label><input type="text" value="${esc(m.nivel||'')}" data-k="nivel">
+      <label>Máster</label><input type="text" value="${esc(m.master)}" data-k="master">
+      <label>Color</label><select data-k="color">${colores}</select>
+      <label><input type="checkbox" data-k="grupo" ${m.grupo?'checked':''} style="width:auto"> Mostrar QR de grupo</label>
+      <label>Imagen QR (PNG)</label><input type="file" accept="image/png,image/jpeg" data-qr="1">
+      <button class="sec" data-del="1">Eliminar mesa</button>`;
+    d.querySelectorAll('[data-k]').forEach(el=>el.addEventListener('input', ()=>{ m[el.dataset.k] = el.type==='checkbox' ? el.checked : el.value; dibujar(); }));
+    d.querySelectorAll('select[data-k]').forEach(el=>el.addEventListener('change', ()=>{ m[el.dataset.k] = el.value; dibujar(); }));
+    d.querySelector('[data-qr]').addEventListener('change', e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ m.qr=r.result; dibujar(); }; r.readAsDataURL(f); });
+    d.querySelector('[data-del]').addEventListener('click', ()=>{ S.mesas.splice(i,1); pintarMesas(); dibujar(); });
+    cont.appendChild(d);
+  });
+}
+// valores iniciales
+for (const id of GENERALES) document.getElementById(id).value = S[id];
+pintarMesas(); enlazar(); dibujar();
+</script></body></html>
