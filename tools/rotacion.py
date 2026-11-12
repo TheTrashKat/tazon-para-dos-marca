@@ -81,6 +81,10 @@ def main():
         for c in e["cola"]:
             print(f"  [{c['estado']}] {c['fecha']} {c['tipo']}: {c['titulo']}")
         return
+    main_generar()
+
+
+def main_generar():
     estado = cargar_estado()
     tipo, item, receta, grupo = elegir(estado)
     nombre = f"{estado['siguiente']:03d}_{tipo}"
