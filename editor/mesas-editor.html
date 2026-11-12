@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es"><head><meta charset="utf-8"><script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script><title>Editor · mesas Tazón para Dos</title>
+<html lang="es"><head><meta charset="utf-8"><script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script><script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script><title>Editor · mesas Tazón para Dos</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;display:flex;height:100vh;font:600 14px Barlow,system-ui,sans-serif;background:#14101f;color:#F7F2E8}
@@ -46,6 +46,10 @@ body{margin:0;display:flex;height:100vh;font:600 14px Barlow,system-ui,sans-seri
   <h2>Mesas</h2>
   <div id="mesas"></div>
   <button id="addMesa">+ Agregar mesa</button>
+  <h2>Importar campañas</h2>
+  <p style="font-size:12px;opacity:.8">Excel (.xlsx) o CSV con una fila por mesa. Columnas: nombre, tipo, inicio, horario, players, descripcion, nivel, master, color, url. Color: sol, coral, musgo, turquesa o crema.</p>
+  <input type="file" id="importar" accept=".xlsx,.xls,.csv" style="width:100%">
+  <button class="sec" id="plantilla">Descargar plantilla (.xlsx)</button>
   <h2>Exportar</h2>
   <button id="exportar">Copiar configuración (JSON)</button>
   <button id="png">Descargar PNG (1080×1350 por imagen)</button>
@@ -149,6 +153,40 @@ function enlazar(){
   document.getElementById('png').addEventListener('click', descargarPng);
   document.getElementById('exportar').addEventListener('click', ()=>{ const c = JSON.stringify({...S, foto: S.foto?'[imagen]':''}, null, 2); navigator.clipboard?.writeText(c); alert('Configuración copiada.'); });
 }
+const COLOR_NOMBRE = {sol:'#FFE600', coral:'#E07D84', musgo:'#7FA68C', turquesa:'#55C4BF', crema:'#F7F2E8'};
+const COLUMNAS = ['nombre','tipo','inicio','horario','players','descripcion','nivel','master','color','url'];
+function filaAMesa(f, i){
+  const g = k => String(f[k] ?? '').trim();
+  const colorTxt = g('color').toLowerCase();
+  const color = COLOR_NOMBRE[colorTxt] || (colorTxt.startsWith('#') ? colorTxt : '#FFE600');
+  return { num: String(i+1).padStart(2,'0'), nombre: g('nombre'), tipo: g('tipo') || 'Campaña', inicio: g('inicio'),
+           hora: g('horario'), buscamos: g('players'), desc: g('descripcion'), nivel: g('nivel'),
+           master: g('master') || '[MÁSTER]', color, qr: '', url: g('url'), grupo: true };
+}
+document.getElementById('importar').addEventListener('change', async e => {
+  const f = e.target.files[0]; if (!f) return;
+  try {
+    const wb = XLSX.read(await f.arrayBuffer(), { type: 'array' });
+    const hoja = wb.Sheets[wb.SheetNames[0]];
+    const filas = XLSX.utils.sheet_to_json(hoja, { defval: '', raw: false,
+      header: COLUMNAS, range: 1 });            // fila 1 = encabezados
+    const mesas = filas.filter(r => String(r.nombre || '').trim()).map(filaAMesa);
+    if (!mesas.length) { alert('No encontré mesas. Revisa que la columna "nombre" tenga datos.'); return; }
+    S.mesas = mesas; pintarMesas(); dibujar();
+    alert(`Importadas ${mesas.length} mesa(s).`);
+  } catch (err) { alert('No pude leer el archivo: ' + err); }
+  e.target.value = '';
+});
+document.getElementById('plantilla').addEventListener('click', () => {
+  const ejemplo = [
+    {nombre:'Dungeons & Dragons', tipo:'Campaña', inicio:'18:00', horario:'18:00 – 22:00', players:'4', descripcion:'Una campaña de fantasía clásica.', nivel:'NIVEL 3', master:'[MÁSTER]', color:'sol', url:''},
+    {nombre:'Hombre Lobo', tipo:'One Shot', inicio:'19:00', horario:'19:00 – 21:00', players:'5', descripcion:'Un pueblo con miedo a la luna.', nivel:'RANGO 1', master:'[MÁSTER]', color:'musgo', url:''}
+  ];
+  const ws = XLSX.utils.json_to_sheet(ejemplo, { header: COLUMNAS });
+  const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, 'Mesas');
+  XLSX.writeFile(wb, 'plantilla_mesas.xlsx');
+});
+
 function pintarMesas(){
   const cont = document.getElementById('mesas'); cont.innerHTML = '';
   S.mesas.forEach((m,i)=>{
