@@ -85,7 +85,7 @@ function pieza(mesasP, idx, total){
   const acc = oscuro ? '#FFE600' : '#28203B';
   const foto = S.foto ? `<div style="position:absolute;inset:0;background:url('${S.foto}') center/cover;opacity:${S.opacidad}"></div>` : '';
   const filas = mesasP.map(m => {
-    const meta = [m.tipo, m.inicio ? 'Inicia ' + m.inicio : '', m.hora].filter(Boolean).map(esc).join(' · ');
+    const meta = [m.tipo, m.hora || (m.inicio ? 'Inicia ' + m.inicio : '')].filter(Boolean).map(esc).join(' · ');
     const pills = [m.nivel, m.buscamos ? `Buscamos ${m.buscamos} players` : ''].filter(Boolean)
       .map(x=>`<span class="pill" style="border-color:${m.color};color:${txt}">${esc(x)}</span>`).join('')
       + `<span class="pill" style="border-color:${m.color};color:${txt}">Máster: ${esc(m.master)}</span>`;
@@ -160,7 +160,7 @@ function pintarMesas(){
       <label>Nombre</label><input type="text" value="${esc(m.nombre)}" data-k="nombre">
       <label>Tipo</label><select data-k="tipo">${tipos}</select>
       <label>Hora de inicio</label><input type="text" value="${esc(m.inicio||'')}" data-k="inicio" placeholder="18:00">
-      <label>Horario de esta mesa</label><input type="text" value="${esc(m.hora||'')}" data-k="hora" placeholder="18:00 – 22:00">
+      <label>Horario de la mesa (ej. 18:00 – 22:00)</label><input type="text" value="${esc(m.hora||'')}" data-k="hora" placeholder="18:00 – 22:00">
       <label>Players que buscas</label><input type="text" value="${esc(m.buscamos||'')}" data-k="buscamos" placeholder="4">
       <label>Descripción</label><textarea data-k="desc">${esc(m.desc)}</textarea>
       <label>Nivel (píldora)</label><input type="text" value="${esc(m.nivel||'')}" data-k="nivel">
